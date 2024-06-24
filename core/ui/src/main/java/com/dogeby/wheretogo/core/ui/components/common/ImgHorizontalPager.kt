@@ -31,13 +31,13 @@ import com.dogeby.wheretogo.core.ui.R
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun ImageHorizontalPager(
-    images: List<String>,
+fun ImgHorizontalPager(
+    imgSrcs: List<String>,
     modifier: Modifier = Modifier,
     ratio: Float = 1.5f,
 ) {
     val pagerState = rememberPagerState {
-        images.size
+        imgSrcs.size
     }
     var currentPage by remember {
         mutableIntStateOf(pagerState.currentPage + 1)
@@ -59,7 +59,7 @@ fun ImageHorizontalPager(
         ) { page ->
             AsyncImage(
                 model = ImageRequest.Builder(LocalContext.current)
-                    .data(images[page])
+                    .data(imgSrcs[page])
                     .crossfade(true)
                     .build(),
                 contentDescription = null,
@@ -72,7 +72,7 @@ fun ImageHorizontalPager(
         }
         PageTag(
             currentPage = { currentPage },
-            totalPage = images.size,
+            totalPage = imgSrcs.size,
             modifier = Modifier
                 .align(Alignment.BottomEnd)
                 .padding(end = 16.dp, bottom = 12.dp)
@@ -83,10 +83,10 @@ fun ImageHorizontalPager(
 
 @Preview(showBackground = true)
 @Composable
-private fun ImageHorizontalPagerPreview() {
+private fun ImgHorizontalPagerPreview() {
     Surface {
-        ImageHorizontalPager(
-            images = List(5) {
+        ImgHorizontalPager(
+            imgSrcs = List(5) {
                 "http://tong.visitkorea.or.kr/cms/resource/23/2678623_image2_1.jpg"
             },
         )
