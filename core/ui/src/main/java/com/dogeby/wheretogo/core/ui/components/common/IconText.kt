@@ -13,7 +13,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 
 @Composable
@@ -21,8 +24,10 @@ fun IconText(
     icon: ImageVector,
     text: String,
     modifier: Modifier = Modifier,
-    contentDescription: String? = null,
     color: Color = MaterialTheme.colorScheme.onSurfaceVariant,
+    contentDescription: String? = null,
+    iconSize: Dp = 12.dp,
+    style: TextStyle = MaterialTheme.typography.labelMedium,
 ) {
     Row(
         modifier = modifier,
@@ -31,13 +36,15 @@ fun IconText(
         Icon(
             imageVector = icon,
             contentDescription = contentDescription,
-            modifier = Modifier.size(12.dp),
+            modifier = Modifier.size(iconSize),
             tint = color,
         )
         Text(
             text = text,
             color = color,
-            style = MaterialTheme.typography.labelMedium,
+            overflow = TextOverflow.Ellipsis,
+            maxLines = 1,
+            style = style,
         )
     }
 }
