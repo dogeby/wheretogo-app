@@ -58,7 +58,7 @@ fun ContentMediumCard(
                     style = MaterialTheme.typography.titleMedium,
                 )
                 Text(
-                    text = categories.joinToString(" · "),
+                    text = categories.joinToString(" • "),
                     overflow = TextOverflow.Ellipsis,
                     maxLines = 1,
                     style = MaterialTheme.typography.labelMedium,

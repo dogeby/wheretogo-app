@@ -41,7 +41,7 @@ fun ContentListItem(
         supportingContent = {
             Column {
                 Text(
-                    text = categories.joinToString(" · "),
+                    text = categories.joinToString(" • "),
                     overflow = TextOverflow.Ellipsis,
                     maxLines = 1,
                     style = MaterialTheme.typography.labelMedium,
