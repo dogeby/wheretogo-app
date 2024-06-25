@@ -19,25 +19,18 @@ import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
-import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import coil.ImageLoader
-import coil.compose.AsyncImage
-import coil.request.ImageRequest
-import com.dogeby.wheretogo.core.ui.R
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun ImageHorizontalPager(
-    images: List<String>,
+fun ImgHorizontalPager(
+    imgSrcs: List<String>,
     modifier: Modifier = Modifier,
     ratio: Float = 1.5f,
 ) {
     val pagerState = rememberPagerState {
-        images.size
+        imgSrcs.size
     }
     var currentPage by remember {
         mutableIntStateOf(pagerState.currentPage + 1)
@@ -57,22 +50,14 @@ fun ImageHorizontalPager(
                 pagerSnapDistance = PagerSnapDistance.atMost(1),
             ),
         ) { page ->
-            AsyncImage(
-                model = ImageRequest.Builder(LocalContext.current)
-                    .data(images[page])
-                    .crossfade(true)
-                    .build(),
-                contentDescription = null,
-                imageLoader = ImageLoader(LocalContext.current),
+            AsyncImageWithFallback(
+                imgSrc = imgSrcs[page],
                 modifier = Modifier.aspectRatio(ratio),
-                contentScale = ContentScale.FillBounds,
-                placeholder = painterResource(id = R.drawable.loading_img),
-                error = painterResource(id = R.drawable.ic_broken_image),
             )
         }
         PageTag(
             currentPage = { currentPage },
-            totalPage = images.size,
+            totalPage = imgSrcs.size,
             modifier = Modifier
                 .align(Alignment.BottomEnd)
                 .padding(end = 16.dp, bottom = 12.dp)
@@ -83,10 +68,10 @@ fun ImageHorizontalPager(
 
 @Preview(showBackground = true)
 @Composable
-private fun ImageHorizontalPagerPreview() {
+private fun ImgHorizontalPagerPreview() {
     Surface {
-        ImageHorizontalPager(
-            images = List(5) {
+        ImgHorizontalPager(
+            imgSrcs = List(5) {
                 "http://tong.visitkorea.or.kr/cms/resource/23/2678623_image2_1.jpg"
             },
         )
