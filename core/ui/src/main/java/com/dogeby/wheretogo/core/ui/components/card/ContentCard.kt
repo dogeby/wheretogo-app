@@ -25,7 +25,7 @@ import com.dogeby.wheretogo.core.ui.components.common.IconText
 import com.dogeby.wheretogo.core.ui.components.common.StarRatingDisplay
 
 @Composable
-fun ContentMediumCard(
+fun ContentCard(
     title: String,
     imgSrc: String,
     categories: List<String>,
@@ -39,7 +39,7 @@ fun ContentMediumCard(
 ) {
     Surface(
         onClick = onClick,
-        modifier = modifier.width(240.dp),
+        modifier = modifier,
         shape = shape,
         color = color,
     ) {
@@ -79,8 +79,8 @@ fun ContentMediumCard(
 
 @Preview(showBackground = true)
 @Composable
-private fun ContentMediumCardPreview() {
-    ContentMediumCard(
+private fun ContentCardPreview() {
+    ContentCard(
         title = "Title",
         imgSrc = "http://tong.visitkorea.or.kr/cms/resource/23/2678623_image3_1.jpg",
         categories = listOf("cat1", "cat2", "cat3"),
@@ -88,14 +88,14 @@ private fun ContentMediumCardPreview() {
         areaName = "area",
         sigunguName = "sigungu",
         onClick = {},
-        modifier = Modifier.padding(16.dp),
+        modifier = Modifier.padding(16.dp).width(240.dp),
     )
 }
 
 @Preview(showBackground = true)
 @Composable
-private fun ContentMediumCardPreview_RatingZero() {
-    ContentMediumCard(
+private fun ContentCardPreview_RatingZero() {
+    ContentCard(
         title = "Title",
         imgSrc = "http://tong.visitkorea.or.kr/cms/resource/23/2678623_image3_1.jpg",
         categories = listOf("cat1", "cat2", "cat3"),
@@ -103,6 +103,6 @@ private fun ContentMediumCardPreview_RatingZero() {
         areaName = "area",
         sigunguName = "sigungu",
         onClick = {},
-        modifier = Modifier.padding(16.dp),
+        modifier = Modifier.padding(16.dp).width(240.dp),
     )
 }
