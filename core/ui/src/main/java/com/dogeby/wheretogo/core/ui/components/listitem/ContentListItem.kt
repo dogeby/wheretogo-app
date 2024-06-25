@@ -6,7 +6,6 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.LocationOn
-import androidx.compose.material.icons.filled.StarRate
 import androidx.compose.material3.ListItem
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -17,6 +16,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.dogeby.wheretogo.core.ui.components.common.AsyncImageWithFallback
 import com.dogeby.wheretogo.core.ui.components.common.IconText
+import com.dogeby.wheretogo.core.ui.components.common.StarRatingDisplay
 
 @Composable
 fun ContentListItem(
@@ -49,14 +49,7 @@ fun ContentListItem(
                 Row(
                     horizontalArrangement = Arrangement.spacedBy(8.dp),
                 ) {
-                    IconText(
-                        icon = Icons.Default.StarRate,
-                        text = String.format(
-                            locale = null,
-                            format = "%.1f",
-                            avgStarRating.coerceIn(0.0, 5.0),
-                        ),
-                    )
+                    StarRatingDisplay(avgStarRating)
                     IconText(
                         icon = Icons.Default.LocationOn,
                         text = "$areaName $sigunguName",
