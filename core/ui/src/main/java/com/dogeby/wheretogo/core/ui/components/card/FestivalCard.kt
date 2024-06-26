@@ -8,8 +8,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.CalendarToday
 import androidx.compose.material.icons.filled.LocationOn
-import androidx.compose.material.icons.filled.StarRate
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -18,17 +18,21 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.dogeby.wheretogo.core.ui.components.common.AsyncImageWithFallback
 import com.dogeby.wheretogo.core.ui.components.common.IconText
+import com.dogeby.wheretogo.core.ui.components.common.StarRatingDisplay
+import com.dogeby.wheretogo.core.ui.components.util.formatDate
 
 @Composable
-fun ContentMediumCard(
+fun FestivalCard(
     title: String,
     imgSrc: String,
-    categories: List<String>,
+    startDate: String,
+    endDate: String,
     avgStarRating: Double,
     areaName: String,
     sigunguName: String,
@@ -39,7 +43,7 @@ fun ContentMediumCard(
 ) {
     Surface(
         onClick = onClick,
-        modifier = modifier.width(240.dp),
+        modifier = modifier,
         shape = shape,
         color = color,
     ) {
@@ -57,23 +61,17 @@ fun ContentMediumCard(
                     maxLines = 1,
                     style = MaterialTheme.typography.titleMedium,
                 )
-                Text(
-                    text = categories.joinToString(" · "),
-                    overflow = TextOverflow.Ellipsis,
-                    maxLines = 1,
-                    style = MaterialTheme.typography.labelMedium,
+
+                val locale = LocalConfiguration.current.locales[0]
+                IconText(
+                    icon = Icons.Default.CalendarToday,
+                    text = "${startDate.formatDate(locale)} - ${endDate.formatDate(locale)}",
+                    style = MaterialTheme.typography.bodyMedium,
                 )
                 Row(
                     horizontalArrangement = Arrangement.spacedBy(8.dp),
                 ) {
-                    IconText(
-                        icon = Icons.Default.StarRate,
-                        text = String.format(
-                            locale = null,
-                            format = "%.1f",
-                            avgStarRating.coerceIn(0.0, 5.0),
-                        ),
-                    )
+                    StarRatingDisplay(avgStarRating)
                     IconText(
                         icon = Icons.Default.LocationOn,
                         text = "$areaName $sigunguName",
@@ -86,15 +84,16 @@ fun ContentMediumCard(
 
 @Preview(showBackground = true)
 @Composable
-private fun ContentMediumCardPreview() {
-    ContentMediumCard(
+private fun FestivalCardPreview() {
+    FestivalCard(
         title = "Title",
-        imgSrc = "http://tong.visitkorea.or.kr/cms/resource/23/2678623_image3_1.jpg",
-        categories = listOf("cat1", "cat2", "cat3"),
+        imgSrc = "http://tong.visitkorea.or.kr/cms/resource/54/2483454_image2_1.JPG",
+        startDate = "20210306",
+        endDate = "20211030",
         avgStarRating = 4.5,
         areaName = "area",
         sigunguName = "sigungu",
         onClick = {},
-        modifier = Modifier.padding(16.dp),
+        modifier = Modifier.width(360.dp).padding(16.dp),
     )
 }
