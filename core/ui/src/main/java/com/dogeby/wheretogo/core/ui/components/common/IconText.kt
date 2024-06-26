@@ -21,6 +21,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 
+internal val ICON_TEXT_DEFAULT_ICON_SIZE = 12.dp
+
 @Composable
 fun IconText(
     icon: ImageVector,
@@ -28,7 +30,7 @@ fun IconText(
     modifier: Modifier = Modifier,
     color: Color = MaterialTheme.colorScheme.onSurfaceVariant,
     contentDescription: String? = null,
-    iconSize: Dp = 12.dp,
+    iconSize: Dp = ICON_TEXT_DEFAULT_ICON_SIZE,
     style: TextStyle = MaterialTheme.typography.labelMedium,
 ) {
     Row(
