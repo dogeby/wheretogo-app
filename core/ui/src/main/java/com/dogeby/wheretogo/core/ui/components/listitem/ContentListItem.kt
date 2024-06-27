@@ -7,12 +7,15 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.LocationOn
 import androidx.compose.material3.ListItem
+import androidx.compose.material3.ListItemColors
+import androidx.compose.material3.ListItemDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.dogeby.wheretogo.core.ui.components.common.AsyncImageWithFallback
 import com.dogeby.wheretogo.core.ui.components.common.IconText
@@ -27,6 +30,9 @@ fun ContentListItem(
     areaName: String,
     sigunguName: String,
     modifier: Modifier = Modifier,
+    colors: ListItemColors = ListItemDefaults.colors(),
+    tonalElevation: Dp = ListItemDefaults.Elevation,
+    shadowElevation: Dp = ListItemDefaults.Elevation,
 ) {
     ListItem(
         headlineContent = {
@@ -63,6 +69,9 @@ fun ContentListItem(
                 modifier = Modifier.size(56.dp),
             )
         },
+        colors = colors,
+        tonalElevation = tonalElevation,
+        shadowElevation = shadowElevation,
     )
 }
 

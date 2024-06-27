@@ -4,12 +4,15 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.History
 import androidx.compose.material3.Icon
 import androidx.compose.material3.ListItem
+import androidx.compose.material3.ListItemColors
+import androidx.compose.material3.ListItemDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.Dp
 
 @Composable
 fun KeywordListItem(
@@ -17,6 +20,9 @@ fun KeywordListItem(
     keyword: String,
     modifier: Modifier = Modifier,
     contentDescription: String? = null,
+    colors: ListItemColors = ListItemDefaults.colors(),
+    tonalElevation: Dp = ListItemDefaults.Elevation,
+    shadowElevation: Dp = ListItemDefaults.Elevation,
 ) {
     ListItem(
         headlineContent = {
@@ -33,6 +39,9 @@ fun KeywordListItem(
                 contentDescription = contentDescription,
             )
         },
+        colors = colors,
+        tonalElevation = tonalElevation,
+        shadowElevation = shadowElevation,
     )
 }
 

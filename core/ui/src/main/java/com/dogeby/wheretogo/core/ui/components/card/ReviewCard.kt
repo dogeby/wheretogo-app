@@ -70,9 +70,7 @@ fun ReviewCard(
     onImageClick: (currentPage: Int) -> Unit,
     modifier: Modifier = Modifier,
     shape: Shape = CardDefaults.shape,
-    colors: CardColors = CardDefaults
-        .cardColors()
-        .copy(containerColor = Color.Transparent),
+    colors: CardColors = CardDefaults.cardColors(containerColor = Color.Transparent),
     isWriter: Boolean = false,
 ) {
     var reviewContentExpanded by remember { mutableStateOf(false) }
