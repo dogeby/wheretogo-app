@@ -27,7 +27,7 @@ import androidx.compose.ui.unit.dp
 import com.dogeby.wheretogo.core.ui.components.common.AsyncImageWithFallback
 import com.dogeby.wheretogo.core.ui.components.common.IconText
 import com.dogeby.wheretogo.core.ui.components.common.StarRatingDisplay
-import com.dogeby.wheretogo.core.ui.components.util.formatDate
+import com.dogeby.wheretogo.core.ui.util.formatDate
 
 @Composable
 fun FestivalCard(

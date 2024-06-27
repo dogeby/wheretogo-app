@@ -16,8 +16,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.dogeby.wheretogo.core.ui.components.listitem.ContentListItem
-import com.dogeby.wheretogo.core.ui.components.model.ContentListItemUiState
-import com.dogeby.wheretogo.core.ui.components.model.ContentListUiState
+import com.dogeby.wheretogo.core.ui.model.ContentListItemUiState
+import com.dogeby.wheretogo.core.ui.model.ContentListUiState
 
 fun LazyGridScope.contentList(
     contentsState: ContentListUiState,

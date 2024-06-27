@@ -52,7 +52,7 @@ import com.dogeby.wheretogo.core.ui.R
 import com.dogeby.wheretogo.core.ui.components.common.AsyncImageWithFallback
 import com.dogeby.wheretogo.core.ui.components.common.ICON_TEXT_DEFAULT_ICON_SIZE
 import com.dogeby.wheretogo.core.ui.components.common.IconText
-import com.dogeby.wheretogo.core.ui.components.util.formatDate
+import com.dogeby.wheretogo.core.ui.util.formatDate
 
 private val REVIEW_IMAGE_SIZE = 144.dp
 

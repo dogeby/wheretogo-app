@@ -1,4 +1,4 @@
-package com.dogeby.wheretogo.core.ui.components.util
+package com.dogeby.wheretogo.core.ui.util
 
 import android.icu.text.SimpleDateFormat
 import java.util.Locale

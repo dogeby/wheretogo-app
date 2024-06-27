@@ -1,4 +1,4 @@
-package com.dogeby.wheretogo.core.ui.components.model
+package com.dogeby.wheretogo.core.ui.model
 
 sealed interface ContentListUiState {
 
