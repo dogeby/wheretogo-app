@@ -22,3 +22,4 @@ dependencyResolutionManagement {
 rootProject.name = "Wheretogo"
 include(":app")
 include(":core:ui")
+include(":feature:contents")
