@@ -10,8 +10,10 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.CalendarToday
 import androidx.compose.material.icons.filled.LocationOn
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardColors
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -38,14 +40,14 @@ fun FestivalCard(
     sigunguName: String,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
-    shape: Shape = RoundedCornerShape(12.dp),
-    color: Color = Color.Transparent,
+    shape: Shape = CardDefaults.shape,
+    colors: CardColors = CardDefaults.cardColors(containerColor = Color.Transparent),
 ) {
-    Surface(
+    Card(
         onClick = onClick,
         modifier = modifier,
         shape = shape,
-        color = color,
+        colors = colors,
     ) {
         Column {
             AsyncImageWithFallback(
