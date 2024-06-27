@@ -59,11 +59,11 @@ private val REVIEW_IMAGE_SIZE = 144.dp
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun ReviewCard(
-    writerImgSrc: String,
+    writerImgSrc: Any,
     writerName: String,
     writeDate: String,
     starRating: Int,
-    imgSrcs: List<String>,
+    imgSrcs: List<Any>,
     reviewContent: String,
     onEdit: () -> Unit,
     onDelete: () -> Unit,
@@ -132,7 +132,7 @@ fun ReviewCard(
 
 @Composable
 private fun ReviewCardHeader(
-    writerImgSrc: String,
+    writerImgSrc: Any,
     writerName: String,
     writeDate: String,
     starRating: Int,

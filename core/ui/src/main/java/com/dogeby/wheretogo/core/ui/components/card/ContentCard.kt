@@ -27,7 +27,7 @@ import com.dogeby.wheretogo.core.ui.components.common.StarRatingDisplay
 @Composable
 fun ContentCard(
     title: String,
-    imgSrc: String,
+    imgSrc: Any,
     categories: List<String>,
     avgStarRating: Double,
     areaName: String,

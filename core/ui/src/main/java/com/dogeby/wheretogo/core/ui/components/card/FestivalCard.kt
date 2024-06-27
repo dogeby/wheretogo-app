@@ -30,7 +30,7 @@ import com.dogeby.wheretogo.core.ui.components.util.formatDate
 @Composable
 fun FestivalCard(
     title: String,
-    imgSrc: String,
+    imgSrc: Any,
     startDate: String,
     endDate: String,
     avgStarRating: Double,
