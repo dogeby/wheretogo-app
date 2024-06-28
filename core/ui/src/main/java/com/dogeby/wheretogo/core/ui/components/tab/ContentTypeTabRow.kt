@@ -6,10 +6,9 @@ import androidx.compose.material3.Tab
 import androidx.compose.material3.TabRowDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
+import androidx.compose.runtime.MutableIntState
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
@@ -19,26 +18,24 @@ import com.dogeby.wheretogo.core.ui.model.ContentTypeTabUiState
 @Composable
 fun ContentTypeTabRow(
     tabStates: List<ContentTypeTabUiState>,
-    onClickTab: (id: String) -> Unit,
+    onClickTab: (index: Int, id: String) -> Unit,
     modifier: Modifier = Modifier,
+    state: MutableIntState = remember(tabStates) { mutableIntStateOf(0) },
     containerColor: Color = TabRowDefaults.primaryContainerColor,
     contentColor: Color = TabRowDefaults.primaryContentColor,
 ) {
-    var state by remember {
-        mutableIntStateOf(0)
-    }
     PrimaryTabRow(
-        selectedTabIndex = state,
+        selectedTabIndex = state.intValue,
         modifier = modifier,
         containerColor = containerColor,
         contentColor = contentColor,
     ) {
         tabStates.forEachIndexed { index, (id, name) ->
             Tab(
-                selected = state == index,
+                selected = state.intValue == index,
                 onClick = {
-                    state = index
-                    onClickTab(id)
+                    state.intValue = index
+                    onClickTab(index, id)
                 },
                 text = {
                     Text(
@@ -60,6 +57,6 @@ private fun ContentTypeTabRowPreview() {
                 name = "name $it",
             )
         },
-        onClickTab = {},
+        onClickTab = { _, _ -> },
     )
 }
