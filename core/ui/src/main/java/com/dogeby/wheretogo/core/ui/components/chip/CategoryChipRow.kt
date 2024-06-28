@@ -9,10 +9,6 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.FilterChip
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -32,17 +28,10 @@ fun CategoryChipRow(
         contentPadding = contentPadding,
         horizontalArrangement = Arrangement.spacedBy(8.dp),
     ) {
-        items(chipStates) { (id, name) ->
-            var selected by rememberSaveable(
-                key = id,
-            ) {
-                mutableStateOf(false)
-            }
-
+        items(chipStates) { (id, name, isSelected) ->
             FilterChip(
-                selected = selected,
+                selected = isSelected,
                 onClick = {
-                    selected = !selected
                     onClickChip(id)
                 },
                 label = {
@@ -61,6 +50,7 @@ private fun CategoryChipRowPreview() {
             CategoryChipUiState(
                 id = it.toString(),
                 name = "name $it",
+                isSelected = it % 3 == 0,
             )
         },
         onClickChip = {},
