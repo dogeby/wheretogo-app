@@ -44,7 +44,6 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.platform.LocalConfiguration
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
@@ -53,27 +52,25 @@ import com.dogeby.wheretogo.core.ui.R
 import com.dogeby.wheretogo.core.ui.components.common.AsyncImageWithFallback
 import com.dogeby.wheretogo.core.ui.components.common.ICON_TEXT_DEFAULT_ICON_SIZE
 import com.dogeby.wheretogo.core.ui.components.common.IconText
-import com.dogeby.wheretogo.core.ui.components.util.formatDate
+import com.dogeby.wheretogo.core.ui.util.formatDate
 
 private val REVIEW_IMAGE_SIZE = 144.dp
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun ReviewCard(
-    writerImgSrc: String,
+    writerImgSrc: Any,
     writerName: String,
     writeDate: String,
     starRating: Int,
-    imgSrcs: List<String>,
+    imgSrcs: List<Any>,
     reviewContent: String,
     onEdit: () -> Unit,
     onDelete: () -> Unit,
     onImageClick: (currentPage: Int) -> Unit,
     modifier: Modifier = Modifier,
     shape: Shape = CardDefaults.shape,
-    colors: CardColors = CardDefaults
-        .cardColors()
-        .copy(containerColor = Color.Transparent),
+    colors: CardColors = CardDefaults.cardColors(containerColor = Color.Transparent),
     isWriter: Boolean = false,
 ) {
     var reviewContentExpanded by remember { mutableStateOf(false) }
@@ -133,7 +130,7 @@ fun ReviewCard(
 
 @Composable
 private fun ReviewCardHeader(
-    writerImgSrc: String,
+    writerImgSrc: Any,
     writerName: String,
     writeDate: String,
     starRating: Int,
@@ -271,7 +268,6 @@ private fun ReviewMoreBtn(
 @Preview(showBackground = true)
 @Composable
 private fun ReviewCardPreview() {
-    val context = LocalContext.current
     ReviewCard(
         writerImgSrc = "",
         writerName = "Writer",
