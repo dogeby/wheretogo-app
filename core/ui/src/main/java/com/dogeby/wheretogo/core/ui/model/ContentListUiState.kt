@@ -12,9 +12,9 @@ sealed interface ContentListUiState {
 data class ContentListItemUiState(
     val id: String,
     val title: String,
-    val imgSrc: Any,
-    val categories: List<String>,
-    val avgStarRating: Double,
-    val areaName: String,
-    val sigunguName: String,
+    val imgSrc: Any = "",
+    val categories: List<String> = emptyList(),
+    val avgStarRating: Double = 0.0,
+    val areaName: String = "",
+    val sigunguName: String = "",
 )

@@ -16,14 +16,16 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.dogeby.wheretogo.core.ui.components.common.AsyncImageWithFallback
+import com.dogeby.wheretogo.core.ui.components.common.DateRangeDisplay
 import com.dogeby.wheretogo.core.ui.components.common.LocationDisplay
 import com.dogeby.wheretogo.core.ui.components.common.StarRatingDisplay
 
 @Composable
-fun ContentListItem(
+fun FestivalListItem(
     title: String,
     imgSrc: Any,
-    categories: List<String>,
+    startDate: String,
+    endDate: String,
     avgStarRating: Double,
     areaName: String,
     sigunguName: String,
@@ -44,11 +46,9 @@ fun ContentListItem(
         modifier = modifier,
         supportingContent = {
             Column {
-                Text(
-                    text = categories.joinToString(" • "),
-                    overflow = TextOverflow.Ellipsis,
-                    maxLines = 1,
-                    style = MaterialTheme.typography.labelMedium,
+                DateRangeDisplay(
+                    startDate = startDate,
+                    endDate = endDate,
                 )
                 Row(
                     horizontalArrangement = Arrangement.spacedBy(8.dp),
@@ -75,11 +75,12 @@ fun ContentListItem(
 
 @Preview(showBackground = true)
 @Composable
-private fun ContentListItemPreview() {
-    ContentListItem(
+private fun FestivalListItemPreview() {
+    FestivalListItem(
         title = "Title",
-        imgSrc = "http://tong.visitkorea.or.kr/cms/resource/23/2678623_image3_1.jpg",
-        categories = listOf("cat1", "cat2", "cat3"),
+        imgSrc = "http://tong.visitkorea.or.kr/cms/resource/54/2483454_image2_1.JPG",
+        startDate = "20210306",
+        endDate = "20211030",
         avgStarRating = 4.5,
         areaName = "area",
         sigunguName = "sigungu",
@@ -88,11 +89,12 @@ private fun ContentListItemPreview() {
 
 @Preview(showBackground = true)
 @Composable
-private fun ContentListItemPreview_OptionParameterIsEmpty() {
-    ContentListItem(
+private fun FestivalListItemPreview_OptionParameterIsEmpty() {
+    FestivalListItem(
         title = "Title",
         imgSrc = "",
-        categories = emptyList(),
+        startDate = "20210306",
+        endDate = "20211030",
         avgStarRating = 0.0,
         areaName = "",
         sigunguName = "",
