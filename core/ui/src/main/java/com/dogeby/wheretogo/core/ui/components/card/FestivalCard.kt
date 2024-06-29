@@ -9,7 +9,6 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.CalendarToday
-import androidx.compose.material.icons.filled.LocationOn
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardColors
 import androidx.compose.material3.CardDefaults
@@ -26,6 +25,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.dogeby.wheretogo.core.ui.components.common.AsyncImageWithFallback
 import com.dogeby.wheretogo.core.ui.components.common.IconText
+import com.dogeby.wheretogo.core.ui.components.common.LocationDisplay
 import com.dogeby.wheretogo.core.ui.components.common.StarRatingDisplay
 import com.dogeby.wheretogo.core.ui.util.formatDate
 
@@ -74,9 +74,9 @@ fun FestivalCard(
                     horizontalArrangement = Arrangement.spacedBy(8.dp),
                 ) {
                     StarRatingDisplay(avgStarRating)
-                    IconText(
-                        icon = Icons.Default.LocationOn,
-                        text = "$areaName $sigunguName",
+                    LocationDisplay(
+                        areaName = areaName,
+                        sigunguName = sigunguName,
                     )
                 }
             }
@@ -96,6 +96,8 @@ private fun FestivalCardPreview() {
         areaName = "area",
         sigunguName = "sigungu",
         onClick = {},
-        modifier = Modifier.width(360.dp).padding(16.dp),
+        modifier = Modifier
+            .width(360.dp)
+            .padding(16.dp),
     )
 }

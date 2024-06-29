@@ -4,8 +4,6 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.size
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.LocationOn
 import androidx.compose.material3.ListItem
 import androidx.compose.material3.ListItemColors
 import androidx.compose.material3.ListItemDefaults
@@ -18,7 +16,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.dogeby.wheretogo.core.ui.components.common.AsyncImageWithFallback
-import com.dogeby.wheretogo.core.ui.components.common.IconText
+import com.dogeby.wheretogo.core.ui.components.common.LocationDisplay
 import com.dogeby.wheretogo.core.ui.components.common.StarRatingDisplay
 
 @Composable
@@ -56,9 +54,9 @@ fun ContentListItem(
                     horizontalArrangement = Arrangement.spacedBy(8.dp),
                 ) {
                     StarRatingDisplay(avgStarRating)
-                    IconText(
-                        icon = Icons.Default.LocationOn,
-                        text = "$areaName $sigunguName",
+                    LocationDisplay(
+                        areaName = areaName,
+                        sigunguName = sigunguName,
                     )
                 }
             }
@@ -85,5 +83,18 @@ private fun ContentListItemPreview() {
         avgStarRating = 4.5,
         areaName = "area",
         sigunguName = "sigungu",
+    )
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun ContentListItemPreview_OptionParameterIsEmpty() {
+    ContentListItem(
+        title = "Title",
+        imgSrc = "",
+        categories = emptyList(),
+        avgStarRating = 0.0,
+        areaName = "",
+        sigunguName = "",
     )
 }
