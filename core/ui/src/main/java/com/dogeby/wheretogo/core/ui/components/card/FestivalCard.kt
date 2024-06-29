@@ -7,8 +7,6 @@ import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.CalendarToday
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardColors
 import androidx.compose.material3.CardDefaults
@@ -19,15 +17,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
-import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.dogeby.wheretogo.core.ui.components.common.AsyncImageWithFallback
-import com.dogeby.wheretogo.core.ui.components.common.IconText
+import com.dogeby.wheretogo.core.ui.components.common.DateRangeDisplay
 import com.dogeby.wheretogo.core.ui.components.common.LocationDisplay
 import com.dogeby.wheretogo.core.ui.components.common.StarRatingDisplay
-import com.dogeby.wheretogo.core.ui.util.formatDate
 
 @Composable
 fun FestivalCard(
@@ -63,11 +59,9 @@ fun FestivalCard(
                     maxLines = 1,
                     style = MaterialTheme.typography.titleMedium,
                 )
-
-                val locale = LocalConfiguration.current.locales[0]
-                IconText(
-                    icon = Icons.Default.CalendarToday,
-                    text = "${startDate.formatDate(locale)} - ${endDate.formatDate(locale)}",
+                DateRangeDisplay(
+                    startDate = startDate,
+                    endDate = endDate,
                     style = MaterialTheme.typography.bodyMedium,
                 )
                 Row(
