@@ -18,6 +18,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.dogeby.wheretogo.core.ui.components.chip.CategoryChipRow
+import com.dogeby.wheretogo.core.ui.components.common.EmptyListDisplay
 import com.dogeby.wheretogo.core.ui.components.common.LoadingDisplay
 import com.dogeby.wheretogo.core.ui.components.list.contentList
 import com.dogeby.wheretogo.core.ui.components.tab.ContentTypeTabRow
@@ -68,26 +69,31 @@ internal fun ContentsScreen(
                     userScrollEnabled = false,
                 ) {
                     with(contentsScreenState.pageStates[selectedTabIndex.intValue]) {
-                        if (contentsState is ContentListUiState.Loading) {
-                            LoadingDisplay()
-                        } else {
-                            Column {
-                                CategoryChipRow(
-                                    chipStates = categoryChipStates,
-                                    onClickChip = {
-                                        onClickCategoryChip(contentTypeTabState.id, it)
-                                    },
-                                    state = LazyListState(),
-                                    contentPadding = PaddingValues(horizontal = 16.dp),
-                                )
-                                LazyVerticalGrid(
-                                    columns = GridCells.Adaptive(360.dp),
-                                    contentPadding = PaddingValues(bottom = 16.dp),
-                                ) {
-                                    contentList(
-                                        contentsState = contentsState,
-                                        onClickItem = onClickContent,
-                                    )
+                        Column {
+                            CategoryChipRow(
+                                chipStates = categoryChipStates,
+                                onClickChip = {
+                                    onClickCategoryChip(contentTypeTabState.id, it)
+                                },
+                                state = LazyListState(),
+                                contentPadding = PaddingValues(horizontal = 16.dp),
+                            )
+                            when (contentsState) {
+                                ContentListUiState.Loading -> LoadingDisplay()
+                                is ContentListUiState.Success -> {
+                                    if (contentsState.contents.isEmpty()) {
+                                        EmptyListDisplay()
+                                    } else {
+                                        LazyVerticalGrid(
+                                            columns = GridCells.Adaptive(360.dp),
+                                            contentPadding = PaddingValues(bottom = 16.dp),
+                                        ) {
+                                            contentList(
+                                                contentsState = contentsState,
+                                                onClickItem = onClickContent,
+                                            )
+                                        }
+                                    }
                                 }
                             }
                         }
@@ -149,6 +155,41 @@ private fun ContentScreenPreview() {
 private fun ContentScreenPreview_Loading() {
     ContentsScreen(
         contentsScreenState = ContentsScreenUiState.Loading,
+        onClickContentTypeTab = {},
+        onClickCategoryChip = { _, _ -> },
+        onClickContent = {},
+    )
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun ContentScreenPreview_Empty() {
+    val tabAndCategory = remember {
+        mutableMapOf(
+            "0" to "00",
+            "1" to "12",
+        )
+    }
+    val pageStates = List(4) { tabIndex ->
+        ContentsPageUiState(
+            ContentTypeTabUiState(
+                id = tabIndex.toString(),
+                name = "name $tabIndex",
+            ),
+            categoryChipStates = List(5) {
+                CategoryChipUiState(
+                    id = "$tabIndex$it",
+                    name = "name $tabIndex$it",
+                    isSelected = tabAndCategory["$tabIndex"] == "$tabIndex$it",
+                )
+            },
+            contentsState = ContentListUiState.Success(
+                contents = emptyList(),
+            ),
+        )
+    }
+    ContentsScreen(
+        contentsScreenState = ContentsScreenUiState.Success(pageStates),
         onClickContentTypeTab = {},
         onClickCategoryChip = { _, _ -> },
         onClickContent = {},
