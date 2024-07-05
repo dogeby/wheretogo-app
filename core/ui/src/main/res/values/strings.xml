@@ -4,5 +4,9 @@
     <string name="delete">삭제</string>
     <string name="delete_review">리뷰를 삭제할까요?</string>
     <string name="cancel">취소</string>
+    <string name="attraction">관광지</string>
+    <string name="festival">축제</string>
+    <string name="restaurant">음식</string>
+    <string name="accommodation">숙박</string>
     <string name="no_search_results">검색 결과가 없습니다.</string>
 </resources>
