@@ -9,6 +9,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.dogeby.wheretogo.core.ui.components.chip.CategoryChipRow
+import com.dogeby.wheretogo.core.ui.components.common.EmptyListDisplay
 import com.dogeby.wheretogo.core.ui.components.common.LoadingDisplay
 import com.dogeby.wheretogo.core.ui.components.list.festivalList
 import com.dogeby.wheretogo.core.ui.model.CategoryChipUiState
@@ -28,25 +29,30 @@ internal fun FestivalsScreen(
         is FestivalsScreenUiState.Success -> {
             Column(modifier = modifier) {
                 with(festivalsScreenState) {
-                    if (festivalsState is FestivalListUiState.Loading) {
-                        LoadingDisplay()
-                    } else {
-                        Column {
-                            CategoryChipRow(
-                                chipStates = categoryChipStates,
-                                onClickChip = {
-                                    onClickCategoryChip(it)
-                                },
-                                contentPadding = PaddingValues(horizontal = 16.dp),
-                            )
-                            LazyVerticalGrid(
-                                columns = GridCells.Adaptive(360.dp),
-                                contentPadding = PaddingValues(bottom = 16.dp),
-                            ) {
-                                festivalList(
-                                    festivalsState = festivalsState,
-                                    onClickItem = onClickContent,
-                                )
+                    Column {
+                        CategoryChipRow(
+                            chipStates = categoryChipStates,
+                            onClickChip = {
+                                onClickCategoryChip(it)
+                            },
+                            contentPadding = PaddingValues(horizontal = 16.dp),
+                        )
+                        when (festivalsState) {
+                            FestivalListUiState.Loading -> LoadingDisplay()
+                            is FestivalListUiState.Success -> {
+                                if (festivalsState.festivals.isEmpty()) {
+                                    EmptyListDisplay()
+                                } else {
+                                    LazyVerticalGrid(
+                                        columns = GridCells.Adaptive(360.dp),
+                                        contentPadding = PaddingValues(bottom = 16.dp),
+                                    ) {
+                                        festivalList(
+                                            festivalsState = festivalsState,
+                                            onClickItem = onClickContent,
+                                        )
+                                    }
+                                }
                             }
                         }
                     }
@@ -81,6 +87,26 @@ private fun FestivalsScreenPreview() {
                         sigunguName = "sigungu",
                     )
                 },
+            ),
+        ),
+        onClickCategoryChip = {},
+        onClickContent = {},
+    )
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun FestivalsScreenPreview_Empty() {
+    FestivalsScreen(
+        festivalsScreenState = FestivalsScreenUiState.Success(
+            categoryChipStates = List(5) {
+                CategoryChipUiState(
+                    id = it.toString(),
+                    name = "name $it",
+                )
+            },
+            festivalsState = FestivalListUiState.Success(
+                festivals = emptyList(),
             ),
         ),
         onClickCategoryChip = {},
