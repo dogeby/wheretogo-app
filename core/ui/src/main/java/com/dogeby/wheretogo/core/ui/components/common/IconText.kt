@@ -2,6 +2,7 @@ package com.dogeby.wheretogo.core.ui.components.common
 
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -40,7 +41,7 @@ fun IconText(
         Icon(
             imageVector = icon,
             contentDescription = contentDescription,
-            modifier = Modifier.size(iconSize),
+            modifier = Modifier.size(iconSize).offset(y = (-0.5).dp),
             tint = color,
         )
         Spacer(modifier = Modifier.width(2.dp))

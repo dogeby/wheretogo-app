@@ -1,6 +1,8 @@
 package com.dogeby.wheretogo.core.ui.components.common
 
 import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.padding
@@ -25,20 +27,21 @@ import androidx.compose.ui.unit.dp
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun ImgHorizontalPager(
-    imgSrcs: List<String>,
+    imgSrcs: List<Any>,
     modifier: Modifier = Modifier,
     ratio: Float = 1.5f,
+    onImgClick: ((page: Int, imgSrcs: List<Any>) -> Unit)? = null,
 ) {
     val pagerState = rememberPagerState {
         imgSrcs.size
     }
     var currentPage by remember {
-        mutableIntStateOf(pagerState.currentPage + 1)
+        mutableIntStateOf(pagerState.currentPage)
     }
     LaunchedEffect(pagerState) {
         snapshotFlow { pagerState.currentPage }
             .collect { page ->
-                currentPage = page + 1
+                currentPage = page
             }
     }
 
@@ -52,11 +55,20 @@ fun ImgHorizontalPager(
         ) { page ->
             AsyncImageWithFallback(
                 imgSrc = imgSrcs[page],
-                modifier = Modifier.aspectRatio(ratio),
+                modifier = Modifier
+                    .aspectRatio(ratio)
+                    .clickable(
+                        interactionSource = remember { MutableInteractionSource() },
+                        indication = null,
+                    ) {
+                        if (onImgClick != null) {
+                            onImgClick(currentPage, imgSrcs)
+                        }
+                    },
             )
         }
         PageTag(
-            currentPage = { currentPage },
+            currentPage = { currentPage + 1 },
             totalPage = imgSrcs.size,
             modifier = Modifier
                 .align(Alignment.BottomEnd)

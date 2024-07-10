@@ -21,6 +21,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.dogeby.wheretogo.core.ui.components.common.AsyncImageWithFallback
+import com.dogeby.wheretogo.core.ui.components.common.CategoryDisplay
 import com.dogeby.wheretogo.core.ui.components.common.LocationDisplay
 import com.dogeby.wheretogo.core.ui.components.common.StarRatingDisplay
 
@@ -57,12 +58,7 @@ fun ContentCard(
                     maxLines = 1,
                     style = MaterialTheme.typography.titleMedium,
                 )
-                Text(
-                    text = categories.joinToString(" • "),
-                    overflow = TextOverflow.Ellipsis,
-                    maxLines = 1,
-                    style = MaterialTheme.typography.labelMedium,
-                )
+                CategoryDisplay(categories)
                 Row(
                     horizontalArrangement = Arrangement.spacedBy(8.dp),
                 ) {
