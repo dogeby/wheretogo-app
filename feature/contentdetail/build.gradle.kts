@@ -53,6 +53,7 @@ dependencies {
     implementation(libs.hilt.navigation.compose)
     implementation(libs.hilt.android)
     kapt(libs.hilt.compiler)
+    implementation(libs.autolinktext)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

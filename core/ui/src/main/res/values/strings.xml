@@ -12,4 +12,7 @@
     <string name="empty_list">목록이 비어있습니다.</string>
     <string name="review">리뷰</string>
     <string name="all">전체</string>
+    <string name="tel">전화번호</string>
+    <string name="homepage">홈페이지</string>
+    <string name="modified_time">수정일</string>
 </resources>
