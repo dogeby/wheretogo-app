@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.PagerDefaults
 import androidx.compose.foundation.pager.PagerSnapDistance
+import androidx.compose.foundation.pager.PagerState
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
@@ -37,14 +38,15 @@ import com.dogeby.wheretogo.core.ui.components.common.AsyncImageWithFallback
 import net.engawapg.lib.zoomable.rememberZoomState
 import net.engawapg.lib.zoomable.zoomable
 
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
 @Composable
 fun ImgDetailDialogue(
-    imgSrcs: List<String>,
+    initialPage: Int,
+    imgSrcs: List<Any>,
     onDismissRequest: () -> Unit,
 ) {
     var page by remember {
-        mutableIntStateOf(1)
+        mutableIntStateOf(initialPage.coerceIn(imgSrcs.indices))
     }
     var topBarVisible by remember {
         mutableStateOf(true)
@@ -71,10 +73,14 @@ fun ImgDetailDialogue(
                 onPageChanged = {
                     page = it
                 },
+                pagerState = rememberPagerState(
+                    initialPage = initialPage,
+                    pageCount = { imgSrcs.size },
+                ),
             )
             CenterAlignedTopAppBar(
                 title = {
-                    Text(text = "$page / ${imgSrcs.size}")
+                    Text(text = "${page + 1} / ${imgSrcs.size}")
                 },
                 modifier = Modifier.graphicsLayer {
                     alpha = animatedAlpha
@@ -102,17 +108,15 @@ fun ImgDetailDialogue(
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun ImgDetailHorizontalPager(
-    imgSrcs: List<String>,
+    imgSrcs: List<Any>,
     onPageChanged: (page: Int) -> Unit,
     modifier: Modifier = Modifier,
+    pagerState: PagerState = rememberPagerState { imgSrcs.size },
 ) {
-    val pagerState = rememberPagerState {
-        imgSrcs.size
-    }
     LaunchedEffect(pagerState) {
         snapshotFlow { pagerState.currentPage }
             .collect { page ->
-                onPageChanged(page + 1)
+                onPageChanged(page)
             }
     }
     HorizontalPager(
@@ -146,6 +150,7 @@ fun ImgDetailHorizontalPager(
 @Composable
 private fun ImgDetailDialoguePreview() {
     ImgDetailDialogue(
+        initialPage = 3,
         imgSrcs = List(5) {
             "http://tong.visitkorea.or.kr/cms/resource/23/2678623_image2_1.jpg"
         },
@@ -153,6 +158,7 @@ private fun ImgDetailDialoguePreview() {
     )
 }
 
+@OptIn(ExperimentalFoundationApi::class)
 @Preview(showBackground = true)
 @Composable
 private fun ImgDetailHorizontalPagerPreview() {
