@@ -91,38 +91,44 @@ fun ReviewCard(
                 onDelete = onDelete,
                 isWriter = isWriter,
             )
-            HorizontalPager(
-                state = pagerState,
-                modifier = Modifier.padding(
-                    horizontal = 16.dp,
-                    vertical = 8.dp,
-                ),
-                pageSize = PageSize.Fixed(REVIEW_IMAGE_SIZE),
-                pageSpacing = 8.dp,
-            ) { page ->
-                Card(onClick = { onImageClick(page) }) {
-                    AsyncImageWithFallback(
-                        imgSrc = imgSrcs[page],
-                        modifier = Modifier.size(REVIEW_IMAGE_SIZE),
-                    )
+
+            if (pagerState.pageCount != 0) {
+                HorizontalPager(
+                    state = pagerState,
+                    modifier = Modifier.padding(
+                        horizontal = 16.dp,
+                        vertical = 8.dp,
+                    ),
+                    pageSize = PageSize.Fixed(REVIEW_IMAGE_SIZE),
+                    pageSpacing = 8.dp,
+                ) { page ->
+                    Card(onClick = { onImageClick(page) }) {
+                        AsyncImageWithFallback(
+                            imgSrc = imgSrcs[page],
+                            modifier = Modifier.size(REVIEW_IMAGE_SIZE),
+                        )
+                    }
                 }
             }
-            Box(
-                modifier = Modifier
-                    .animateContentSize()
-                    .padding(16.dp)
-                    .clickable(
-                        interactionSource = remember { MutableInteractionSource() },
-                        indication = rememberRipple(),
-                    ) {
-                        reviewContentExpanded = !reviewContentExpanded
-                    },
-            ) {
-                Text(
-                    text = reviewContent,
-                    overflow = TextOverflow.Ellipsis,
-                    maxLines = if (reviewContentExpanded) Int.MAX_VALUE else 5,
-                )
+
+            if (reviewContent.isNotBlank()) {
+                Box(
+                    modifier = Modifier
+                        .animateContentSize()
+                        .padding(16.dp)
+                        .clickable(
+                            interactionSource = remember { MutableInteractionSource() },
+                            indication = rememberRipple(),
+                        ) {
+                            reviewContentExpanded = !reviewContentExpanded
+                        },
+                ) {
+                    Text(
+                        text = reviewContent,
+                        overflow = TextOverflow.Ellipsis,
+                        maxLines = if (reviewContentExpanded) Int.MAX_VALUE else 5,
+                    )
+                }
             }
         }
     }
@@ -278,6 +284,72 @@ private fun ReviewCardPreview() {
         },
         reviewContent =
         " Gyeongbokgung Palace is the primary palace of the Joseon dynasty.".repeat(5),
+        onEdit = {},
+        onDelete = {},
+        onImageClick = {},
+        modifier = Modifier
+            .padding(8.dp)
+            .width(360.dp),
+        colors = CardDefaults.cardColors(),
+        isWriter = true,
+    )
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun ReviewCardPreview_ImgSrcsEmpty() {
+    ReviewCard(
+        writerImgSrc = "",
+        writerName = "Writer",
+        writeDate = "240611",
+        starRating = 4,
+        imgSrcs = emptyList(),
+        reviewContent =
+        " Gyeongbokgung Palace is the primary palace of the Joseon dynasty.".repeat(5),
+        onEdit = {},
+        onDelete = {},
+        onImageClick = {},
+        modifier = Modifier
+            .padding(8.dp)
+            .width(360.dp),
+        colors = CardDefaults.cardColors(),
+        isWriter = true,
+    )
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun ReviewCardPreview_ContentEmpty() {
+    ReviewCard(
+        writerImgSrc = "",
+        writerName = "Writer",
+        writeDate = "240611",
+        starRating = 4,
+        imgSrcs = List(8) {
+            "http://tong.visitkorea.or.kr/cms/resource/23/2678623_image3_1.jpg"
+        },
+        reviewContent = "",
+        onEdit = {},
+        onDelete = {},
+        onImageClick = {},
+        modifier = Modifier
+            .padding(8.dp)
+            .width(360.dp),
+        colors = CardDefaults.cardColors(),
+        isWriter = true,
+    )
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun ReviewCardPreview_ImgSrcsAndContentEmpty() {
+    ReviewCard(
+        writerImgSrc = "",
+        writerName = "Writer",
+        writeDate = "240611",
+        starRating = 4,
+        imgSrcs = emptyList(),
+        reviewContent = "",
         onEdit = {},
         onDelete = {},
         onImageClick = {},
