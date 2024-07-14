@@ -15,4 +15,7 @@
     <string name="tel">전화번호</string>
     <string name="homepage">홈페이지</string>
     <string name="modified_time">수정일</string>
+    <string name="review_text_field_placeholder">솔직한 리뷰를 남겨주세요. (선택 사항)</string>
+    <string name="photo_picker_limit_warning">사진은 최대 %1$d장까지 선택 가능합니다.</string>
+    <string name="photo_picker_title">사진 (선택 사항)</string>
 </resources>

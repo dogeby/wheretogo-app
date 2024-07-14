@@ -1,11 +1,13 @@
 plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.jetbrains.kotlin.android)
+    alias(libs.plugins.hilt.android)
+    alias(libs.plugins.jetbrains.kotlin.kapt)
     alias(libs.plugins.compose.compiler)
 }
 
 android {
-    namespace = "com.dogeby.wheretogo.core.ui"
+    namespace = "com.dogeby.wheretogo.feature.reviewedit"
     compileSdk = 34
 
     defaultConfig {
@@ -37,9 +39,9 @@ android {
 }
 
 dependencies {
+    implementation(project(":core:ui"))
 
     implementation(libs.androidx.core.ktx)
-    implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(platform(libs.androidx.compose.bom))
     implementation(libs.androidx.ui)
     implementation(libs.androidx.ui.graphics)
@@ -47,8 +49,10 @@ dependencies {
     implementation(libs.androidx.material3)
     implementation(libs.androidx.material.icons.extended)
     implementation(libs.coil.compose)
-    implementation(libs.zoomable)
-    implementation(libs.androidx.activity.compose)
+    implementation(libs.androidx.lifecycle.viewmodel.compose)
+    implementation(libs.hilt.navigation.compose)
+    implementation(libs.hilt.android)
+    kapt(libs.hilt.compiler)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
