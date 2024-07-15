@@ -1,19 +1,19 @@
 package com.dogeby.wheretogo.core.ui.model
 
-sealed interface ReviewListUiState {
+sealed interface ReviewWithWriterListUiState {
 
-    data object Loading : ReviewListUiState
+    data object Loading : ReviewWithWriterListUiState
 
     data class Success(
-        val reviews: List<ReviewListItemUiState>,
-    ) : ReviewListUiState
+        val reviews: List<ReviewWithWriterListItemUiState>,
+    ) : ReviewWithWriterListUiState
 }
 
-data class ReviewListItemUiState(
+data class ReviewWithWriterListItemUiState(
     val id: String,
     val writerImgSrc: Any = "",
     val writerName: String,
-    val writeDate: String,
+    val reviewDate: String,
     val starRating: Int,
     val reviewContent: String,
     val imgSrcs: List<Any> = emptyList(),

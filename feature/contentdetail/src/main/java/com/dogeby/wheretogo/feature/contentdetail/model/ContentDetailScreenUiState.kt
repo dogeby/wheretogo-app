@@ -1,6 +1,6 @@
 package com.dogeby.wheretogo.feature.contentdetail.model
 
-import com.dogeby.wheretogo.core.ui.model.ReviewListUiState
+import com.dogeby.wheretogo.core.ui.model.ReviewWithWriterListUiState
 
 sealed interface ContentDetailScreenUiState {
 
@@ -16,7 +16,7 @@ sealed interface ContentDetailScreenUiState {
         val overview: String = "",
         val tel: String = "",
         val homepage: String = "",
-        val reviewListUiState: ReviewListUiState,
+        val reviewWithWriterListUiState: ReviewWithWriterListUiState,
         val ratingFilterOption: RatingFilterOption,
     ) : ContentDetailScreenUiState
 }

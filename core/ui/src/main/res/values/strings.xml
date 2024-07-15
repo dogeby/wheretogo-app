@@ -18,4 +18,6 @@
     <string name="review_text_field_placeholder">솔직한 리뷰를 남겨주세요. (선택 사항)</string>
     <string name="photo_picker_limit_warning">사진은 최대 %1$d장까지 선택 가능합니다.</string>
     <string name="photo_picker_title">사진 (선택 사항)</string>
+    <string name="avg_star_rating">평균평점</string>
+    <string name="my_review">내가 쓴 리뷰</string>
 </resources>

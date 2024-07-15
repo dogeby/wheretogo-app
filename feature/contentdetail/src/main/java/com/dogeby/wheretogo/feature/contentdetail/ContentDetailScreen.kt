@@ -15,8 +15,8 @@ import androidx.compose.ui.unit.dp
 import com.dogeby.wheretogo.core.ui.components.common.ImgHorizontalPager
 import com.dogeby.wheretogo.core.ui.components.common.LoadingDisplay
 import com.dogeby.wheretogo.core.ui.components.dialogue.ImgDetailDialogue
-import com.dogeby.wheretogo.core.ui.model.ReviewListItemUiState
-import com.dogeby.wheretogo.core.ui.model.ReviewListUiState
+import com.dogeby.wheretogo.core.ui.model.ReviewWithWriterListItemUiState
+import com.dogeby.wheretogo.core.ui.model.ReviewWithWriterListUiState
 import com.dogeby.wheretogo.feature.contentdetail.model.ContentDetailScreenUiState
 import com.dogeby.wheretogo.feature.contentdetail.model.RatingFilterOption
 
@@ -66,7 +66,7 @@ internal fun ContentDetailScreen(
                         HorizontalDivider()
                     }
                     reviewContent(
-                        reviewListUiState = reviewListUiState,
+                        reviewWithWriterListUiState = reviewWithWriterListUiState,
                         ratingFilterOption = ratingFilterOption,
                         onCreate = {
                             onReviewCreate(id)
@@ -111,13 +111,13 @@ private fun ContentDetailScreenPreview() {
                 " 경복궁은동궐(창덕궁)이나서궐(경희궁)에비해위치가북쪽에있어 '북궐'이라불리기도했다.",
             tel = "02-999-9999",
             homepage = "http://www.royalpalace.go.kr",
-            reviewListUiState = ReviewListUiState.Success(
+            reviewWithWriterListUiState = ReviewWithWriterListUiState.Success(
                 reviews = List(10) {
-                    ReviewListItemUiState(
+                    ReviewWithWriterListItemUiState(
                         id = it.toString(),
                         writerImgSrc = "",
                         writerName = "Writer",
-                        writeDate = "240611",
+                        reviewDate = "240611",
                         starRating = 4,
                         reviewContent =
                         " Gyeongbokgung Palace is the primary palace of the Joseon dynasty.".repeat(

@@ -56,12 +56,11 @@ import com.dogeby.wheretogo.core.ui.util.formatDate
 
 private val REVIEW_IMAGE_SIZE = 144.dp
 
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun ReviewCard(
+fun ReviewCardWithWriter(
     writerImgSrc: Any,
     writerName: String,
-    writeDate: String,
+    reviewDate: String,
     starRating: Int,
     imgSrcs: List<Any>,
     reviewContent: String,
@@ -73,72 +72,41 @@ fun ReviewCard(
     colors: CardColors = CardDefaults.cardColors(containerColor = Color.Transparent),
     isWriter: Boolean = false,
 ) {
-    var reviewContentExpanded by remember { mutableStateOf(false) }
-    val pagerState = rememberPagerState { imgSrcs.size }
-
     Card(
         modifier = modifier,
         shape = shape,
         colors = colors,
     ) {
         Column {
-            ReviewCardHeader(
+            ReviewWriterHeader(
                 writerImgSrc = writerImgSrc,
                 writerName = writerName,
-                writeDate = writeDate,
+                reviewDate = reviewDate,
                 starRating = starRating,
                 onEdit = onEdit,
                 onDelete = onDelete,
                 isWriter = isWriter,
             )
 
-            if (pagerState.pageCount != 0) {
-                HorizontalPager(
-                    state = pagerState,
-                    modifier = Modifier.padding(
-                        horizontal = 16.dp,
-                        vertical = 8.dp,
-                    ),
-                    pageSize = PageSize.Fixed(REVIEW_IMAGE_SIZE),
-                    pageSpacing = 8.dp,
-                ) { page ->
-                    Card(onClick = { onImageClick(page) }) {
-                        AsyncImageWithFallback(
-                            imgSrc = imgSrcs[page],
-                            modifier = Modifier.size(REVIEW_IMAGE_SIZE),
-                        )
-                    }
-                }
+            if (imgSrcs.isNotEmpty()) {
+                ReviewImgHorizontalPager(
+                    imgSrcs = imgSrcs,
+                    onImageClick = onImageClick,
+                )
             }
 
             if (reviewContent.isNotBlank()) {
-                Box(
-                    modifier = Modifier
-                        .animateContentSize()
-                        .padding(16.dp)
-                        .clickable(
-                            interactionSource = remember { MutableInteractionSource() },
-                            indication = rememberRipple(),
-                        ) {
-                            reviewContentExpanded = !reviewContentExpanded
-                        },
-                ) {
-                    Text(
-                        text = reviewContent,
-                        overflow = TextOverflow.Ellipsis,
-                        maxLines = if (reviewContentExpanded) Int.MAX_VALUE else 5,
-                    )
-                }
+                ExpandableReviewContent(reviewContent)
             }
         }
     }
 }
 
 @Composable
-private fun ReviewCardHeader(
+private fun ReviewWriterHeader(
     writerImgSrc: Any,
     writerName: String,
-    writeDate: String,
+    reviewDate: String,
     starRating: Int,
     onEdit: () -> Unit,
     onDelete: () -> Unit,
@@ -167,30 +135,10 @@ private fun ReviewCardHeader(
                 color = MaterialTheme.colorScheme.onSurface,
                 style = MaterialTheme.typography.titleMedium,
             )
-            Row(
-                verticalAlignment = Alignment.CenterVertically,
-            ) {
-                IconText(
-                    icon = Icons.Default.CalendarToday,
-                    text = writeDate.formatDate(LocalConfiguration.current.locales[0]),
-                )
-                Text(
-                    text = "•",
-                    modifier = Modifier.padding(horizontal = 4.dp),
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
-                    style = MaterialTheme.typography.labelMedium,
-                )
-                repeat(starRating) {
-                    Icon(
-                        imageVector = Icons.Default.StarRate,
-                        contentDescription = null,
-                        modifier = Modifier
-                            .size(ICON_TEXT_DEFAULT_ICON_SIZE)
-                            .offset(y = (-1).dp),
-                        tint = MaterialTheme.colorScheme.onSurfaceVariant,
-                    )
-                }
-            }
+            ReviewDateAndStarRatingRow(
+                reviewDate = reviewDate,
+                starRating = starRating,
+            )
         }
         if (isWriter) {
             ReviewMoreBtn(
@@ -271,13 +219,187 @@ private fun ReviewMoreBtn(
     }
 }
 
+@Composable
+fun ReviewCardWithContent(
+    title: String,
+    reviewDate: String,
+    starRating: Int,
+    imgSrcs: List<Any>,
+    reviewContent: String,
+    onClickHeader: () -> Unit,
+    onEdit: () -> Unit,
+    onDelete: () -> Unit,
+    onImageClick: (currentPage: Int) -> Unit,
+    modifier: Modifier = Modifier,
+    shape: Shape = CardDefaults.shape,
+    colors: CardColors = CardDefaults.cardColors(containerColor = Color.Transparent),
+    isWriter: Boolean = false,
+) {
+    Card(
+        modifier = modifier,
+        shape = shape,
+        colors = colors,
+    ) {
+        Column {
+            ReviewContentHeader(
+                title = title,
+                reviewDate = reviewDate,
+                starRating = starRating,
+                onEdit = onEdit,
+                onDelete = onDelete,
+                isWriter = isWriter,
+                modifier = Modifier.clickable(
+                    interactionSource = remember { MutableInteractionSource() },
+                    indication = rememberRipple(),
+                    onClick = onClickHeader,
+                ),
+            )
+
+            if (imgSrcs.isNotEmpty()) {
+                ReviewImgHorizontalPager(
+                    imgSrcs = imgSrcs,
+                    onImageClick = onImageClick,
+                )
+            }
+
+            if (reviewContent.isNotBlank()) {
+                ExpandableReviewContent(reviewContent)
+            }
+        }
+    }
+}
+
+@Composable
+private fun ReviewContentHeader(
+    title: String,
+    reviewDate: String,
+    starRating: Int,
+    onEdit: () -> Unit,
+    onDelete: () -> Unit,
+    modifier: Modifier = Modifier,
+    isWriter: Boolean = false,
+) {
+    Row(
+        modifier = modifier.padding(
+            start = 16.dp,
+            top = 12.dp,
+            end = 4.dp,
+            bottom = 12.dp,
+        ),
+        verticalAlignment = Alignment.CenterVertically,
+    ) {
+        Column(modifier = Modifier.weight(1f)) {
+            Text(
+                text = title,
+                color = MaterialTheme.colorScheme.onSurface,
+                style = MaterialTheme.typography.titleMedium,
+            )
+            ReviewDateAndStarRatingRow(
+                reviewDate = reviewDate,
+                starRating = starRating,
+            )
+        }
+        if (isWriter) {
+            ReviewMoreBtn(
+                onEdit = onEdit,
+                onDelete = onDelete,
+            )
+        }
+    }
+}
+
+@OptIn(ExperimentalFoundationApi::class)
+@Composable
+private fun ReviewImgHorizontalPager(
+    imgSrcs: List<Any>,
+    onImageClick: (currentPage: Int) -> Unit,
+) {
+    val pagerState = rememberPagerState { imgSrcs.size }
+
+    HorizontalPager(
+        state = pagerState,
+        modifier = Modifier.padding(
+            horizontal = 16.dp,
+            vertical = 8.dp,
+        ),
+        pageSize = PageSize.Fixed(REVIEW_IMAGE_SIZE),
+        pageSpacing = 8.dp,
+    ) { page ->
+        Card(onClick = { onImageClick(page) }) {
+            AsyncImageWithFallback(
+                imgSrc = imgSrcs[page],
+                modifier = Modifier.size(REVIEW_IMAGE_SIZE),
+            )
+        }
+    }
+}
+
+@Composable
+private fun ExpandableReviewContent(
+    reviewContent: String,
+    modifier: Modifier = Modifier,
+) {
+    var reviewContentExpanded by remember { mutableStateOf(false) }
+
+    Box(
+        modifier = modifier
+            .animateContentSize()
+            .padding(16.dp)
+            .clickable(
+                interactionSource = remember { MutableInteractionSource() },
+                indication = rememberRipple(),
+            ) {
+                reviewContentExpanded = !reviewContentExpanded
+            },
+    ) {
+        Text(
+            text = reviewContent,
+            overflow = TextOverflow.Ellipsis,
+            maxLines = if (reviewContentExpanded) Int.MAX_VALUE else 5,
+        )
+    }
+}
+
+@Composable
+private fun ReviewDateAndStarRatingRow(
+    reviewDate: String,
+    starRating: Int,
+    modifier: Modifier = Modifier,
+) {
+    Row(
+        modifier = modifier,
+        verticalAlignment = Alignment.CenterVertically,
+    ) {
+        IconText(
+            icon = Icons.Default.CalendarToday,
+            text = reviewDate.formatDate(LocalConfiguration.current.locales[0]),
+        )
+        Text(
+            text = "•",
+            modifier = Modifier.padding(horizontal = 4.dp),
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
+            style = MaterialTheme.typography.labelMedium,
+        )
+        repeat(starRating) {
+            Icon(
+                imageVector = Icons.Default.StarRate,
+                contentDescription = null,
+                modifier = Modifier
+                    .size(ICON_TEXT_DEFAULT_ICON_SIZE)
+                    .offset(y = (-1).dp),
+                tint = MaterialTheme.colorScheme.onSurfaceVariant,
+            )
+        }
+    }
+}
+
 @Preview(showBackground = true)
 @Composable
-private fun ReviewCardPreview() {
-    ReviewCard(
+private fun ReviewCardWithWriterPreview() {
+    ReviewCardWithWriter(
         writerImgSrc = "",
         writerName = "Writer",
-        writeDate = "240611",
+        reviewDate = "240611",
         starRating = 4,
         imgSrcs = List(8) {
             "http://tong.visitkorea.or.kr/cms/resource/23/2678623_image3_1.jpg"
@@ -297,11 +419,11 @@ private fun ReviewCardPreview() {
 
 @Preview(showBackground = true)
 @Composable
-private fun ReviewCardPreview_ImgSrcsEmpty() {
-    ReviewCard(
+private fun ReviewCardWithWriterPreview_ImgSrcsEmpty() {
+    ReviewCardWithWriter(
         writerImgSrc = "",
         writerName = "Writer",
-        writeDate = "240611",
+        reviewDate = "240611",
         starRating = 4,
         imgSrcs = emptyList(),
         reviewContent =
@@ -319,11 +441,11 @@ private fun ReviewCardPreview_ImgSrcsEmpty() {
 
 @Preview(showBackground = true)
 @Composable
-private fun ReviewCardPreview_ContentEmpty() {
-    ReviewCard(
+private fun ReviewCardWithWriterPreview_ContentEmpty() {
+    ReviewCardWithWriter(
         writerImgSrc = "",
         writerName = "Writer",
-        writeDate = "240611",
+        reviewDate = "240611",
         starRating = 4,
         imgSrcs = List(8) {
             "http://tong.visitkorea.or.kr/cms/resource/23/2678623_image3_1.jpg"
@@ -342,11 +464,11 @@ private fun ReviewCardPreview_ContentEmpty() {
 
 @Preview(showBackground = true)
 @Composable
-private fun ReviewCardPreview_ImgSrcsAndContentEmpty() {
-    ReviewCard(
+private fun ReviewCardWithWriterPreview_ImgSrcsAndContentEmpty() {
+    ReviewCardWithWriter(
         writerImgSrc = "",
         writerName = "Writer",
-        writeDate = "240611",
+        reviewDate = "240611",
         starRating = 4,
         imgSrcs = emptyList(),
         reviewContent = "",
@@ -363,15 +485,39 @@ private fun ReviewCardPreview_ImgSrcsAndContentEmpty() {
 
 @Preview(showBackground = true)
 @Composable
-private fun ReviewCardHeaderPreview() {
-    ReviewCardHeader(
+private fun ReviewWriterHeaderPreview() {
+    ReviewWriterHeader(
         writerImgSrc = "",
         writerName = "Writer",
-        writeDate = "240611",
+        reviewDate = "240611",
         starRating = 4,
         onEdit = {},
         onDelete = {},
         modifier = Modifier.width(360.dp),
+        isWriter = true,
+    )
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun ReviewCardWithContentPreview() {
+    ReviewCardWithContent(
+        title = "Title",
+        reviewDate = "240611",
+        starRating = 4,
+        imgSrcs = List(8) {
+            "http://tong.visitkorea.or.kr/cms/resource/23/2678623_image3_1.jpg"
+        },
+        reviewContent =
+        " Gyeongbokgung Palace is the primary palace of the Joseon dynasty.".repeat(5),
+        onClickHeader = {},
+        onEdit = {},
+        onDelete = {},
+        onImageClick = {},
+        modifier = Modifier
+            .padding(8.dp)
+            .width(360.dp),
+        colors = CardDefaults.cardColors(),
         isWriter = true,
     )
 }
