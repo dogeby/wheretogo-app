@@ -13,7 +13,7 @@ data class ReviewWithWriterListItemUiState(
     val id: String,
     val writerImgSrc: Any = "",
     val writerName: String,
-    val writeDate: String,
+    val reviewDate: String,
     val starRating: Int,
     val reviewContent: String,
     val imgSrcs: List<Any> = emptyList(),

@@ -23,7 +23,7 @@ fun LazyListScope.reviewCardWithWriterList(
                     ReviewCardWithWriter(
                         writerImgSrc = writerImgSrc,
                         writerName = writerName,
-                        writeDate = writeDate,
+                        reviewDate = reviewDate,
                         starRating = starRating,
                         imgSrcs = imgSrcs,
                         reviewContent = reviewContent,
@@ -55,7 +55,7 @@ private fun ReviewCardWithWriterListPreview() {
                         id = it.toString(),
                         writerImgSrc = "",
                         writerName = "Writer",
-                        writeDate = "240611",
+                        reviewDate = "240611",
                         starRating = 4,
                         reviewContent =
                         " Gyeongbokgung Palace is the primary palace of the Joseon dynasty.".repeat(

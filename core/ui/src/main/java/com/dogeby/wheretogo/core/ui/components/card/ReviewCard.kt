@@ -61,7 +61,7 @@ private val REVIEW_IMAGE_SIZE = 144.dp
 fun ReviewCardWithWriter(
     writerImgSrc: Any,
     writerName: String,
-    writeDate: String,
+    reviewDate: String,
     starRating: Int,
     imgSrcs: List<Any>,
     reviewContent: String,
@@ -85,7 +85,7 @@ fun ReviewCardWithWriter(
             ReviewWriterHeader(
                 writerImgSrc = writerImgSrc,
                 writerName = writerName,
-                writeDate = writeDate,
+                reviewDate = reviewDate,
                 starRating = starRating,
                 onEdit = onEdit,
                 onDelete = onDelete,
@@ -138,7 +138,7 @@ fun ReviewCardWithWriter(
 private fun ReviewWriterHeader(
     writerImgSrc: Any,
     writerName: String,
-    writeDate: String,
+    reviewDate: String,
     starRating: Int,
     onEdit: () -> Unit,
     onDelete: () -> Unit,
@@ -172,7 +172,7 @@ private fun ReviewWriterHeader(
             ) {
                 IconText(
                     icon = Icons.Default.CalendarToday,
-                    text = writeDate.formatDate(LocalConfiguration.current.locales[0]),
+                    text = reviewDate.formatDate(LocalConfiguration.current.locales[0]),
                 )
                 Text(
                     text = "•",
@@ -277,7 +277,7 @@ private fun ReviewCardWithWriterPreview() {
     ReviewCardWithWriter(
         writerImgSrc = "",
         writerName = "Writer",
-        writeDate = "240611",
+        reviewDate = "240611",
         starRating = 4,
         imgSrcs = List(8) {
             "http://tong.visitkorea.or.kr/cms/resource/23/2678623_image3_1.jpg"
@@ -301,7 +301,7 @@ private fun ReviewCardWithWriterPreview_ImgSrcsEmpty() {
     ReviewCardWithWriter(
         writerImgSrc = "",
         writerName = "Writer",
-        writeDate = "240611",
+        reviewDate = "240611",
         starRating = 4,
         imgSrcs = emptyList(),
         reviewContent =
@@ -323,7 +323,7 @@ private fun ReviewCardWithWriterPreview_ContentEmpty() {
     ReviewCardWithWriter(
         writerImgSrc = "",
         writerName = "Writer",
-        writeDate = "240611",
+        reviewDate = "240611",
         starRating = 4,
         imgSrcs = List(8) {
             "http://tong.visitkorea.or.kr/cms/resource/23/2678623_image3_1.jpg"
@@ -346,7 +346,7 @@ private fun ReviewCardWithWriterPreview_ImgSrcsAndContentEmpty() {
     ReviewCardWithWriter(
         writerImgSrc = "",
         writerName = "Writer",
-        writeDate = "240611",
+        reviewDate = "240611",
         starRating = 4,
         imgSrcs = emptyList(),
         reviewContent = "",
@@ -367,7 +367,7 @@ private fun ReviewWriterHeaderPreview() {
     ReviewWriterHeader(
         writerImgSrc = "",
         writerName = "Writer",
-        writeDate = "240611",
+        reviewDate = "240611",
         starRating = 4,
         onEdit = {},
         onDelete = {},
