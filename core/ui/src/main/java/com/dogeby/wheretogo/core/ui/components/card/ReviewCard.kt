@@ -56,7 +56,6 @@ import com.dogeby.wheretogo.core.ui.util.formatDate
 
 private val REVIEW_IMAGE_SIZE = 144.dp
 
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun ReviewCardWithWriter(
     writerImgSrc: Any,
@@ -73,9 +72,6 @@ fun ReviewCardWithWriter(
     colors: CardColors = CardDefaults.cardColors(containerColor = Color.Transparent),
     isWriter: Boolean = false,
 ) {
-    var reviewContentExpanded by remember { mutableStateOf(false) }
-    val pagerState = rememberPagerState { imgSrcs.size }
-
     Card(
         modifier = modifier,
         shape = shape,
@@ -92,43 +88,15 @@ fun ReviewCardWithWriter(
                 isWriter = isWriter,
             )
 
-            if (pagerState.pageCount != 0) {
-                HorizontalPager(
-                    state = pagerState,
-                    modifier = Modifier.padding(
-                        horizontal = 16.dp,
-                        vertical = 8.dp,
-                    ),
-                    pageSize = PageSize.Fixed(REVIEW_IMAGE_SIZE),
-                    pageSpacing = 8.dp,
-                ) { page ->
-                    Card(onClick = { onImageClick(page) }) {
-                        AsyncImageWithFallback(
-                            imgSrc = imgSrcs[page],
-                            modifier = Modifier.size(REVIEW_IMAGE_SIZE),
-                        )
-                    }
-                }
+            if (imgSrcs.isNotEmpty()) {
+                ReviewImgHorizontalPager(
+                    imgSrcs = imgSrcs,
+                    onImageClick = onImageClick,
+                )
             }
 
             if (reviewContent.isNotBlank()) {
-                Box(
-                    modifier = Modifier
-                        .animateContentSize()
-                        .padding(16.dp)
-                        .clickable(
-                            interactionSource = remember { MutableInteractionSource() },
-                            indication = rememberRipple(),
-                        ) {
-                            reviewContentExpanded = !reviewContentExpanded
-                        },
-                ) {
-                    Text(
-                        text = reviewContent,
-                        overflow = TextOverflow.Ellipsis,
-                        maxLines = if (reviewContentExpanded) Int.MAX_VALUE else 5,
-                    )
-                }
+                ExpandableReviewContent(reviewContent)
             }
         }
     }
@@ -268,6 +236,58 @@ private fun ReviewMoreBtn(
                 },
             )
         }
+    }
+}
+
+@OptIn(ExperimentalFoundationApi::class)
+@Composable
+private fun ReviewImgHorizontalPager(
+    imgSrcs: List<Any>,
+    onImageClick: (currentPage: Int) -> Unit,
+) {
+    val pagerState = rememberPagerState { imgSrcs.size }
+
+    HorizontalPager(
+        state = pagerState,
+        modifier = Modifier.padding(
+            horizontal = 16.dp,
+            vertical = 8.dp,
+        ),
+        pageSize = PageSize.Fixed(REVIEW_IMAGE_SIZE),
+        pageSpacing = 8.dp,
+    ) { page ->
+        Card(onClick = { onImageClick(page) }) {
+            AsyncImageWithFallback(
+                imgSrc = imgSrcs[page],
+                modifier = Modifier.size(REVIEW_IMAGE_SIZE),
+            )
+        }
+    }
+}
+
+@Composable
+private fun ExpandableReviewContent(
+    reviewContent: String,
+    modifier: Modifier = Modifier,
+) {
+    var reviewContentExpanded by remember { mutableStateOf(false) }
+
+    Box(
+        modifier = modifier
+            .animateContentSize()
+            .padding(16.dp)
+            .clickable(
+                interactionSource = remember { MutableInteractionSource() },
+                indication = rememberRipple(),
+            ) {
+                reviewContentExpanded = !reviewContentExpanded
+            },
+    ) {
+        Text(
+            text = reviewContent,
+            overflow = TextOverflow.Ellipsis,
+            maxLines = if (reviewContentExpanded) Int.MAX_VALUE else 5,
+        )
     }
 }
 
