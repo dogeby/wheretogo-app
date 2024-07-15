@@ -21,13 +21,13 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.dogeby.wheretogo.core.ui.R
-import com.dogeby.wheretogo.core.ui.components.list.reviewCardList
-import com.dogeby.wheretogo.core.ui.model.ReviewListItemUiState
-import com.dogeby.wheretogo.core.ui.model.ReviewListUiState
+import com.dogeby.wheretogo.core.ui.components.list.reviewCardWithWriterList
+import com.dogeby.wheretogo.core.ui.model.ReviewWithWriterListItemUiState
+import com.dogeby.wheretogo.core.ui.model.ReviewWithWriterListUiState
 import com.dogeby.wheretogo.feature.contentdetail.model.RatingFilterOption
 
 internal fun LazyListScope.reviewContent(
-    reviewListUiState: ReviewListUiState,
+    reviewWithWriterListUiState: ReviewWithWriterListUiState,
     ratingFilterOption: RatingFilterOption,
     onCreate: () -> Unit,
     onEdit: (id: String) -> Unit,
@@ -79,8 +79,8 @@ internal fun LazyListScope.reviewContent(
             }
         }
     }
-    reviewCardList(
-        reviewListUiState = reviewListUiState,
+    reviewCardWithWriterList(
+        reviewWithWriterListUiState = reviewWithWriterListUiState,
         onEdit = onEdit,
         onDelete = onDelete,
         onImageClick = onImageClick,
@@ -92,9 +92,9 @@ internal fun LazyListScope.reviewContent(
 private fun ReviewContentPreview() {
     LazyColumn {
         reviewContent(
-            reviewListUiState = ReviewListUiState.Success(
+            reviewWithWriterListUiState = ReviewWithWriterListUiState.Success(
                 reviews = List(10) {
-                    ReviewListItemUiState(
+                    ReviewWithWriterListItemUiState(
                         id = it.toString(),
                         writerImgSrc = "",
                         writerName = "Writer",

@@ -58,7 +58,7 @@ private val REVIEW_IMAGE_SIZE = 144.dp
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun ReviewCard(
+fun ReviewCardWithWriter(
     writerImgSrc: Any,
     writerName: String,
     writeDate: String,
@@ -82,7 +82,7 @@ fun ReviewCard(
         colors = colors,
     ) {
         Column {
-            ReviewCardHeader(
+            ReviewWriterHeader(
                 writerImgSrc = writerImgSrc,
                 writerName = writerName,
                 writeDate = writeDate,
@@ -135,7 +135,7 @@ fun ReviewCard(
 }
 
 @Composable
-private fun ReviewCardHeader(
+private fun ReviewWriterHeader(
     writerImgSrc: Any,
     writerName: String,
     writeDate: String,
@@ -273,8 +273,8 @@ private fun ReviewMoreBtn(
 
 @Preview(showBackground = true)
 @Composable
-private fun ReviewCardPreview() {
-    ReviewCard(
+private fun ReviewCardWithWriterPreview() {
+    ReviewCardWithWriter(
         writerImgSrc = "",
         writerName = "Writer",
         writeDate = "240611",
@@ -297,8 +297,8 @@ private fun ReviewCardPreview() {
 
 @Preview(showBackground = true)
 @Composable
-private fun ReviewCardPreview_ImgSrcsEmpty() {
-    ReviewCard(
+private fun ReviewCardWithWriterPreview_ImgSrcsEmpty() {
+    ReviewCardWithWriter(
         writerImgSrc = "",
         writerName = "Writer",
         writeDate = "240611",
@@ -319,8 +319,8 @@ private fun ReviewCardPreview_ImgSrcsEmpty() {
 
 @Preview(showBackground = true)
 @Composable
-private fun ReviewCardPreview_ContentEmpty() {
-    ReviewCard(
+private fun ReviewCardWithWriterPreview_ContentEmpty() {
+    ReviewCardWithWriter(
         writerImgSrc = "",
         writerName = "Writer",
         writeDate = "240611",
@@ -342,8 +342,8 @@ private fun ReviewCardPreview_ContentEmpty() {
 
 @Preview(showBackground = true)
 @Composable
-private fun ReviewCardPreview_ImgSrcsAndContentEmpty() {
-    ReviewCard(
+private fun ReviewCardWithWriterPreview_ImgSrcsAndContentEmpty() {
+    ReviewCardWithWriter(
         writerImgSrc = "",
         writerName = "Writer",
         writeDate = "240611",
@@ -363,8 +363,8 @@ private fun ReviewCardPreview_ImgSrcsAndContentEmpty() {
 
 @Preview(showBackground = true)
 @Composable
-private fun ReviewCardHeaderPreview() {
-    ReviewCardHeader(
+private fun ReviewWriterHeaderPreview() {
+    ReviewWriterHeader(
         writerImgSrc = "",
         writerName = "Writer",
         writeDate = "240611",
