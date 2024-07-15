@@ -135,30 +135,10 @@ private fun ReviewWriterHeader(
                 color = MaterialTheme.colorScheme.onSurface,
                 style = MaterialTheme.typography.titleMedium,
             )
-            Row(
-                verticalAlignment = Alignment.CenterVertically,
-            ) {
-                IconText(
-                    icon = Icons.Default.CalendarToday,
-                    text = reviewDate.formatDate(LocalConfiguration.current.locales[0]),
-                )
-                Text(
-                    text = "•",
-                    modifier = Modifier.padding(horizontal = 4.dp),
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
-                    style = MaterialTheme.typography.labelMedium,
-                )
-                repeat(starRating) {
-                    Icon(
-                        imageVector = Icons.Default.StarRate,
-                        contentDescription = null,
-                        modifier = Modifier
-                            .size(ICON_TEXT_DEFAULT_ICON_SIZE)
-                            .offset(y = (-1).dp),
-                        tint = MaterialTheme.colorScheme.onSurfaceVariant,
-                    )
-                }
-            }
+            ReviewDateAndStarRatingRow(
+                reviewDate = reviewDate,
+                starRating = starRating,
+            )
         }
         if (isWriter) {
             ReviewMoreBtn(
@@ -239,6 +219,95 @@ private fun ReviewMoreBtn(
     }
 }
 
+@Composable
+fun ReviewCardWithContent(
+    title: String,
+    reviewDate: String,
+    starRating: Int,
+    imgSrcs: List<Any>,
+    reviewContent: String,
+    onClickHeader: () -> Unit,
+    onEdit: () -> Unit,
+    onDelete: () -> Unit,
+    onImageClick: (currentPage: Int) -> Unit,
+    modifier: Modifier = Modifier,
+    shape: Shape = CardDefaults.shape,
+    colors: CardColors = CardDefaults.cardColors(containerColor = Color.Transparent),
+    isWriter: Boolean = false,
+) {
+    Card(
+        modifier = modifier,
+        shape = shape,
+        colors = colors,
+    ) {
+        Column {
+            ReviewContentHeader(
+                title = title,
+                reviewDate = reviewDate,
+                starRating = starRating,
+                onEdit = onEdit,
+                onDelete = onDelete,
+                isWriter = isWriter,
+                modifier = Modifier.clickable(
+                    interactionSource = remember { MutableInteractionSource() },
+                    indication = rememberRipple(),
+                    onClick = onClickHeader,
+                ),
+            )
+
+            if (imgSrcs.isNotEmpty()) {
+                ReviewImgHorizontalPager(
+                    imgSrcs = imgSrcs,
+                    onImageClick = onImageClick,
+                )
+            }
+
+            if (reviewContent.isNotBlank()) {
+                ExpandableReviewContent(reviewContent)
+            }
+        }
+    }
+}
+
+@Composable
+private fun ReviewContentHeader(
+    title: String,
+    reviewDate: String,
+    starRating: Int,
+    onEdit: () -> Unit,
+    onDelete: () -> Unit,
+    modifier: Modifier = Modifier,
+    isWriter: Boolean = false,
+) {
+    Row(
+        modifier = modifier.padding(
+            start = 16.dp,
+            top = 12.dp,
+            end = 4.dp,
+            bottom = 12.dp,
+        ),
+        verticalAlignment = Alignment.CenterVertically,
+    ) {
+        Column(modifier = Modifier.weight(1f)) {
+            Text(
+                text = title,
+                color = MaterialTheme.colorScheme.onSurface,
+                style = MaterialTheme.typography.titleMedium,
+            )
+            ReviewDateAndStarRatingRow(
+                reviewDate = reviewDate,
+                starRating = starRating,
+            )
+        }
+        if (isWriter) {
+            ReviewMoreBtn(
+                onEdit = onEdit,
+                onDelete = onDelete,
+            )
+        }
+    }
+}
+
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 private fun ReviewImgHorizontalPager(
@@ -288,6 +357,39 @@ private fun ExpandableReviewContent(
             overflow = TextOverflow.Ellipsis,
             maxLines = if (reviewContentExpanded) Int.MAX_VALUE else 5,
         )
+    }
+}
+
+@Composable
+private fun ReviewDateAndStarRatingRow(
+    reviewDate: String,
+    starRating: Int,
+    modifier: Modifier = Modifier,
+) {
+    Row(
+        modifier = modifier,
+        verticalAlignment = Alignment.CenterVertically,
+    ) {
+        IconText(
+            icon = Icons.Default.CalendarToday,
+            text = reviewDate.formatDate(LocalConfiguration.current.locales[0]),
+        )
+        Text(
+            text = "•",
+            modifier = Modifier.padding(horizontal = 4.dp),
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
+            style = MaterialTheme.typography.labelMedium,
+        )
+        repeat(starRating) {
+            Icon(
+                imageVector = Icons.Default.StarRate,
+                contentDescription = null,
+                modifier = Modifier
+                    .size(ICON_TEXT_DEFAULT_ICON_SIZE)
+                    .offset(y = (-1).dp),
+                tint = MaterialTheme.colorScheme.onSurfaceVariant,
+            )
+        }
     }
 }
 
@@ -392,6 +494,30 @@ private fun ReviewWriterHeaderPreview() {
         onEdit = {},
         onDelete = {},
         modifier = Modifier.width(360.dp),
+        isWriter = true,
+    )
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun ReviewCardWithContentPreview() {
+    ReviewCardWithContent(
+        title = "Title",
+        reviewDate = "240611",
+        starRating = 4,
+        imgSrcs = List(8) {
+            "http://tong.visitkorea.or.kr/cms/resource/23/2678623_image3_1.jpg"
+        },
+        reviewContent =
+        " Gyeongbokgung Palace is the primary palace of the Joseon dynasty.".repeat(5),
+        onClickHeader = {},
+        onEdit = {},
+        onDelete = {},
+        onImageClick = {},
+        modifier = Modifier
+            .padding(8.dp)
+            .width(360.dp),
+        colors = CardDefaults.cardColors(),
         isWriter = true,
     )
 }
