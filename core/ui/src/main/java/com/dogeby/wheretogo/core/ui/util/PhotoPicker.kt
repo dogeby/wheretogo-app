@@ -14,9 +14,9 @@ import androidx.compose.ui.composed
 
 fun Modifier.photoPicker(
     onPhotoSelected: (List<Uri>) -> Unit,
+    interactionSource: MutableInteractionSource,
     maxItems: Int = 1,
     enabled: Boolean = true,
-    interactionSource: MutableInteractionSource,
 ) = if (Build.VERSION.SDK_INT >= 30) {
     photoPickerWithPickVisualMedia(
         maxItems = maxItems,

@@ -89,8 +89,8 @@ private fun PhotoPickerButton(
                 if (maxItems > 0) {
                     Modifier.photoPicker(
                         onPhotoSelected = onPhotoSelected,
-                        maxItems = maxItems,
                         interactionSource = remember { MutableInteractionSource() },
+                        maxItems = maxItems,
                     )
                 } else {
                     Modifier.clickable {

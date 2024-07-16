@@ -1,5 +1,7 @@
 package com.dogeby.wheretogo.feature.profileedit
 
+import android.net.Uri
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -21,6 +23,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.dogeby.wheretogo.core.ui.components.common.AsyncImageWithFallback
 import com.dogeby.wheretogo.core.ui.components.common.LoadingDisplay
+import com.dogeby.wheretogo.core.ui.util.photoPicker
 import com.dogeby.wheretogo.feature.profileedit.model.ProfileEditScreenUiState
 
 @Composable
@@ -31,6 +34,7 @@ internal fun ProfileEditScreen(
     newProfileImgSrc: Any?,
     onInputNicknameChanged: (String) -> Unit,
     onClearInputNickname: () -> Unit,
+    onProfileImgSrcChanged: (uri: Uri) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     when (profileEditScreenUiState) {
@@ -54,7 +58,15 @@ internal fun ProfileEditScreen(
                     imgSrc = newProfileImgSrc ?: profileEditScreenUiState.originalProfileImgSrc,
                     modifier = Modifier
                         .size(128.dp)
-                        .clip(CircleShape),
+                        .clip(CircleShape)
+                        .photoPicker(
+                            onPhotoSelected = {
+                                it
+                                    .firstOrNull()
+                                    ?.let(onProfileImgSrcChanged)
+                            },
+                            interactionSource = remember { MutableInteractionSource() },
+                        ),
                 )
                 Spacer(modifier = Modifier.height(64.dp))
                 NicknameTextField(
@@ -78,16 +90,20 @@ private fun ProfileEditScreenPreview() {
     var isInputNicknameError by remember {
         mutableStateOf(false)
     }
+    var newProfileImgSrc: Any by remember {
+        mutableStateOf("")
+    }
 
     ProfileEditScreen(
         profileEditScreenUiState = ProfileEditScreenUiState.Success("Nickname"),
         inputNickname = { inputNickname },
         isInputNicknameError = isInputNicknameError,
-        newProfileImgSrc = "",
+        newProfileImgSrc = newProfileImgSrc,
         onInputNicknameChanged = {
             inputNickname = it
             isInputNicknameError = (2..10).contains(inputNickname.length).not()
         },
         onClearInputNickname = { inputNickname = "" },
+        onProfileImgSrcChanged = { newProfileImgSrc = it },
     )
 }
