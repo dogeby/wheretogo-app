@@ -1,13 +1,10 @@
 package com.dogeby.wheretogo.feature.reviewedit
 
 import android.net.Uri
-import android.os.Build
 import android.widget.Toast
-import androidx.activity.compose.rememberLauncherForActivityResult
-import androidx.activity.result.PickVisualMediaRequest
-import androidx.activity.result.contract.ActivityResultContracts
-import androidx.annotation.RequiresApi
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.padding
@@ -37,100 +34,27 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.dogeby.wheretogo.core.ui.R
 import com.dogeby.wheretogo.core.ui.components.common.AsyncImageWithFallback
+import com.dogeby.wheretogo.core.ui.util.photoPicker
+import com.dogeby.wheretogo.core.ui.util.rememberToast
 
 private val PhotoSize = 80.dp
 
-@RequiresApi(30)
 @Composable
-internal fun PhotoPickerWithPickVisualMedia(
+internal fun PhotoContent(
     photoSrcs: List<Uri>,
     maxItems: Int,
     onAddPhotoSrcs: (uris: List<Uri>) -> Unit,
     onRemovePhotoSrc: (uri: Uri) -> Unit,
 ) {
     val remainingPhotoCapacity = maxItems - photoSrcs.size
-    val launcher = when {
-        remainingPhotoCapacity > 1 -> {
-            rememberLauncherForActivityResult(
-                contract = ActivityResultContracts.PickMultipleVisualMedia(remainingPhotoCapacity),
-                onResult = onAddPhotoSrcs,
-            )
-        }
-        else -> {
-            rememberLauncherForActivityResult(
-                contract = ActivityResultContracts.PickVisualMedia(),
-                onResult = {
-                    it?.let {
-                        onAddPhotoSrcs(listOf(it))
-                    }
-                },
-            )
-        }
-    }
 
     LazyRow(
         horizontalArrangement = Arrangement.spacedBy(8.dp),
     ) {
         item {
-            val context = LocalContext.current
             PhotoPickerButton(
-                onClick = {
-                    if (remainingPhotoCapacity > 0) {
-                        launcher.launch(
-                            PickVisualMediaRequest(
-                                ActivityResultContracts.PickVisualMedia.ImageOnly,
-                            ),
-                        )
-                    } else {
-                        Toast.makeText(
-                            context,
-                            context.getString(R.string.photo_picker_limit_warning, maxItems),
-                            Toast.LENGTH_SHORT,
-                        ).show()
-                    }
-                },
-            )
-        }
-        items(photoSrcs) {
-            PickedPhoto(
-                uri = it,
-                onRemove = onRemovePhotoSrc,
-            )
-        }
-    }
-}
-
-@Composable
-internal fun PhotoPickerWithGetContent(
-    photoSrcs: List<Uri>,
-    maxItems: Int,
-    onAddPhotoSrc: (uri: Uri) -> Unit,
-    onRemovePhotoSrc: (uri: Uri) -> Unit,
-) {
-    val launcher = rememberLauncherForActivityResult(
-        contract = ActivityResultContracts.GetContent(),
-        onResult = {
-            it?.let { onAddPhotoSrc(it) }
-        },
-    )
-
-    LazyRow(
-        horizontalArrangement = Arrangement.spacedBy(8.dp),
-    ) {
-        item {
-            val context = LocalContext.current
-            PhotoPickerButton(
-                onClick = {
-                    if (photoSrcs.size < 5) {
-                        launcher.launch("image/*")
-                    } else {
-                        Toast.makeText(
-                            context,
-                            context.getString(R.string.photo_picker_limit_warning, maxItems),
-                            Toast.LENGTH_SHORT,
-                        ).show()
-                    }
-                },
+                onPhotoSelected = onAddPhotoSrcs,
+                maxItems = remainingPhotoCapacity,
             )
         }
         items(photoSrcs) {
@@ -144,9 +68,9 @@ internal fun PhotoPickerWithGetContent(
 
 @Composable
 private fun PhotoPickerButton(
-    onClick: () -> Unit,
+    onPhotoSelected: (List<Uri>) -> Unit,
     modifier: Modifier = Modifier,
-    enabled: Boolean = true,
+    maxItems: Int = 1,
     shape: Shape = RoundedCornerShape(8),
     color: Color = MaterialTheme.colorScheme.surfaceContainerLow,
     contentColor: Color = MaterialTheme.colorScheme.onSurfaceVariant,
@@ -155,10 +79,31 @@ private fun PhotoPickerButton(
     shadowElevation: Dp = 0.dp,
     size: Dp = PhotoSize,
 ) {
+    val context = LocalContext.current
+    val toast = rememberToast()
+
     Surface(
-        onClick = onClick,
-        modifier = modifier.size(size),
-        enabled = enabled,
+        modifier = modifier
+            .size(size)
+            .then(
+                if (maxItems > 0) {
+                    Modifier.photoPicker(
+                        onPhotoSelected = onPhotoSelected,
+                        maxItems = maxItems,
+                        interactionSource = remember { MutableInteractionSource() },
+                    )
+                } else {
+                    Modifier.clickable {
+                        toast(
+                            context.getString(
+                                R.string.photo_picker_limit_warning,
+                                maxItems,
+                            ),
+                            Toast.LENGTH_SHORT,
+                        )
+                    }
+                },
+            ),
         shape = shape,
         color = color,
         contentColor = contentColor,
@@ -214,43 +159,28 @@ private fun PickedPhoto(
 
 @Preview(showBackground = true)
 @Composable
-private fun PhotoPickerPreview() {
+private fun PhotoContentPreview() {
     val photoSrcs = remember {
         mutableStateListOf<Uri>()
     }
 
-    if (Build.VERSION.SDK_INT >= 30) {
-        PhotoPickerWithPickVisualMedia(
-            photoSrcs = photoSrcs,
-            maxItems = 5,
-            onAddPhotoSrcs = { uris ->
-                photoSrcs.addAll(uris.filter { it !in photoSrcs })
-            },
-            onRemovePhotoSrc = {
-                photoSrcs.remove(it)
-            },
-        )
-    } else {
-        PhotoPickerWithGetContent(
-            photoSrcs = photoSrcs,
-            maxItems = 5,
-            onAddPhotoSrc = {
-                if (it !in photoSrcs) {
-                    photoSrcs.add(it)
-                }
-            },
-            onRemovePhotoSrc = {
-                photoSrcs.remove(it)
-            },
-        )
-    }
+    PhotoContent(
+        photoSrcs = photoSrcs,
+        maxItems = 5,
+        onAddPhotoSrcs = { uris ->
+            photoSrcs.addAll(uris.filter { it !in photoSrcs })
+        },
+        onRemovePhotoSrc = {
+            photoSrcs.remove(it)
+        },
+    )
 }
 
 @Preview(showBackground = true)
 @Composable
 private fun PhotoPickerButtonPreview() {
     PhotoPickerButton(
-        onClick = {},
+        onPhotoSelected = {},
         modifier = Modifier.padding(16.dp),
     )
 }
