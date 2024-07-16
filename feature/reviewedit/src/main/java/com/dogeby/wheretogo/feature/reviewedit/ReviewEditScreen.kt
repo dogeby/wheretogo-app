@@ -1,7 +1,6 @@
 package com.dogeby.wheretogo.feature.reviewedit
 
 import android.net.Uri
-import android.os.Build
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -76,23 +75,12 @@ internal fun ReviewEditScreen(
             style = MaterialTheme.typography.titleMedium,
         )
         Spacer(modifier = Modifier.height(12.dp))
-        if (Build.VERSION.SDK_INT >= 30) {
-            PhotoPickerWithPickVisualMedia(
-                photoSrcs = photoSrcs,
-                maxItems = 5,
-                onAddPhotoSrcs = onAddPhotoSrcs,
-                onRemovePhotoSrc = onRemovePhotoSrc,
-            )
-        } else {
-            PhotoPickerWithGetContent(
-                photoSrcs = photoSrcs,
-                maxItems = 5,
-                onAddPhotoSrc = {
-                    onAddPhotoSrcs(listOf(it))
-                },
-                onRemovePhotoSrc = onRemovePhotoSrc,
-            )
-        }
+        PhotoContent(
+            photoSrcs = photoSrcs,
+            maxItems = 5,
+            onAddPhotoSrcs = onAddPhotoSrcs,
+            onRemovePhotoSrc = onRemovePhotoSrc,
+        )
     }
 }
 

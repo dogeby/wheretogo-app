@@ -20,4 +20,5 @@
     <string name="photo_picker_title">사진 (선택 사항)</string>
     <string name="avg_star_rating">평균평점</string>
     <string name="my_review">내가 쓴 리뷰</string>
+    <string name="nickname_text_field_supporting_text">2~10자로 입력해주세요.\n한글, 영문, 숫자만 입력 가능합니다.</string>
 </resources>
