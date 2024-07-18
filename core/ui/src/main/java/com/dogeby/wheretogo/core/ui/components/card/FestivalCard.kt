@@ -49,7 +49,7 @@ fun FestivalCard(
             AsyncImageWithFallback(
                 imgSrc = imgSrc,
                 modifier = Modifier
-                    .aspectRatio(1.5f)
+                    .aspectRatio(1.6f)
                     .clip(RoundedCornerShape(12.dp)),
             )
             Column(modifier = Modifier.padding(vertical = 4.dp)) {
