@@ -5,6 +5,8 @@ sealed interface FestivalListUiState {
     data object Loading : FestivalListUiState
 
     data class Success(
+        val contentTypeId: String,
+        val contentTypeName: String,
         val festivals: List<FestivalListItemUiState>,
     ) : FestivalListUiState
 }

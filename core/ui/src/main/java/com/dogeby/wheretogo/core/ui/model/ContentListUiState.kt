@@ -5,6 +5,8 @@ sealed interface ContentListUiState {
     data object Loading : ContentListUiState
 
     data class Success(
+        val contentTypeId: String,
+        val contentTypeName: String,
         val contents: List<ContentListItemUiState>,
     ) : ContentListUiState
 }

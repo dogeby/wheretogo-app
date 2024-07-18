@@ -127,6 +127,8 @@ private fun ContentScreenPreview() {
                 )
             },
             contentsState = ContentListUiState.Success(
+                contentTypeId = "12",
+                contentTypeName = "관광지",
                 contents = List(20) {
                     ContentListItemUiState(
                         id = "$tabIndex$it",
@@ -184,6 +186,8 @@ private fun ContentScreenPreview_Empty() {
                 )
             },
             contentsState = ContentListUiState.Success(
+                contentTypeId = "12",
+                contentTypeName = "관광지",
                 contents = emptyList(),
             ),
         )

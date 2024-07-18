@@ -74,6 +74,8 @@ private fun FestivalsScreenPreview() {
                 )
             },
             festivalsState = FestivalListUiState.Success(
+                contentTypeId = "15",
+                contentTypeName = "축제/공연/행사",
                 festivals = List(10) {
                     FestivalListItemUiState(
                         id = "$it",
@@ -106,6 +108,8 @@ private fun FestivalsScreenPreview_Empty() {
                 )
             },
             festivalsState = FestivalListUiState.Success(
+                contentTypeId = "15",
+                contentTypeName = "축제/공연/행사",
                 festivals = emptyList(),
             ),
         ),

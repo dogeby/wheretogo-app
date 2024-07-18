@@ -161,6 +161,8 @@ private fun SearchResultScreenPreview_Success() {
         SearchResultScreen(
             searchResultScreenState = SearchResultScreenUiState.Success(
                 attractionListState = ContentListUiState.Success(
+                    contentTypeId = "12",
+                    contentTypeName = "관광지",
                     contents = List(10) {
                         ContentListItemUiState(
                             id = "$it",
@@ -175,6 +177,8 @@ private fun SearchResultScreenPreview_Success() {
                     },
                 ),
                 festivalListState = FestivalListUiState.Success(
+                    contentTypeId = "15",
+                    contentTypeName = "축제/공연/행사",
                     festivals = List(10) {
                         FestivalListItemUiState(
                             id = "$it",
@@ -189,8 +193,16 @@ private fun SearchResultScreenPreview_Success() {
                         )
                     },
                 ),
-                restaurantListState = ContentListUiState.Success(emptyList()),
-                accommodationListState = ContentListUiState.Success(emptyList()),
+                restaurantListState = ContentListUiState.Success(
+                    contentTypeId = "39",
+                    contentTypeName = "음식",
+                    contents = emptyList(),
+                ),
+                accommodationListState = ContentListUiState.Success(
+                    contentTypeId = "32",
+                    contentTypeName = "숙박",
+                    contents = emptyList(),
+                ),
             ),
             onClickContent = {},
         )

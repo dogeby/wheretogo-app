@@ -90,6 +90,8 @@ private fun ContentListPreview() {
     ) {
         contentList(
             contentsState = ContentListUiState.Success(
+                contentTypeId = "12",
+                contentTypeName = "관광지",
                 contents = List(10) {
                     ContentListItemUiState(
                         id = "$it",
@@ -116,6 +118,8 @@ private fun ContentCardListPreview_LazyListScope() {
     ) {
         contentCardList(
             contentsState = ContentListUiState.Success(
+                contentTypeId = "12",
+                contentTypeName = "관광지",
                 contents = List(10) {
                     ContentListItemUiState(
                         id = "$it",
