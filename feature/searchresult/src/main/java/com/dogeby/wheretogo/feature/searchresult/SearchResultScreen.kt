@@ -68,7 +68,7 @@ private fun SearchResultList(
         contentPadding = PaddingValues(bottom = 16.dp),
     ) {
         contentSearchResultList(
-            titleResId = R.string.attraction,
+            titleResId = R.string.destination,
             contentListState = attractionListState,
             onClickContent = onClickContent,
         )
@@ -82,7 +82,7 @@ private fun SearchResultList(
                         },
                     ) {
                         Text(
-                            text = stringResource(id = R.string.festival),
+                            text = stringResource(id = R.string.festival_performance_event),
                             style = MaterialTheme.typography.titleMedium,
                             modifier = Modifier.padding(horizontal = 16.dp),
                         )
