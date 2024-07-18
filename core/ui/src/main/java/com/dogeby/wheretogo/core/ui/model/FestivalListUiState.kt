@@ -7,6 +7,8 @@ sealed interface FestivalListUiState {
     data class Success(
         val contentTypeId: String,
         val contentTypeName: String,
+        val areaName: String = "",
+        val sigunguName: String = "",
         val festivals: List<FestivalListItemUiState>,
     ) : FestivalListUiState
 }
