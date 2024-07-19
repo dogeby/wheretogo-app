@@ -4,10 +4,6 @@
     <string name="delete">삭제</string>
     <string name="delete_review">리뷰를 삭제할까요?</string>
     <string name="cancel">취소</string>
-    <string name="attraction">관광지</string>
-    <string name="festival">축제</string>
-    <string name="restaurant">음식</string>
-    <string name="accommodation">숙박</string>
     <string name="no_search_results">검색 결과가 없습니다.</string>
     <string name="empty_list">목록이 비어있습니다.</string>
     <string name="review">리뷰</string>
@@ -21,4 +17,15 @@
     <string name="avg_star_rating">평균평점</string>
     <string name="my_review">내가 쓴 리뷰</string>
     <string name="nickname_text_field_supporting_text">2~10자로 입력해주세요.\n한글, 영문, 숫자만 입력 가능합니다.</string>
+
+    <string name="destination">여행지</string>
+    <string name="tourist_spot">관광지</string>
+    <string name="cultural_facility">문화시설</string>
+    <string name="festival_performance_event">축제/공연/행사</string>
+    <string name="festival">축제</string>
+    <string name="travel_course">여행코스</string>
+    <string name="leisure_sport">레포츠</string>
+    <string name="accommodation">숙박</string>
+    <string name="shopping">쇼핑</string>
+    <string name="restaurant">음식</string>
 </resources>

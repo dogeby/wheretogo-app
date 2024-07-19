@@ -29,7 +29,7 @@ import androidx.compose.ui.unit.dp
 fun ImgHorizontalPager(
     imgSrcs: List<Any>,
     modifier: Modifier = Modifier,
-    ratio: Float = 1.5f,
+    ratio: Float = 1.6f,
     onImgClick: ((page: Int, imgSrcs: List<Any>) -> Unit)? = null,
 ) {
     val pagerState = rememberPagerState {

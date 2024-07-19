@@ -5,6 +5,7 @@ import androidx.compose.material.icons.filled.LocationOn
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import com.dogeby.wheretogo.core.ui.util.buildLocationText
 
 @Composable
 fun LocationDisplay(
@@ -15,13 +16,7 @@ fun LocationDisplay(
     if (areaName.isBlank() && sigunguName.isBlank()) {
         return
     }
-    val locationText = buildString {
-        append(areaName)
-        if (areaName.isNotBlank() && sigunguName.isNotBlank()) {
-            append(" ")
-        }
-        append(sigunguName)
-    }
+    val locationText = buildLocationText(areaName, sigunguName)
 
     IconText(
         icon = Icons.Default.LocationOn,

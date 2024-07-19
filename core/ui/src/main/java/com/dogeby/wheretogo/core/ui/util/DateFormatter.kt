@@ -13,3 +13,32 @@ fun String.formatDate(
 
     return outputFormatter.format(inputFormatter.parse(this))
 }
+
+fun buildLocationText(
+    areaName: String = "",
+    sigunguName: String = "",
+): String {
+    return buildString {
+        append(areaName)
+        if (areaName.isNotBlank() && sigunguName.isNotBlank()) {
+            append(" ")
+        }
+        append(sigunguName)
+    }
+}
+
+fun buildLocationContentTypeText(
+    areaName: String = "",
+    sigunguName: String = "",
+    contentTypeName: String = "",
+): String {
+    return buildString {
+        append(buildLocationText(areaName, sigunguName))
+        if (contentTypeName.isNotBlank()) {
+            if (this.isNotBlank()) {
+                append(" ")
+            }
+            append(contentTypeName)
+        }
+    }
+}

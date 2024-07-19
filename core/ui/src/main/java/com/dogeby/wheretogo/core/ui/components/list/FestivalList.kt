@@ -90,6 +90,8 @@ private fun FestivalCardListPreview() {
     ) {
         festivalCardList(
             festivalsState = FestivalListUiState.Success(
+                contentTypeId = "15",
+                contentTypeName = "축제/공연/행사",
                 festivals = List(10) {
                     FestivalListItemUiState(
                         id = "$it",
@@ -118,6 +120,8 @@ private fun FestivalListPreview() {
     ) {
         festivalList(
             festivalsState = FestivalListUiState.Success(
+                contentTypeId = "15",
+                contentTypeName = "축제/공연/행사",
                 festivals = List(10) {
                     FestivalListItemUiState(
                         id = "$it",
