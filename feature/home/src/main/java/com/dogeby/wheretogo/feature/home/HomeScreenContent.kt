@@ -10,7 +10,6 @@ import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.foundation.pager.PageSize
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowForward
-import androidx.compose.material.icons.outlined.Festival
 import androidx.compose.material3.ListItemDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -28,7 +27,6 @@ import com.dogeby.wheretogo.core.ui.model.FestivalListItemUiState
 import com.dogeby.wheretogo.core.ui.model.FestivalListUiState
 import com.dogeby.wheretogo.core.ui.util.buildLocationContentTypeText
 import com.dogeby.wheretogo.feature.home.model.HomeScreenUiState
-import com.dogeby.wheretogo.feature.home.model.MenuIconBtnUiState
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
@@ -55,7 +53,6 @@ internal fun HomeScreenContent(
             }
             item {
                 NavigationMenus(
-                    menuIconBtnStates = menuIconBtnStates,
                     onNavigateToList = {
                         onNavigateToList(it, "", "")
                     },
@@ -202,13 +199,6 @@ private fun HomeScreenContentPreview() {
     )
     HomeScreenContent(
         homeScreenUiState = HomeScreenUiState.Success(
-            menuIconBtnStates = List(4) {
-                MenuIconBtnUiState(
-                    contentTypeId = "",
-                    icon = Icons.Outlined.Festival,
-                    text = "Menu $it",
-                )
-            },
             festivalPerformanceEventListState = festivalListUiState,
             touristSpotListState = contentListUiState,
             culturalFacilityListState = contentListUiState,

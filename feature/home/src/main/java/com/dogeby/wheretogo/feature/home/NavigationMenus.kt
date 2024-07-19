@@ -4,18 +4,16 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.Festival
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import com.dogeby.wheretogo.core.ui.components.button.MenuIconButton
-import com.dogeby.wheretogo.feature.home.model.MenuIconBtnUiState
+import com.dogeby.wheretogo.feature.home.model.ContentTypeMenu
 
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun NavigationMenus(
-    menuIconBtnStates: List<MenuIconBtnUiState>,
     onNavigateToList: (contentTypeId: String) -> Unit,
     modifier: Modifier = Modifier,
     horizontalArrangement: Arrangement.Horizontal = Arrangement.Start,
@@ -26,10 +24,10 @@ fun NavigationMenus(
         horizontalArrangement = horizontalArrangement,
         verticalArrangement = verticalArrangement,
     ) {
-        menuIconBtnStates.forEach {
+        ContentTypeMenu.entries.forEach {
             MenuIconButton(
                 icon = it.icon,
-                text = it.text,
+                text = stringResource(id = it.nameResId),
                 onClick = { onNavigateToList(it.contentTypeId) },
             )
         }
@@ -40,13 +38,6 @@ fun NavigationMenus(
 @Composable
 private fun NavigationMenusPreview() {
     NavigationMenus(
-        menuIconBtnStates = List(5) {
-            MenuIconBtnUiState(
-                contentTypeId = "",
-                icon = Icons.Outlined.Festival,
-                text = "Festival $it",
-            )
-        },
         onNavigateToList = {},
         modifier = Modifier.fillMaxWidth(),
     )

@@ -1,7 +1,5 @@
 package com.dogeby.wheretogo.feature.home
 
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.Festival
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
@@ -11,7 +9,6 @@ import com.dogeby.wheretogo.core.ui.model.ContentListUiState
 import com.dogeby.wheretogo.core.ui.model.FestivalListItemUiState
 import com.dogeby.wheretogo.core.ui.model.FestivalListUiState
 import com.dogeby.wheretogo.feature.home.model.HomeScreenUiState
-import com.dogeby.wheretogo.feature.home.model.MenuIconBtnUiState
 
 @Composable
 internal fun HomeScreen(
@@ -73,13 +70,6 @@ private fun HomeScreenPreview() {
     )
     HomeScreen(
         homeScreenUiState = HomeScreenUiState.Success(
-            menuIconBtnStates = List(4) {
-                MenuIconBtnUiState(
-                    contentTypeId = "",
-                    icon = Icons.Outlined.Festival,
-                    text = "Menu $it",
-                )
-            },
             festivalPerformanceEventListState = festivalListUiState,
             touristSpotListState = contentListUiState,
             culturalFacilityListState = contentListUiState,

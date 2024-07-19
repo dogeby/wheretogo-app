@@ -8,7 +8,6 @@ sealed interface HomeScreenUiState {
     data object Loading : HomeScreenUiState
 
     data class Success(
-        val menuIconBtnStates: List<MenuIconBtnUiState>,
         val festivalPerformanceEventListState: FestivalListUiState,
         val touristSpotListState: ContentListUiState,
         val culturalFacilityListState: ContentListUiState,
