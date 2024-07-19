@@ -7,7 +7,9 @@ sealed interface ContentListUiState {
     data class Success(
         val contentTypeId: String,
         val contentTypeName: String,
+        val areaCode: String = "",
         val areaName: String = "",
+        val sigunguCode: String = "",
         val sigunguName: String = "",
         val contents: List<ContentListItemUiState>,
     ) : ContentListUiState
