@@ -23,7 +23,6 @@ import com.dogeby.wheretogo.core.ui.components.card.ContentCard
 import com.dogeby.wheretogo.core.ui.components.listitem.ContentListItem
 import com.dogeby.wheretogo.core.ui.model.ContentListItemUiState
 import com.dogeby.wheretogo.core.ui.model.ContentListUiState
-import kotlin.math.ceil
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
@@ -82,7 +81,7 @@ fun ContentCarousel(
         ContentListUiState.Loading -> Unit
         is ContentListUiState.Success -> {
             val pagerState = rememberPagerState {
-                ceil(contentsState.contents.size / columns.toFloat()).toInt()
+                (contentsState.contents.size + columns - 1) / columns
             }
             HorizontalPager(
                 state = pagerState,

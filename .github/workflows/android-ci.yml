@@ -40,6 +40,14 @@ jobs:
       - name: Run ktlint
         run: ./gradlew ktlintCheck
 
+      - name: Setup Environment Variables for Tests
+        env:
+          TOUR_API_BASED_URL: ${{ secrets.TOUR_API_BASED_URL }}
+          TOUR_API_SERVICE_KEY: ${{ secrets.TOUR_API_SERVICE_KEY  }}
+        run: |
+          echo TOUR_API_BASED_URL=\"$TOUR_API_BASED_URL\" >> ./local.properties
+          echo TOUR_API_SERVICE_KEY=\"$TOUR_API_SERVICE_KEY\" >> ./local.properties
+
       - name: Run unit tests
         run: ./gradlew testDebugUnitTest
 
