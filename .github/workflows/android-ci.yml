@@ -44,7 +44,7 @@ jobs:
         env:
           TOUR_API_BASED_URL: ${{ secrets.TOUR_API_BASED_URL }}
           TOUR_API_SERVICE_KEY: ${{ secrets.TOUR_API_SERVICE_KEY  }}
-        run:
+        run: |
           echo TOUR_API_BASED_URL=\"$TOUR_API_BASED_URL\" >> ./local.properties
           echo TOUR_API_SERVICE_KEY=\"$TOUR_API_SERVICE_KEY\" >> ./local.properties
 
