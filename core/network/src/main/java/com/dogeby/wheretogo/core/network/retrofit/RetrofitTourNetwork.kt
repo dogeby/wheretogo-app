@@ -3,7 +3,7 @@ package com.dogeby.wheretogo.core.network.retrofit
 import com.dogeby.wheretogo.core.model.tour.ArrangeOption
 import com.dogeby.wheretogo.core.network.BuildConfig
 import com.dogeby.wheretogo.core.network.TourNetworkDataSource
-import com.dogeby.wheretogo.core.network.model.tour.NetworkTourResponse
+import com.dogeby.wheretogo.core.network.model.tour.NetworkTourContentResponse
 import com.dogeby.wheretogo.core.network.model.tour.TourInfoRequestBody
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import javax.inject.Inject
@@ -37,7 +37,7 @@ class RetrofitTourNetwork @Inject constructor(
         category2: String,
         category3: String,
         arrangeOption: ArrangeOption,
-    ): Result<NetworkTourResponse> = runCatching {
+    ): Result<NetworkTourContentResponse> = runCatching {
         val response = networkApi.fetchTourInfoByRegion(
             TourInfoRequestBody(
                 numberOfRows = numberOfRows,
@@ -77,5 +77,5 @@ private interface RetrofitTourNetworkApi {
     @GET("areaBasedList1")
     suspend fun fetchTourInfoByRegion(
         @QueryMap queryParams: Map<String, String>,
-    ): Response<NetworkTourResponse>
+    ): Response<NetworkTourContentResponse>
 }

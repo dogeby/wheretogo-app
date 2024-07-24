@@ -2,12 +2,12 @@ package com.dogeby.wheretogo.core.network.fake
 
 import com.dogeby.wheretogo.core.model.tour.ArrangeOption
 import com.dogeby.wheretogo.core.network.TourNetworkDataSource
-import com.dogeby.wheretogo.core.network.model.tour.NetworkTourBody
-import com.dogeby.wheretogo.core.network.model.tour.NetworkTourHeader
-import com.dogeby.wheretogo.core.network.model.tour.NetworkTourListItem
-import com.dogeby.wheretogo.core.network.model.tour.NetworkTourResponse
-import com.dogeby.wheretogo.core.network.model.tour.NetworkTourResponseContent
-import com.dogeby.wheretogo.core.network.model.tour.NetworkTourResult
+import com.dogeby.wheretogo.core.network.model.tour.NetworkTourContentBody
+import com.dogeby.wheretogo.core.network.model.tour.NetworkTourContentData
+import com.dogeby.wheretogo.core.network.model.tour.NetworkTourContentHeader
+import com.dogeby.wheretogo.core.network.model.tour.NetworkTourContentResponse
+import com.dogeby.wheretogo.core.network.model.tour.NetworkTourContentResponseContent
+import com.dogeby.wheretogo.core.network.model.tour.NetworkTourContentResult
 import javax.inject.Inject
 import org.jetbrains.annotations.TestOnly
 
@@ -24,18 +24,18 @@ class FakeTourNetworkDataSource @Inject constructor() : TourNetworkDataSource {
         category2: String,
         category3: String,
         arrangeOption: ArrangeOption,
-    ): Result<NetworkTourResponse> {
-        val header = NetworkTourHeader(
+    ): Result<NetworkTourContentResponse> {
+        val header = NetworkTourContentHeader(
             resultCode = "0000",
             resultMessage = "OK",
         )
-        val body = NetworkTourBody(
+        val body = NetworkTourContentBody(
             numberOfRows = numberOfRows,
             currentPage = currentPage,
             totalCount = 3742,
-            result = NetworkTourResult(
+            result = NetworkTourContentResult(
                 items = List(numberOfRows) {
-                    NetworkTourListItem(
+                    NetworkTourContentData(
                         contentId = "$currentPage $it",
                         contentTypeId = "38",
                         createdTime = "20111111014944",
@@ -62,8 +62,8 @@ class FakeTourNetworkDataSource @Inject constructor() : TourNetworkDataSource {
             ),
         )
         return Result.success(
-            NetworkTourResponse(
-                response = NetworkTourResponseContent(
+            NetworkTourContentResponse(
+                content = NetworkTourContentResponseContent(
                     header = header,
                     body = body,
                 ),

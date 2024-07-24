@@ -21,7 +21,7 @@ class RetrofitTourNetworkTest {
             .onSuccess {
                 Assert.assertEquals(
                     "0000",
-                    it.response.header.resultCode,
+                    it.content.header.resultCode,
                 )
             }
             .onFailure {

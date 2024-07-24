@@ -1,7 +1,7 @@
 package com.dogeby.wheretogo.core.network
 
 import com.dogeby.wheretogo.core.model.tour.ArrangeOption
-import com.dogeby.wheretogo.core.network.model.tour.NetworkTourResponse
+import com.dogeby.wheretogo.core.network.model.tour.NetworkTourContentResponse
 
 interface TourNetworkDataSource {
 
@@ -15,5 +15,5 @@ interface TourNetworkDataSource {
         category2: String = "",
         category3: String = "",
         arrangeOption: ArrangeOption = ArrangeOption.TITLE,
-    ): Result<NetworkTourResponse>
+    ): Result<NetworkTourContentResponse>
 }

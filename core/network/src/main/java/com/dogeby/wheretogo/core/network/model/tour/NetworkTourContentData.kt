@@ -4,7 +4,7 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class NetworkTourListItem(
+data class NetworkTourContentData(
     @SerialName("contentid")
     val contentId: String,
 
