@@ -2,18 +2,12 @@ package com.dogeby.wheretogo.core.network
 
 import com.dogeby.wheretogo.core.model.tour.ArrangeOption
 import com.dogeby.wheretogo.core.network.model.tour.NetworkTourContentResponse
+import com.dogeby.wheretogo.core.network.model.tour.TourInfoByRegionRequestBody
 
 interface TourNetworkDataSource {
 
     suspend fun fetchTourInfoByRegion(
-        currentPage: Int = 1,
-        numberOfRows: Int = 12,
-        contentTypeId: String = "",
-        areaCode: String = "",
-        sigunguCode: String = "",
-        category1: String = "",
-        category2: String = "",
-        category3: String = "",
-        arrangeOption: ArrangeOption = ArrangeOption.TITLE,
+        tourInfoByRegionRequestBody: TourInfoByRegionRequestBody,
+        arrangeOption: ArrangeOption = ArrangeOption.MODIFIED_TIME,
     ): Result<NetworkTourContentResponse>
 }

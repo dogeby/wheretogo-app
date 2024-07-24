@@ -8,6 +8,7 @@ import com.dogeby.wheretogo.core.network.model.tour.NetworkTourContentHeader
 import com.dogeby.wheretogo.core.network.model.tour.NetworkTourContentResponse
 import com.dogeby.wheretogo.core.network.model.tour.NetworkTourContentResponseContent
 import com.dogeby.wheretogo.core.network.model.tour.NetworkTourContentResult
+import com.dogeby.wheretogo.core.network.model.tour.TourInfoByRegionRequestBody
 import javax.inject.Inject
 import org.jetbrains.annotations.TestOnly
 
@@ -15,14 +16,7 @@ import org.jetbrains.annotations.TestOnly
 class FakeTourNetworkDataSource @Inject constructor() : TourNetworkDataSource {
 
     override suspend fun fetchTourInfoByRegion(
-        currentPage: Int,
-        numberOfRows: Int,
-        contentTypeId: String,
-        areaCode: String,
-        sigunguCode: String,
-        category1: String,
-        category2: String,
-        category3: String,
+        tourInfoByRegionRequestBody: TourInfoByRegionRequestBody,
         arrangeOption: ArrangeOption,
     ): Result<NetworkTourContentResponse> {
         val header = NetworkTourContentHeader(
@@ -30,17 +24,17 @@ class FakeTourNetworkDataSource @Inject constructor() : TourNetworkDataSource {
             resultMessage = "OK",
         )
         val body = NetworkTourContentBody(
-            numberOfRows = numberOfRows,
-            currentPage = currentPage,
+            numberOfRows = tourInfoByRegionRequestBody.numberOfRows,
+            currentPage = tourInfoByRegionRequestBody.currentPage,
             totalCount = 3742,
             result = NetworkTourContentResult(
-                items = List(numberOfRows) {
+                items = List(tourInfoByRegionRequestBody.numberOfRows) {
                     NetworkTourContentData(
-                        contentId = "$currentPage $it",
+                        contentId = "${tourInfoByRegionRequestBody.currentPage} $it",
                         contentTypeId = "38",
                         createdTime = "20111111014944",
                         modifiedTime = "20230407105028",
-                        title = "Title $currentPage $it",
+                        title = "Title ${tourInfoByRegionRequestBody.currentPage} $it",
                         addr1 = null,
                         addr2 = null,
                         areaCode = null,
