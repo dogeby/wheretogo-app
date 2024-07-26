@@ -3,8 +3,8 @@ package com.dogeby.wheretogo.core.network.retrofit
 import com.dogeby.wheretogo.core.model.tour.ArrangeOption
 import com.dogeby.wheretogo.core.network.BuildConfig
 import com.dogeby.wheretogo.core.network.TourNetworkDataSource
-import com.dogeby.wheretogo.core.network.model.tour.NetworkTourResponse
-import com.dogeby.wheretogo.core.network.model.tour.TourInfoRequestBody
+import com.dogeby.wheretogo.core.network.model.tour.NetworkTourContentResponse
+import com.dogeby.wheretogo.core.network.model.tour.TourInfoByRegionRequestBody
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -13,6 +13,7 @@ import okhttp3.MediaType.Companion.toMediaType
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.http.GET
+import retrofit2.http.Query
 import retrofit2.http.QueryMap
 
 @Singleton
@@ -28,32 +29,16 @@ class RetrofitTourNetwork @Inject constructor(
             .create(RetrofitTourNetworkApi::class.java)
 
     override suspend fun fetchTourInfoByRegion(
-        currentPage: Int,
-        numberOfRows: Int,
-        contentTypeId: String,
-        areaCode: String,
-        sigunguCode: String,
-        category1: String,
-        category2: String,
-        category3: String,
+        tourInfoByRegionRequestBody: TourInfoByRegionRequestBody,
         arrangeOption: ArrangeOption,
-    ): Result<NetworkTourResponse> = runCatching {
+    ): Result<NetworkTourContentResponse> = runCatching {
         val response = networkApi.fetchTourInfoByRegion(
-            TourInfoRequestBody(
-                numberOfRows = numberOfRows,
-                currentPage = currentPage,
-                mobileOs = TOUR_API_MOBILE_OS,
-                mobileApp = TOUR_API_MOBILE_APP,
-                serviceKey = TOUR_API_SERVICE_KEY,
-                responseType = RESPONSE_TYPE,
-                arrange = arrangeOption.code,
-                contentTypeId = contentTypeId,
-                areaCode = areaCode,
-                sigunguCode = sigunguCode,
-                category1 = category1,
-                category2 = category2,
-                category3 = category3,
-            ).toQueryMap(),
+            queryParams = tourInfoByRegionRequestBody.toQueryMap(),
+            mobileOs = TOUR_API_MOBILE_OS,
+            mobileApp = TOUR_API_MOBILE_APP,
+            serviceKey = TOUR_API_SERVICE_KEY,
+            responseType = RESPONSE_TYPE,
+            arrange = arrangeOption.code,
         )
         if (response.isSuccessful) {
             response.body() ?: throw NullPointerException()
@@ -77,5 +62,10 @@ private interface RetrofitTourNetworkApi {
     @GET("areaBasedList1")
     suspend fun fetchTourInfoByRegion(
         @QueryMap queryParams: Map<String, String>,
-    ): Response<NetworkTourResponse>
+        @Query("MobileOS") mobileOs: String,
+        @Query("MobileApp") mobileApp: String,
+        @Query("serviceKey") serviceKey: String,
+        @Query("_type") responseType: String,
+        @Query("arrange") arrange: String,
+    ): Response<NetworkTourContentResponse>
 }

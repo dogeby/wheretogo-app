@@ -4,7 +4,7 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class NetworkTourBody(
+data class NetworkTourContentBody(
     @SerialName("numOfRows")
     val numberOfRows: Int,
 
@@ -15,11 +15,11 @@ data class NetworkTourBody(
     val totalCount: Int,
 
     @SerialName("items")
-    val result: NetworkTourResult,
+    val result: NetworkTourContentResult,
 )
 
 @Serializable
-data class NetworkTourResult(
+data class NetworkTourContentResult(
     @SerialName("item")
-    val items: List<NetworkTourListItem>,
+    val items: List<NetworkTourContentData>,
 )

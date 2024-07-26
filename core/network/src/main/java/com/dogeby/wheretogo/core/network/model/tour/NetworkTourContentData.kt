@@ -4,7 +4,7 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class NetworkTourListItem(
+data class NetworkTourContentData(
     @SerialName("contentid")
     val contentId: String,
 
@@ -21,13 +21,13 @@ data class NetworkTourListItem(
     val title: String,
 
     @SerialName("addr1")
-    val addr1: String?,
+    val addr1: String? = null,
 
     @SerialName("addr2")
     val addr2: String? = null,
 
     @SerialName("areacode")
-    val areaCode: String?,
+    val areaCode: String? = null,
 
     @SerialName("sigungucode")
     val sigunguCode: String? = null,

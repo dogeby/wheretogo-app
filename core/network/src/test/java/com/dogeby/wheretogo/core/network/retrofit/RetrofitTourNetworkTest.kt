@@ -1,5 +1,6 @@
 package com.dogeby.wheretogo.core.network.retrofit
 
+import com.dogeby.wheretogo.core.network.model.tour.TourInfoByRegionRequestBody
 import kotlinx.coroutines.test.runTest
 import kotlinx.serialization.json.Json
 import org.junit.Assert
@@ -16,12 +17,12 @@ class RetrofitTourNetworkTest {
     }
 
     @Test
-    fun fetchTourInfoByRegion() = runTest {
-        retrofitTourNetwork.fetchTourInfoByRegion()
+    fun test_fetchTourInfoByRegion_success() = runTest {
+        retrofitTourNetwork.fetchTourInfoByRegion(TourInfoByRegionRequestBody())
             .onSuccess {
                 Assert.assertEquals(
                     "0000",
-                    it.response.header.resultCode,
+                    it.content.header.resultCode,
                 )
             }
             .onFailure {
