@@ -3,8 +3,8 @@ package com.dogeby.wheretogo.core.network.retrofit
 import com.dogeby.wheretogo.core.model.tour.ArrangeOption
 import com.dogeby.wheretogo.core.network.BuildConfig
 import com.dogeby.wheretogo.core.network.TourNetworkDataSource
-import com.dogeby.wheretogo.core.network.model.tour.NetworkTourContentResponse
 import com.dogeby.wheretogo.core.network.model.tour.TourInfoByRegionRequestBody
+import com.dogeby.wheretogo.core.network.model.tour.tourcontent.NetworkTourContentResponse
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import javax.inject.Inject
 import javax.inject.Singleton

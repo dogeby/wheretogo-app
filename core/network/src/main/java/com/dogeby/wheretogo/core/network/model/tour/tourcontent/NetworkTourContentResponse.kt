@@ -1,4 +1,4 @@
-package com.dogeby.wheretogo.core.network.model.tour
+package com.dogeby.wheretogo.core.network.model.tour.tourcontent
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable

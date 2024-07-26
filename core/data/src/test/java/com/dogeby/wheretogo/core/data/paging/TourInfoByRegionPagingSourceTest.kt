@@ -6,8 +6,8 @@ import androidx.paging.testing.TestPager
 import com.dogeby.wheretogo.core.data.model.TourContentData
 import com.dogeby.wheretogo.core.data.model.toTourContentData
 import com.dogeby.wheretogo.core.network.fake.FakeTourNetworkDataSource
-import com.dogeby.wheretogo.core.network.model.tour.NetworkTourContentData
 import com.dogeby.wheretogo.core.network.model.tour.TourInfoByRegionRequestBody
+import com.dogeby.wheretogo.core.network.model.tour.tourcontent.NetworkTourContentData
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert
 import org.junit.Before

@@ -2,13 +2,13 @@ package com.dogeby.wheretogo.core.network.fake
 
 import com.dogeby.wheretogo.core.model.tour.ArrangeOption
 import com.dogeby.wheretogo.core.network.TourNetworkDataSource
-import com.dogeby.wheretogo.core.network.model.tour.NetworkTourContentBody
-import com.dogeby.wheretogo.core.network.model.tour.NetworkTourContentData
-import com.dogeby.wheretogo.core.network.model.tour.NetworkTourContentHeader
-import com.dogeby.wheretogo.core.network.model.tour.NetworkTourContentResponse
-import com.dogeby.wheretogo.core.network.model.tour.NetworkTourContentResponseContent
-import com.dogeby.wheretogo.core.network.model.tour.NetworkTourContentResult
 import com.dogeby.wheretogo.core.network.model.tour.TourInfoByRegionRequestBody
+import com.dogeby.wheretogo.core.network.model.tour.tourcontent.NetworkTourContentBody
+import com.dogeby.wheretogo.core.network.model.tour.tourcontent.NetworkTourContentData
+import com.dogeby.wheretogo.core.network.model.tour.tourcontent.NetworkTourContentHeader
+import com.dogeby.wheretogo.core.network.model.tour.tourcontent.NetworkTourContentResponse
+import com.dogeby.wheretogo.core.network.model.tour.tourcontent.NetworkTourContentResponseContent
+import com.dogeby.wheretogo.core.network.model.tour.tourcontent.NetworkTourContentResult
 import javax.inject.Inject
 import org.jetbrains.annotations.TestOnly
 

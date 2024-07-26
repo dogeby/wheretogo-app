@@ -6,8 +6,8 @@ import com.dogeby.wheretogo.core.data.model.TourContentData
 import com.dogeby.wheretogo.core.data.model.toTourContentData
 import com.dogeby.wheretogo.core.model.tour.ArrangeOption
 import com.dogeby.wheretogo.core.network.TourNetworkDataSource
-import com.dogeby.wheretogo.core.network.model.tour.NetworkTourContentData
 import com.dogeby.wheretogo.core.network.model.tour.TourInfoByRegionRequestBody
+import com.dogeby.wheretogo.core.network.model.tour.tourcontent.NetworkTourContentData
 import kotlin.Exception
 
 class TourInfoByRegionPagingSource(
@@ -40,7 +40,9 @@ class TourInfoByRegionPagingSource(
             }
             with(response.content.body) {
                 LoadResult.Page(
-                    data = result.items.map(NetworkTourContentData::toTourContentData),
+                    data = result.items.map(
+                        NetworkTourContentData::toTourContentData,
+                    ),
                     prevKey = null,
                     nextKey = calculateNextKey(
                         currentPage = currentPage,
