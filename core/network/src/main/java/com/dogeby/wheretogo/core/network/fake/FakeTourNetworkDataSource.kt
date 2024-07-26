@@ -15,10 +15,15 @@ import org.jetbrains.annotations.TestOnly
 @TestOnly
 class FakeTourNetworkDataSource @Inject constructor() : TourNetworkDataSource {
 
+    var shouldReturnError: Boolean = false
+
     override suspend fun fetchTourInfoByRegion(
         tourInfoByRegionRequestBody: TourInfoByRegionRequestBody,
         arrangeOption: ArrangeOption,
     ): Result<NetworkTourContentResponse> {
+        if (shouldReturnError) {
+            return Result.failure(Exception())
+        }
         val header = NetworkTourContentHeader(
             resultCode = "0000",
             resultMessage = "OK",
@@ -26,7 +31,7 @@ class FakeTourNetworkDataSource @Inject constructor() : TourNetworkDataSource {
         val body = NetworkTourContentBody(
             numberOfRows = tourInfoByRegionRequestBody.numberOfRows,
             currentPage = tourInfoByRegionRequestBody.currentPage,
-            totalCount = 3742,
+            totalCount = TOTAL_COUNT,
             result = NetworkTourContentResult(
                 items = List(tourInfoByRegionRequestBody.numberOfRows) {
                     NetworkTourContentData(
@@ -63,5 +68,9 @@ class FakeTourNetworkDataSource @Inject constructor() : TourNetworkDataSource {
                 ),
             ),
         )
+    }
+
+    companion object {
+        const val TOTAL_COUNT = 100
     }
 }
