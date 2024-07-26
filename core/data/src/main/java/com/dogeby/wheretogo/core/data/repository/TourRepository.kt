@@ -1,7 +1,7 @@
 package com.dogeby.wheretogo.core.data.repository
 
 import androidx.paging.PagingData
-import com.dogeby.wheretogo.core.data.model.TourContentData
+import com.dogeby.wheretogo.core.data.model.tour.tourcontent.TourContentData
 import com.dogeby.wheretogo.core.model.tour.ArrangeOption
 import kotlinx.coroutines.flow.Flow
 
