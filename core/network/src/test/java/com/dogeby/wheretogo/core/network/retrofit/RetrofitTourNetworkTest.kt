@@ -17,7 +17,7 @@ class RetrofitTourNetworkTest {
     }
 
     @Test
-    fun fetchTourInfoByRegion() = runTest {
+    fun test_fetchTourInfoByRegion_success() = runTest {
         retrofitTourNetwork.fetchTourInfoByRegion(TourInfoByRegionRequestBody())
             .onSuccess {
                 Assert.assertEquals(

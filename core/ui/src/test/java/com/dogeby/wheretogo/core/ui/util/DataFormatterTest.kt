@@ -6,7 +6,7 @@ import org.junit.Test
 class DataFormatterTest {
 
     @Test
-    fun buildLocationText_nonBlankAreaAndSigungu() {
+    fun test_buildLocationText_nonBlankAreaAndSigungu() {
         val areaName = "Seoul"
         val sigunguName = "Gangnam"
         val result = buildLocationText(areaName, sigunguName)
@@ -14,7 +14,7 @@ class DataFormatterTest {
     }
 
     @Test
-    fun buildLocationText_nonBlankAreaAndBlankSigungu() {
+    fun test_buildLocationText_nonBlankAreaAndBlankSigungu() {
         val areaName = "Seoul"
         val sigunguName = ""
         val result = buildLocationText(areaName, sigunguName)
@@ -22,7 +22,7 @@ class DataFormatterTest {
     }
 
     @Test
-    fun buildLocationText_blankAreaAndNonBlankSigungu() {
+    fun test_buildLocationText_blankAreaAndNonBlankSigungu() {
         val areaName = ""
         val sigunguName = "Gangnam"
         val result = buildLocationText(areaName, sigunguName)
@@ -30,7 +30,7 @@ class DataFormatterTest {
     }
 
     @Test
-    fun buildLocationText_blankAreaAndSigungu() {
+    fun test_buildLocationText_blankAreaAndSigungu() {
         val areaName = ""
         val sigunguName = ""
         val result = buildLocationText(areaName, sigunguName)
@@ -38,7 +38,7 @@ class DataFormatterTest {
     }
 
     @Test
-    fun buildLocationContentTypeText_nonBlankAreaSigunguAndContentType() {
+    fun test_buildLocationContentTypeText_nonBlankAreaSigunguAndContentType() {
         val areaName = "Seoul"
         val sigunguName = "Gangnam"
         val contentTypeName = "Festival"
@@ -47,7 +47,7 @@ class DataFormatterTest {
     }
 
     @Test
-    fun buildLocationContentTypeText_nonBlankAreaAndSigunguAndBlankContentType() {
+    fun test_buildLocationContentTypeText_nonBlankAreaAndSigunguAndBlankContentType() {
         val areaName = "Seoul"
         val sigunguName = "Gangnam"
         val contentTypeName = ""
@@ -56,7 +56,7 @@ class DataFormatterTest {
     }
 
     @Test
-    fun buildLocationContentTypeText_nonBlankAreaAndBlankSigunguAndNonBlankContentType() {
+    fun test_buildLocationContentTypeText_nonBlankAreaAndBlankSigunguAndNonBlankContentType() {
         val areaName = "Seoul"
         val sigunguName = ""
         val contentTypeName = "Festival"
@@ -65,7 +65,7 @@ class DataFormatterTest {
     }
 
     @Test
-    fun buildLocationContentTypeText_blankAreaAndNonBlankSigunguAndContentType() {
+    fun test_buildLocationContentTypeText_blankAreaAndNonBlankSigunguAndContentType() {
         val areaName = ""
         val sigunguName = "Gangnam"
         val contentTypeName = "Festival"
@@ -74,7 +74,7 @@ class DataFormatterTest {
     }
 
     @Test
-    fun buildLocationContentTypeText_blankAreaAndSigunguAndNonBlankContentType() {
+    fun test_buildLocationContentTypeText_blankAreaAndSigunguAndNonBlankContentType() {
         val areaName = ""
         val sigunguName = ""
         val contentTypeName = "Festival"
@@ -83,7 +83,7 @@ class DataFormatterTest {
     }
 
     @Test
-    fun buildLocationContentTypeText_blankAreaSigunguAndContentType() {
+    fun test_buildLocationContentTypeText_blankAreaSigunguAndContentType() {
         val areaName = ""
         val sigunguName = ""
         val contentTypeName = ""
