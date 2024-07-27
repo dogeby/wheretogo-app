@@ -4,6 +4,7 @@ import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import com.dogeby.wheretogo.core.data.model.tour.tourcontent.TourContentData
 import com.dogeby.wheretogo.core.data.model.tour.tourcontent.toTourContentData
+import com.dogeby.wheretogo.core.data.util.PagingUtil.calculateNextKey
 import com.dogeby.wheretogo.core.model.tour.ArrangeOption
 import com.dogeby.wheretogo.core.network.TourNetworkDataSource
 import com.dogeby.wheretogo.core.network.model.tour.TourInfoByRegionRequestBody
@@ -53,20 +54,6 @@ class TourInfoByRegionPagingSource(
             }
         } catch (e: Exception) {
             LoadResult.Error(e)
-        }
-    }
-
-    private fun calculateNextKey(
-        currentPage: Int,
-        numberOfRows: Int,
-        totalCount: Int,
-    ): Int? {
-        val totalPages = (totalCount + numberOfRows - 1) / numberOfRows
-
-        return if (currentPage >= totalPages) {
-            null
-        } else {
-            currentPage + 1
         }
     }
 
