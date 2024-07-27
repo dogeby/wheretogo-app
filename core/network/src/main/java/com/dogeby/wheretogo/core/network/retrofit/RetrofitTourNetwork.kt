@@ -3,7 +3,9 @@ package com.dogeby.wheretogo.core.network.retrofit
 import com.dogeby.wheretogo.core.model.tour.ArrangeOption
 import com.dogeby.wheretogo.core.network.BuildConfig
 import com.dogeby.wheretogo.core.network.TourNetworkDataSource
+import com.dogeby.wheretogo.core.network.model.tour.FestivalInfoRequestBody
 import com.dogeby.wheretogo.core.network.model.tour.TourInfoByRegionRequestBody
+import com.dogeby.wheretogo.core.network.model.tour.festival.NetworkFestivalResponse
 import com.dogeby.wheretogo.core.network.model.tour.tourcontent.NetworkTourContentResponse
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import javax.inject.Inject
@@ -47,6 +49,25 @@ class RetrofitTourNetwork @Inject constructor(
         }
     }
 
+    override suspend fun fetchFestivalInfo(
+        festivalInfoRequestBody: FestivalInfoRequestBody,
+        arrangeOption: ArrangeOption,
+    ): Result<NetworkFestivalResponse> = runCatching {
+        val response = networkApi.fetchFestivalInfo(
+            queryParams = festivalInfoRequestBody.toQueryMap(),
+            mobileOs = TOUR_API_MOBILE_OS,
+            mobileApp = TOUR_API_MOBILE_APP,
+            serviceKey = TOUR_API_SERVICE_KEY,
+            responseType = RESPONSE_TYPE,
+            arrange = arrangeOption.code,
+        )
+        if (response.isSuccessful) {
+            response.body() ?: throw NullPointerException()
+        } else {
+            throw Exception(response.message())
+        }
+    }
+
     private companion object {
 
         private const val AREA_BASED_LIST_URL = BuildConfig.TOUR_API_BASED_URL
@@ -68,4 +89,14 @@ private interface RetrofitTourNetworkApi {
         @Query("_type") responseType: String,
         @Query("arrange") arrange: String,
     ): Response<NetworkTourContentResponse>
+
+    @GET("searchFestival1")
+    suspend fun fetchFestivalInfo(
+        @QueryMap queryParams: Map<String, String>,
+        @Query("MobileOS") mobileOs: String,
+        @Query("MobileApp") mobileApp: String,
+        @Query("serviceKey") serviceKey: String,
+        @Query("_type") responseType: String,
+        @Query("arrange") arrange: String,
+    ): Response<NetworkFestivalResponse>
 }
