@@ -5,8 +5,8 @@ coreKtx = "1.13.1"
 junit = "4.13.2"
 junitVersion = "1.2.1"
 espressoCore = "3.6.1"
-lifecycle = "2.8.3"
-activityCompose = "1.9.0"
+lifecycle = "2.8.4"
+activityCompose = "1.9.1"
 composeBom = "2024.06.00"
 ktlint = "12.1.1"
 coil = "2.6.0"
@@ -20,7 +20,8 @@ kotlinxCoroutines = "1.7.3"
 secrets = "2.0.1"
 kotlinxSerializationJson = "1.5.0"
 okhttp = "4.12.0"
-paging = "3.3.0"
+paging = "3.3.1"
+kotlinxDatetime = "0.6.0-RC.2"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -53,6 +54,7 @@ kotlinx-serialization-json = { group = "org.jetbrains.kotlinx", name = "kotlinx-
 okhttp-logging = { group = "com.squareup.okhttp3", name = "logging-interceptor", version.ref = "okhttp" }
 paging-runtime = { group = "androidx.paging", name = "paging-runtime", version.ref = "paging" }
 paging-testing = { module = "androidx.paging:paging-testing", version.ref = "paging" }
+kotlinx-datetime = { group = "org.jetbrains.kotlinx", name = "kotlinx-datetime", version.ref = "kotlinxDatetime" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
