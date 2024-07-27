@@ -3,17 +3,17 @@ package com.dogeby.wheretogo.core.data.paging
 import androidx.paging.PagingConfig
 import androidx.paging.PagingSource
 import androidx.paging.testing.TestPager
-import com.dogeby.wheretogo.core.data.model.tour.tourcontent.TourContentData
-import com.dogeby.wheretogo.core.data.model.tour.tourcontent.toTourContentData
+import com.dogeby.wheretogo.core.data.model.tour.festival.FestivalData
+import com.dogeby.wheretogo.core.data.model.tour.festival.toFestivalData
 import com.dogeby.wheretogo.core.network.fake.FakeTourNetworkDataSource
-import com.dogeby.wheretogo.core.network.model.tour.TourInfoByRegionRequestBody
-import com.dogeby.wheretogo.core.network.model.tour.tourcontent.NetworkTourContentData
+import com.dogeby.wheretogo.core.network.model.tour.FestivalInfoRequestBody
+import com.dogeby.wheretogo.core.network.model.tour.festival.NetworkFestivalData
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert
 import org.junit.Before
 import org.junit.Test
 
-class TourInfoByRegionPagingSourceTest {
+class FestivalInfoPagingSourceTest {
 
     private lateinit var fakeTourNetworkDataSource: FakeTourNetworkDataSource
 
@@ -23,18 +23,18 @@ class TourInfoByRegionPagingSourceTest {
     }
 
     @Test
-    fun test_tourInfoByRegionPagingSource_success() = runTest {
-        val requestBody = TourInfoByRegionRequestBody()
+    fun test_fetchFestivalInfo_success() = runTest {
+        val requestBody = FestivalInfoRequestBody()
         val pager = createTestPager(requestBody)
         val expectedResult = PagingSource.LoadResult.Page(
             data = fakeTourNetworkDataSource
-                .fetchTourInfoByRegion(requestBody)
+                .fetchFestivalInfo(requestBody)
                 .getOrThrow()
                 .content
                 .body
                 .result
                 .items
-                .map(NetworkTourContentData::toTourContentData),
+                .map(NetworkFestivalData::toFestivalData),
             prevKey = null,
             nextKey = 2,
         )
@@ -48,7 +48,7 @@ class TourInfoByRegionPagingSourceTest {
     }
 
     @Test
-    fun test_tourInfoByRegionPagingSource_error() = runTest {
+    fun test_fetchFestivalInfo_error() = runTest {
         fakeTourNetworkDataSource.shouldReturnError = true
         val pager = createTestPager()
 
@@ -60,7 +60,7 @@ class TourInfoByRegionPagingSourceTest {
     }
 
     @Test
-    fun test_tourInfoByRegionPagingSource_consecutiveLoads() = runTest {
+    fun test_fetchFestivalInfo_consecutiveLoads() = runTest {
         val pager = createTestPager()
         val page = with(pager) {
             refresh()
@@ -76,9 +76,9 @@ class TourInfoByRegionPagingSourceTest {
     }
 
     @Test
-    fun test_tourInfoByRegionPagingSource_lastPage() = runTest {
+    fun test_fetchFestivalInfo_lastPage() = runTest {
         val numberOfRows = 12
-        val requestBody = TourInfoByRegionRequestBody(numberOfRows = numberOfRows)
+        val requestBody = FestivalInfoRequestBody(numberOfRows = numberOfRows)
         val pager = createTestPager(requestBody)
         val page = pager.refresh(
             initialKey = (FakeTourNetworkDataSource.TOTAL_COUNT + numberOfRows - 1) / numberOfRows,
@@ -92,11 +92,11 @@ class TourInfoByRegionPagingSourceTest {
     }
 
     private fun createTestPager(
-        requestBody: TourInfoByRegionRequestBody = TourInfoByRegionRequestBody(),
-    ): TestPager<Int, TourContentData> {
-        val pagingSource = TourInfoByRegionPagingSource(
+        requestBody: FestivalInfoRequestBody = FestivalInfoRequestBody(),
+    ): TestPager<Int, FestivalData> {
+        val pagingSource = FestivalInfoPagingSource(
             tourNetworkDataSource = fakeTourNetworkDataSource,
-            tourInfoByRegionRequestBody = requestBody,
+            festivalInfoRequestBody = requestBody,
         )
         return TestPager(
             PagingConfig(requestBody.numberOfRows),
