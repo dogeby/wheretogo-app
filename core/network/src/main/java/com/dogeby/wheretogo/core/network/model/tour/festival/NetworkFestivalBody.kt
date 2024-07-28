@@ -1,10 +1,10 @@
-package com.dogeby.wheretogo.core.network.model.tour
+package com.dogeby.wheretogo.core.network.model.tour.festival
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class NetworkTourContentBody(
+data class NetworkFestivalBody(
     @SerialName("numOfRows")
     val numberOfRows: Int,
 
@@ -15,11 +15,11 @@ data class NetworkTourContentBody(
     val totalCount: Int,
 
     @SerialName("items")
-    val result: NetworkTourContentResult,
+    val result: NetworkFestivalResult,
 )
 
 @Serializable
-data class NetworkTourContentResult(
+data class NetworkFestivalResult(
     @SerialName("item")
-    val items: List<NetworkTourContentData>,
+    val items: List<NetworkFestivalData>,
 )

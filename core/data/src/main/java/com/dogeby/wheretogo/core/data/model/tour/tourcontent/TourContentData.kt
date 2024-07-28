@@ -1,6 +1,6 @@
-package com.dogeby.wheretogo.core.data.model
+package com.dogeby.wheretogo.core.data.model.tour.tourcontent
 
-import com.dogeby.wheretogo.core.network.model.tour.NetworkTourContentData
+import com.dogeby.wheretogo.core.network.model.tour.tourcontent.NetworkTourContentData
 
 data class TourContentData(
     val contentId: String,
