@@ -3,12 +3,18 @@ package com.dogeby.wheretogo.core.network.fake
 import com.dogeby.wheretogo.core.model.tour.ArrangeOption
 import com.dogeby.wheretogo.core.network.TourNetworkDataSource
 import com.dogeby.wheretogo.core.network.model.tour.FestivalInfoRequestBody
+import com.dogeby.wheretogo.core.network.model.tour.KeywordSearchRequestBody
 import com.dogeby.wheretogo.core.network.model.tour.TourInfoByRegionRequestBody
 import com.dogeby.wheretogo.core.network.model.tour.festival.NetworkFestivalBody
 import com.dogeby.wheretogo.core.network.model.tour.festival.NetworkFestivalData
 import com.dogeby.wheretogo.core.network.model.tour.festival.NetworkFestivalResponse
 import com.dogeby.wheretogo.core.network.model.tour.festival.NetworkFestivalResponseContent
 import com.dogeby.wheretogo.core.network.model.tour.festival.NetworkFestivalResult
+import com.dogeby.wheretogo.core.network.model.tour.keywordsearch.NetworkKeywordSearchBody
+import com.dogeby.wheretogo.core.network.model.tour.keywordsearch.NetworkKeywordSearchData
+import com.dogeby.wheretogo.core.network.model.tour.keywordsearch.NetworkKeywordSearchResponse
+import com.dogeby.wheretogo.core.network.model.tour.keywordsearch.NetworkKeywordSearchResponseContent
+import com.dogeby.wheretogo.core.network.model.tour.keywordsearch.NetworkKeywordSearchResult
 import com.dogeby.wheretogo.core.network.model.tour.tourcontent.NetworkTourContentBody
 import com.dogeby.wheretogo.core.network.model.tour.tourcontent.NetworkTourContentData
 import com.dogeby.wheretogo.core.network.model.tour.tourcontent.NetworkTourContentHeader
@@ -46,22 +52,6 @@ class FakeTourNetworkDataSource @Inject constructor() : TourNetworkDataSource {
                         createdTime = "20111111014944",
                         modifiedTime = "20230407105028",
                         title = "Title ${tourInfoByRegionRequestBody.currentPage} $it",
-                        addr1 = null,
-                        addr2 = null,
-                        areaCode = null,
-                        sigunguCode = null,
-                        category1 = null,
-                        category2 = null,
-                        category3 = null,
-                        firstImageSrc = null,
-                        firstImageThumbnailSrc = null,
-                        longitude = null,
-                        latitude = null,
-                        mapLevel = null,
-                        phoneNumber = null,
-                        zipCode = null,
-                        bookTour = null,
-                        copyrightType = null,
                     )
                 },
             ),
@@ -101,22 +91,6 @@ class FakeTourNetworkDataSource @Inject constructor() : TourNetworkDataSource {
                         title = "Title ${festivalInfoRequestBody.currentPage} $it",
                         eventStartDate = "20210306",
                         eventEndDate = "20211030",
-                        addr1 = null,
-                        addr2 = null,
-                        areaCode = null,
-                        sigunguCode = null,
-                        category1 = null,
-                        category2 = null,
-                        category3 = null,
-                        firstImageSrc = null,
-                        firstImageThumbnailSrc = null,
-                        longitude = null,
-                        latitude = null,
-                        mapLevel = null,
-                        phoneNumber = null,
-                        zipCode = null,
-                        bookTour = null,
-                        copyrightType = null,
                     )
                 },
             ),
@@ -124,6 +98,44 @@ class FakeTourNetworkDataSource @Inject constructor() : TourNetworkDataSource {
         return Result.success(
             NetworkFestivalResponse(
                 content = NetworkFestivalResponseContent(
+                    header = header,
+                    body = body,
+                ),
+            ),
+        )
+    }
+
+    override suspend fun searchKeyword(
+        keywordSearchRequestBody: KeywordSearchRequestBody,
+        arrangeOption: ArrangeOption,
+    ): Result<NetworkKeywordSearchResponse> {
+        if (shouldReturnError) {
+            return Result.failure(Exception())
+        }
+        val header = NetworkTourContentHeader(
+            resultCode = "0000",
+            resultMessage = "OK",
+        )
+        val body = NetworkKeywordSearchBody(
+            numberOfRows = keywordSearchRequestBody.numberOfRows,
+            currentPage = keywordSearchRequestBody.currentPage,
+            totalCount = TOTAL_COUNT,
+            result = NetworkKeywordSearchResult(
+                items = List(keywordSearchRequestBody.numberOfRows) {
+                    NetworkKeywordSearchData(
+                        contentId = "${keywordSearchRequestBody.currentPage} $it",
+                        contentTypeId = "38",
+                        createdTime = "20111111014944",
+                        modifiedTime = "20230407105028",
+                        title = "Title ${keywordSearchRequestBody.currentPage} " +
+                            "$it ${keywordSearchRequestBody.keyword}",
+                    )
+                },
+            ),
+        )
+        return Result.success(
+            NetworkKeywordSearchResponse(
+                content = NetworkKeywordSearchResponseContent(
                     header = header,
                     body = body,
                 ),

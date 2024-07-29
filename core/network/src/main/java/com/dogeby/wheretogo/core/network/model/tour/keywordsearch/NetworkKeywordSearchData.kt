@@ -1,10 +1,10 @@
-package com.dogeby.wheretogo.core.network.model.tour.festival
+package com.dogeby.wheretogo.core.network.model.tour.keywordsearch
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class NetworkFestivalData(
+data class NetworkKeywordSearchData(
     @SerialName("contentid")
     val contentId: String,
 
@@ -19,12 +19,6 @@ data class NetworkFestivalData(
 
     @SerialName("title")
     val title: String,
-
-    @SerialName("eventstartdate")
-    val eventStartDate: String,
-
-    @SerialName("eventenddate")
-    val eventEndDate: String,
 
     @SerialName("addr1")
     val addr1: String? = null,

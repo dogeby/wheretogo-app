@@ -3,17 +3,17 @@ package com.dogeby.wheretogo.core.data.paging
 import androidx.paging.PagingConfig
 import androidx.paging.PagingSource
 import androidx.paging.testing.TestPager
-import com.dogeby.wheretogo.core.data.model.tour.FestivalData
-import com.dogeby.wheretogo.core.data.model.tour.toFestivalData
+import com.dogeby.wheretogo.core.data.model.tour.KeywordSearchData
+import com.dogeby.wheretogo.core.data.model.tour.toKeywordSearchData
 import com.dogeby.wheretogo.core.network.fake.FakeTourNetworkDataSource
-import com.dogeby.wheretogo.core.network.model.tour.FestivalInfoRequestBody
-import com.dogeby.wheretogo.core.network.model.tour.festival.NetworkFestivalData
+import com.dogeby.wheretogo.core.network.model.tour.KeywordSearchRequestBody
+import com.dogeby.wheretogo.core.network.model.tour.keywordsearch.NetworkKeywordSearchData
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert
 import org.junit.Before
 import org.junit.Test
 
-class FestivalInfoPagingSourceTest {
+class KeywordSearchPagingSourceTest {
 
     private lateinit var fakeTourNetworkDataSource: FakeTourNetworkDataSource
 
@@ -23,18 +23,18 @@ class FestivalInfoPagingSourceTest {
     }
 
     @Test
-    fun test_fetchFestivalInfo_success() = runTest {
-        val requestBody = FestivalInfoRequestBody()
+    fun test_keywordSearchPagingSource_success() = runTest {
+        val requestBody = KeywordSearchRequestBody("cafe")
         val pager = createTestPager(requestBody)
         val expectedResult = PagingSource.LoadResult.Page(
             data = fakeTourNetworkDataSource
-                .fetchFestivalInfo(requestBody)
+                .searchKeyword(requestBody)
                 .getOrThrow()
                 .content
                 .body
                 .result
                 .items
-                .map(NetworkFestivalData::toFestivalData),
+                .map(NetworkKeywordSearchData::toKeywordSearchData),
             prevKey = null,
             nextKey = 2,
         )
@@ -48,7 +48,7 @@ class FestivalInfoPagingSourceTest {
     }
 
     @Test
-    fun test_fetchFestivalInfo_error() = runTest {
+    fun test_keywordSearchPagingSource_error() = runTest {
         fakeTourNetworkDataSource.shouldReturnError = true
         val pager = createTestPager()
 
@@ -60,7 +60,7 @@ class FestivalInfoPagingSourceTest {
     }
 
     @Test
-    fun test_fetchFestivalInfo_consecutiveLoads() = runTest {
+    fun test_keywordSearchPagingSource_consecutiveLoads() = runTest {
         val pager = createTestPager()
         val page = with(pager) {
             refresh()
@@ -76,9 +76,12 @@ class FestivalInfoPagingSourceTest {
     }
 
     @Test
-    fun test_fetchFestivalInfo_lastPage() = runTest {
+    fun test_keywordSearchPagingSource_lastPage() = runTest {
         val numberOfRows = 12
-        val requestBody = FestivalInfoRequestBody(numberOfRows = numberOfRows)
+        val requestBody = KeywordSearchRequestBody(
+            keyword = "cafe",
+            numberOfRows = numberOfRows,
+        )
         val pager = createTestPager(requestBody)
         val page = pager.refresh(
             initialKey = (FakeTourNetworkDataSource.TOTAL_COUNT + numberOfRows - 1) / numberOfRows,
@@ -92,11 +95,11 @@ class FestivalInfoPagingSourceTest {
     }
 
     private fun createTestPager(
-        requestBody: FestivalInfoRequestBody = FestivalInfoRequestBody(),
-    ): TestPager<Int, FestivalData> {
-        val pagingSource = FestivalInfoPagingSource(
+        requestBody: KeywordSearchRequestBody = KeywordSearchRequestBody("cafe"),
+    ): TestPager<Int, KeywordSearchData> {
+        val pagingSource = KeywordSearchPagingSource(
             tourNetworkDataSource = fakeTourNetworkDataSource,
-            festivalInfoRequestBody = requestBody,
+            keywordSearchRequestBody = requestBody,
         )
         return TestPager(
             PagingConfig(requestBody.numberOfRows),

@@ -2,34 +2,33 @@ package com.dogeby.wheretogo.core.data.paging
 
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
-import com.dogeby.wheretogo.core.data.model.tour.TourContentData
-import com.dogeby.wheretogo.core.data.model.tour.toTourContentData
+import com.dogeby.wheretogo.core.data.model.tour.KeywordSearchData
+import com.dogeby.wheretogo.core.data.model.tour.toKeywordSearchData
 import com.dogeby.wheretogo.core.data.util.PagingUtil.calculateNextKey
 import com.dogeby.wheretogo.core.model.tour.ArrangeOption
 import com.dogeby.wheretogo.core.network.TourNetworkDataSource
-import com.dogeby.wheretogo.core.network.model.tour.TourInfoByRegionRequestBody
-import com.dogeby.wheretogo.core.network.model.tour.tourcontent.NetworkTourContentData
-import kotlin.Exception
+import com.dogeby.wheretogo.core.network.model.tour.KeywordSearchRequestBody
+import com.dogeby.wheretogo.core.network.model.tour.keywordsearch.NetworkKeywordSearchData
 
-class TourInfoByRegionPagingSource(
+class KeywordSearchPagingSource(
     private val tourNetworkDataSource: TourNetworkDataSource,
-    private val tourInfoByRegionRequestBody: TourInfoByRegionRequestBody,
+    private val keywordSearchRequestBody: KeywordSearchRequestBody,
     private val arrangeOption: ArrangeOption = ArrangeOption.MODIFIED_TIME,
-) : PagingSource<Int, TourContentData>() {
+) : PagingSource<Int, KeywordSearchData>() {
 
-    override fun getRefreshKey(state: PagingState<Int, TourContentData>): Int? {
+    override fun getRefreshKey(state: PagingState<Int, KeywordSearchData>): Int? {
         return state.anchorPosition?.let { anchorPosition ->
             val anchorPage = state.closestPageToPosition(anchorPosition)
             anchorPage?.prevKey?.plus(1) ?: anchorPage?.nextKey?.minus(1)
         }
     }
 
-    override suspend fun load(params: LoadParams<Int>): LoadResult<Int, TourContentData> {
+    override suspend fun load(params: LoadParams<Int>): LoadResult<Int, KeywordSearchData> {
         return try {
             val nextPageNumber = params.key ?: 1
             val response = tourNetworkDataSource
-                .fetchTourInfoByRegion(
-                    tourInfoByRegionRequestBody = tourInfoByRegionRequestBody.copy(
+                .searchKeyword(
+                    keywordSearchRequestBody = keywordSearchRequestBody.copy(
                         currentPage = nextPageNumber,
                     ),
                     arrangeOption = arrangeOption,
@@ -42,12 +41,12 @@ class TourInfoByRegionPagingSource(
             with(response.content.body) {
                 LoadResult.Page(
                     data = result.items.map(
-                        NetworkTourContentData::toTourContentData,
+                        NetworkKeywordSearchData::toKeywordSearchData,
                     ),
                     prevKey = null,
                     nextKey = calculateNextKey(
                         currentPage = currentPage,
-                        numberOfRows = tourInfoByRegionRequestBody.numberOfRows,
+                        numberOfRows = keywordSearchRequestBody.numberOfRows,
                         totalCount = totalCount,
                     ),
                 )

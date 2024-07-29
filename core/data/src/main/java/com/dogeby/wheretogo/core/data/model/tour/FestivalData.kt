@@ -1,13 +1,15 @@
-package com.dogeby.wheretogo.core.data.model.tour.tourcontent
+package com.dogeby.wheretogo.core.data.model.tour
 
-import com.dogeby.wheretogo.core.network.model.tour.tourcontent.NetworkTourContentData
+import com.dogeby.wheretogo.core.network.model.tour.festival.NetworkFestivalData
 
-data class TourContentData(
+data class FestivalData(
     val contentId: String,
     val contentTypeId: String,
     val createdTime: String,
     val modifiedTime: String,
     val title: String,
+    val eventStartDate: String,
+    val eventEndDate: String,
     val addr1: String? = null,
     val addr2: String? = null,
     val areaCode: String? = null,
@@ -26,12 +28,14 @@ data class TourContentData(
     val copyrightType: String? = null,
 )
 
-internal fun NetworkTourContentData.toTourContentData() = TourContentData(
+internal fun NetworkFestivalData.toFestivalData() = FestivalData(
     contentId = contentId,
     contentTypeId = contentTypeId,
     createdTime = createdTime,
     modifiedTime = modifiedTime,
     title = title,
+    eventStartDate = eventStartDate,
+    eventEndDate = eventEndDate,
     addr1 = addr1,
     addr2 = addr2,
     areaCode = areaCode,
@@ -45,7 +49,6 @@ internal fun NetworkTourContentData.toTourContentData() = TourContentData(
     latitude = latitude,
     mapLevel = mapLevel,
     phoneNumber = phoneNumber,
-    zipCode = zipCode,
     bookTour = bookTour,
     copyrightType = copyrightType,
 )
