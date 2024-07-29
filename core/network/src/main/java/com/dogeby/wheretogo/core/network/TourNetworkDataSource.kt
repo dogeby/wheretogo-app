@@ -2,8 +2,10 @@ package com.dogeby.wheretogo.core.network
 
 import com.dogeby.wheretogo.core.model.tour.ArrangeOption
 import com.dogeby.wheretogo.core.network.model.tour.FestivalInfoRequestBody
+import com.dogeby.wheretogo.core.network.model.tour.KeywordSearchRequestBody
 import com.dogeby.wheretogo.core.network.model.tour.TourInfoByRegionRequestBody
 import com.dogeby.wheretogo.core.network.model.tour.festival.NetworkFestivalResponse
+import com.dogeby.wheretogo.core.network.model.tour.keywordsearch.NetworkKeywordSearchResponse
 import com.dogeby.wheretogo.core.network.model.tour.tourcontent.NetworkTourContentResponse
 
 interface TourNetworkDataSource {
@@ -17,4 +19,9 @@ interface TourNetworkDataSource {
         festivalInfoRequestBody: FestivalInfoRequestBody,
         arrangeOption: ArrangeOption = ArrangeOption.MODIFIED_TIME,
     ): Result<NetworkFestivalResponse>
+
+    suspend fun searchKeyword(
+        keywordSearchRequestBody: KeywordSearchRequestBody,
+        arrangeOption: ArrangeOption = ArrangeOption.MODIFIED_TIME,
+    ): Result<NetworkKeywordSearchResponse>
 }
