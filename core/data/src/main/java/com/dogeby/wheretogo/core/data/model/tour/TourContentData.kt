@@ -1,4 +1,4 @@
-package com.dogeby.wheretogo.core.data.model.tour.tourcontent
+package com.dogeby.wheretogo.core.data.model.tour
 
 import com.dogeby.wheretogo.core.network.model.tour.tourcontent.NetworkTourContentData
 

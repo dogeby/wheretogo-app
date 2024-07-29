@@ -3,8 +3,8 @@ package com.dogeby.wheretogo.core.data.paging
 import androidx.paging.PagingConfig
 import androidx.paging.PagingSource
 import androidx.paging.testing.TestPager
-import com.dogeby.wheretogo.core.data.model.tour.festival.FestivalData
-import com.dogeby.wheretogo.core.data.model.tour.festival.toFestivalData
+import com.dogeby.wheretogo.core.data.model.tour.FestivalData
+import com.dogeby.wheretogo.core.data.model.tour.toFestivalData
 import com.dogeby.wheretogo.core.network.fake.FakeTourNetworkDataSource
 import com.dogeby.wheretogo.core.network.model.tour.FestivalInfoRequestBody
 import com.dogeby.wheretogo.core.network.model.tour.festival.NetworkFestivalData

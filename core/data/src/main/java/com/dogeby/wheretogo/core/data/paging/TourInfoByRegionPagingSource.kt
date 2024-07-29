@@ -2,8 +2,8 @@ package com.dogeby.wheretogo.core.data.paging
 
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
-import com.dogeby.wheretogo.core.data.model.tour.tourcontent.TourContentData
-import com.dogeby.wheretogo.core.data.model.tour.tourcontent.toTourContentData
+import com.dogeby.wheretogo.core.data.model.tour.TourContentData
+import com.dogeby.wheretogo.core.data.model.tour.toTourContentData
 import com.dogeby.wheretogo.core.data.util.PagingUtil.calculateNextKey
 import com.dogeby.wheretogo.core.model.tour.ArrangeOption
 import com.dogeby.wheretogo.core.network.TourNetworkDataSource

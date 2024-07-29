@@ -3,8 +3,8 @@ package com.dogeby.wheretogo.core.data.repository
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
-import com.dogeby.wheretogo.core.data.model.tour.festival.FestivalData
-import com.dogeby.wheretogo.core.data.model.tour.tourcontent.TourContentData
+import com.dogeby.wheretogo.core.data.model.tour.FestivalData
+import com.dogeby.wheretogo.core.data.model.tour.TourContentData
 import com.dogeby.wheretogo.core.data.paging.FestivalInfoPagingSource
 import com.dogeby.wheretogo.core.data.paging.TourInfoByRegionPagingSource
 import com.dogeby.wheretogo.core.model.tour.ArrangeOption
