@@ -1,5 +1,6 @@
 package com.dogeby.wheretogo.core.network.retrofit
 
+import com.dogeby.wheretogo.core.network.model.tour.CommonInfoRequestBody
 import com.dogeby.wheretogo.core.network.model.tour.FestivalInfoRequestBody
 import com.dogeby.wheretogo.core.network.model.tour.KeywordSearchRequestBody
 import com.dogeby.wheretogo.core.network.model.tour.TourInfoByRegionRequestBody
@@ -36,7 +37,6 @@ class RetrofitTourNetworkTest {
     fun test_fetchFestivalInfo_success() = runTest {
         retrofitTourNetwork.fetchFestivalInfo(FestivalInfoRequestBody())
             .onSuccess {
-                println(it)
                 Assert.assertEquals(
                     "0000",
                     it.content.header.resultCode,
@@ -51,7 +51,20 @@ class RetrofitTourNetworkTest {
     fun test_searchKeyword_success() = runTest {
         retrofitTourNetwork.searchKeyword(KeywordSearchRequestBody("cafe"))
             .onSuccess {
-                println(it)
+                Assert.assertEquals(
+                    "0000",
+                    it.content.header.resultCode,
+                )
+            }
+            .onFailure {
+                Assert.fail(it.message)
+            }
+    }
+
+    @Test
+    fun test_fetchCommonInfo_success() = runTest {
+        retrofitTourNetwork.fetchCommonInfo(CommonInfoRequestBody("126508"))
+            .onSuccess {
                 Assert.assertEquals(
                     "0000",
                     it.content.header.resultCode,
