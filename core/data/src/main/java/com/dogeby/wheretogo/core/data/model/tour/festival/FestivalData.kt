@@ -49,7 +49,6 @@ internal fun NetworkFestivalData.toFestivalData() = FestivalData(
     latitude = latitude,
     mapLevel = mapLevel,
     phoneNumber = phoneNumber,
-    zipCode = zipCode,
     bookTour = bookTour,
     copyrightType = copyrightType,
 )
