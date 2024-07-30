@@ -6,10 +6,12 @@ import com.dogeby.wheretogo.core.network.TourNetworkDataSource
 import com.dogeby.wheretogo.core.network.model.tour.CommonInfoRequestBody
 import com.dogeby.wheretogo.core.network.model.tour.FestivalInfoRequestBody
 import com.dogeby.wheretogo.core.network.model.tour.KeywordSearchRequestBody
+import com.dogeby.wheretogo.core.network.model.tour.LocationInfoRequestBody
 import com.dogeby.wheretogo.core.network.model.tour.TourInfoByRegionRequestBody
 import com.dogeby.wheretogo.core.network.model.tour.commoninfo.NetworkCommonInfoResponse
 import com.dogeby.wheretogo.core.network.model.tour.festival.NetworkFestivalResponse
 import com.dogeby.wheretogo.core.network.model.tour.keywordsearch.NetworkKeywordSearchResponse
+import com.dogeby.wheretogo.core.network.model.tour.locationinfo.NetworkLocationInfoResponse
 import com.dogeby.wheretogo.core.network.model.tour.tourcontent.NetworkTourContentResponse
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import javax.inject.Inject
@@ -92,6 +94,19 @@ class RetrofitTourNetwork @Inject constructor(
         }
     }
 
+    override suspend fun fetchLocationInfo(
+        locationInfoRequestBody: LocationInfoRequestBody,
+    ): Result<NetworkLocationInfoResponse> = runCatching {
+        val response = networkApi.fetchLocationInfo(
+            queryParams = locationInfoRequestBody.toQueryMap().putCommonQueryParams(),
+        )
+        if (response.isSuccessful) {
+            response.body() ?: throw NullPointerException()
+        } else {
+            throw Exception(response.message())
+        }
+    }
+
     private fun Map<String, String>.putCommonQueryParams(
         mobileOs: String = TOUR_API_MOBILE_OS,
         mobileApp: String = TOUR_API_MOBILE_APP,
@@ -143,4 +158,9 @@ private interface RetrofitTourNetworkApi {
     suspend fun fetchCommonInfo(
         @QueryMap queryParams: Map<String, String>,
     ): Response<NetworkCommonInfoResponse>
+
+    @GET("areaCode1")
+    suspend fun fetchLocationInfo(
+        @QueryMap queryParams: Map<String, String>,
+    ): Response<NetworkLocationInfoResponse>
 }

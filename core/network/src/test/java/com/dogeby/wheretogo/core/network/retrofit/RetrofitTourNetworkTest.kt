@@ -3,6 +3,7 @@ package com.dogeby.wheretogo.core.network.retrofit
 import com.dogeby.wheretogo.core.network.model.tour.CommonInfoRequestBody
 import com.dogeby.wheretogo.core.network.model.tour.FestivalInfoRequestBody
 import com.dogeby.wheretogo.core.network.model.tour.KeywordSearchRequestBody
+import com.dogeby.wheretogo.core.network.model.tour.LocationInfoRequestBody
 import com.dogeby.wheretogo.core.network.model.tour.TourInfoByRegionRequestBody
 import kotlinx.coroutines.test.runTest
 import kotlinx.serialization.json.Json
@@ -64,6 +65,20 @@ class RetrofitTourNetworkTest {
     @Test
     fun test_fetchCommonInfo_success() = runTest {
         retrofitTourNetwork.fetchCommonInfo(CommonInfoRequestBody("126508"))
+            .onSuccess {
+                Assert.assertEquals(
+                    "0000",
+                    it.content.header.resultCode,
+                )
+            }
+            .onFailure {
+                Assert.fail(it.message)
+            }
+    }
+
+    @Test
+    fun test_fetchLocationInfo_success() = runTest {
+        retrofitTourNetwork.fetchLocationInfo(LocationInfoRequestBody())
             .onSuccess {
                 Assert.assertEquals(
                     "0000",

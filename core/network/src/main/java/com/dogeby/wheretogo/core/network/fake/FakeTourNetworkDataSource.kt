@@ -5,6 +5,7 @@ import com.dogeby.wheretogo.core.network.TourNetworkDataSource
 import com.dogeby.wheretogo.core.network.model.tour.CommonInfoRequestBody
 import com.dogeby.wheretogo.core.network.model.tour.FestivalInfoRequestBody
 import com.dogeby.wheretogo.core.network.model.tour.KeywordSearchRequestBody
+import com.dogeby.wheretogo.core.network.model.tour.LocationInfoRequestBody
 import com.dogeby.wheretogo.core.network.model.tour.TourInfoByRegionRequestBody
 import com.dogeby.wheretogo.core.network.model.tour.commoninfo.NetworkCommonInfoBody
 import com.dogeby.wheretogo.core.network.model.tour.commoninfo.NetworkCommonInfoData
@@ -21,6 +22,11 @@ import com.dogeby.wheretogo.core.network.model.tour.keywordsearch.NetworkKeyword
 import com.dogeby.wheretogo.core.network.model.tour.keywordsearch.NetworkKeywordSearchResponse
 import com.dogeby.wheretogo.core.network.model.tour.keywordsearch.NetworkKeywordSearchResponseContent
 import com.dogeby.wheretogo.core.network.model.tour.keywordsearch.NetworkKeywordSearchResult
+import com.dogeby.wheretogo.core.network.model.tour.locationinfo.NetworkLocationInfoBody
+import com.dogeby.wheretogo.core.network.model.tour.locationinfo.NetworkLocationInfoData
+import com.dogeby.wheretogo.core.network.model.tour.locationinfo.NetworkLocationInfoResponse
+import com.dogeby.wheretogo.core.network.model.tour.locationinfo.NetworkLocationInfoResponseContent
+import com.dogeby.wheretogo.core.network.model.tour.locationinfo.NetworkLocationInfoResult
 import com.dogeby.wheretogo.core.network.model.tour.tourcontent.NetworkTourContentBody
 import com.dogeby.wheretogo.core.network.model.tour.tourcontent.NetworkTourContentData
 import com.dogeby.wheretogo.core.network.model.tour.tourcontent.NetworkTourContentHeader
@@ -176,6 +182,40 @@ class FakeTourNetworkDataSource @Inject constructor() : TourNetworkDataSource {
         return Result.success(
             NetworkCommonInfoResponse(
                 content = NetworkCommonInfoResponseContent(
+                    header = header,
+                    body = body,
+                ),
+            ),
+        )
+    }
+
+    override suspend fun fetchLocationInfo(
+        locationInfoRequestBody: LocationInfoRequestBody,
+    ): Result<NetworkLocationInfoResponse> {
+        if (shouldReturnError) {
+            return Result.failure(Exception())
+        }
+        val header = NetworkTourContentHeader(
+            resultCode = "0000",
+            resultMessage = "OK",
+        )
+        val body = NetworkLocationInfoBody(
+            numberOfRows = 1,
+            currentPage = 1,
+            totalCount = 1,
+            result = NetworkLocationInfoResult(
+                items = List(1) {
+                    NetworkLocationInfoData(
+                        code = "$it",
+                        name = "Name $it",
+                        rnum = it,
+                    )
+                },
+            ),
+        )
+        return Result.success(
+            NetworkLocationInfoResponse(
+                content = NetworkLocationInfoResponseContent(
                     header = header,
                     body = body,
                 ),
