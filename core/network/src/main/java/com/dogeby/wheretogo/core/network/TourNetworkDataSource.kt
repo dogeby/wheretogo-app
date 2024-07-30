@@ -9,7 +9,9 @@ import com.dogeby.wheretogo.core.network.model.tour.requestbody.CommonInfoReques
 import com.dogeby.wheretogo.core.network.model.tour.requestbody.FestivalInfoRequestBody
 import com.dogeby.wheretogo.core.network.model.tour.requestbody.KeywordSearchRequestBody
 import com.dogeby.wheretogo.core.network.model.tour.requestbody.LocationInfoRequestBody
+import com.dogeby.wheretogo.core.network.model.tour.requestbody.ServiceInfoRequestBody
 import com.dogeby.wheretogo.core.network.model.tour.requestbody.TourInfoByRegionRequestBody
+import com.dogeby.wheretogo.core.network.model.tour.serviceinfo.NetworkServiceInfoResponse
 import com.dogeby.wheretogo.core.network.model.tour.tourcontent.NetworkTourContentResponse
 
 interface TourNetworkDataSource {
@@ -36,4 +38,8 @@ interface TourNetworkDataSource {
     suspend fun fetchLocationInfo(
         locationInfoRequestBody: LocationInfoRequestBody,
     ): Result<NetworkLocationInfoResponse>
+
+    suspend fun fetchServiceInfo(
+        serviceInfoRequestBody: ServiceInfoRequestBody,
+    ): Result<NetworkServiceInfoResponse>
 }

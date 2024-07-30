@@ -27,7 +27,13 @@ import com.dogeby.wheretogo.core.network.model.tour.requestbody.CommonInfoReques
 import com.dogeby.wheretogo.core.network.model.tour.requestbody.FestivalInfoRequestBody
 import com.dogeby.wheretogo.core.network.model.tour.requestbody.KeywordSearchRequestBody
 import com.dogeby.wheretogo.core.network.model.tour.requestbody.LocationInfoRequestBody
+import com.dogeby.wheretogo.core.network.model.tour.requestbody.ServiceInfoRequestBody
 import com.dogeby.wheretogo.core.network.model.tour.requestbody.TourInfoByRegionRequestBody
+import com.dogeby.wheretogo.core.network.model.tour.serviceinfo.NetworkServiceInfoBody
+import com.dogeby.wheretogo.core.network.model.tour.serviceinfo.NetworkServiceInfoData
+import com.dogeby.wheretogo.core.network.model.tour.serviceinfo.NetworkServiceInfoResponse
+import com.dogeby.wheretogo.core.network.model.tour.serviceinfo.NetworkServiceInfoResponseContent
+import com.dogeby.wheretogo.core.network.model.tour.serviceinfo.NetworkServiceInfoResult
 import com.dogeby.wheretogo.core.network.model.tour.tourcontent.NetworkTourContentBody
 import com.dogeby.wheretogo.core.network.model.tour.tourcontent.NetworkTourContentData
 import com.dogeby.wheretogo.core.network.model.tour.tourcontent.NetworkTourContentResponse
@@ -216,6 +222,40 @@ class FakeTourNetworkDataSource @Inject constructor() : TourNetworkDataSource {
         return Result.success(
             NetworkLocationInfoResponse(
                 content = NetworkLocationInfoResponseContent(
+                    header = header,
+                    body = body,
+                ),
+            ),
+        )
+    }
+
+    override suspend fun fetchServiceInfo(
+        serviceInfoRequestBody: ServiceInfoRequestBody,
+    ): Result<NetworkServiceInfoResponse> {
+        if (shouldReturnError) {
+            return Result.failure(Exception())
+        }
+        val header = NetworkTourApiHeader(
+            resultCode = "0000",
+            resultMessage = "OK",
+        )
+        val body = NetworkServiceInfoBody(
+            numberOfRows = 1,
+            currentPage = 1,
+            totalCount = 1,
+            result = NetworkServiceInfoResult(
+                items = List(1) {
+                    NetworkServiceInfoData(
+                        code = "$it",
+                        name = "Name $it",
+                        rnum = it,
+                    )
+                },
+            ),
+        )
+        return Result.success(
+            NetworkServiceInfoResponse(
+                content = NetworkServiceInfoResponseContent(
                     header = header,
                     body = body,
                 ),
