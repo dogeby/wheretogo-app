@@ -6,6 +6,7 @@ import com.dogeby.wheretogo.core.network.model.tour.CommonInfoRequestBody
 import com.dogeby.wheretogo.core.network.model.tour.FestivalInfoRequestBody
 import com.dogeby.wheretogo.core.network.model.tour.KeywordSearchRequestBody
 import com.dogeby.wheretogo.core.network.model.tour.LocationInfoRequestBody
+import com.dogeby.wheretogo.core.network.model.tour.NetworkTourApiHeader
 import com.dogeby.wheretogo.core.network.model.tour.TourInfoByRegionRequestBody
 import com.dogeby.wheretogo.core.network.model.tour.commoninfo.NetworkCommonInfoBody
 import com.dogeby.wheretogo.core.network.model.tour.commoninfo.NetworkCommonInfoData
@@ -29,7 +30,6 @@ import com.dogeby.wheretogo.core.network.model.tour.locationinfo.NetworkLocation
 import com.dogeby.wheretogo.core.network.model.tour.locationinfo.NetworkLocationInfoResult
 import com.dogeby.wheretogo.core.network.model.tour.tourcontent.NetworkTourContentBody
 import com.dogeby.wheretogo.core.network.model.tour.tourcontent.NetworkTourContentData
-import com.dogeby.wheretogo.core.network.model.tour.tourcontent.NetworkTourContentHeader
 import com.dogeby.wheretogo.core.network.model.tour.tourcontent.NetworkTourContentResponse
 import com.dogeby.wheretogo.core.network.model.tour.tourcontent.NetworkTourContentResponseContent
 import com.dogeby.wheretogo.core.network.model.tour.tourcontent.NetworkTourContentResult
@@ -48,7 +48,7 @@ class FakeTourNetworkDataSource @Inject constructor() : TourNetworkDataSource {
         if (shouldReturnError) {
             return Result.failure(Exception())
         }
-        val header = NetworkTourContentHeader(
+        val header = NetworkTourApiHeader(
             resultCode = "0000",
             resultMessage = "OK",
         )
@@ -85,7 +85,7 @@ class FakeTourNetworkDataSource @Inject constructor() : TourNetworkDataSource {
         if (shouldReturnError) {
             return Result.failure(Exception())
         }
-        val header = NetworkTourContentHeader(
+        val header = NetworkTourApiHeader(
             resultCode = "0000",
             resultMessage = "OK",
         )
@@ -124,7 +124,7 @@ class FakeTourNetworkDataSource @Inject constructor() : TourNetworkDataSource {
         if (shouldReturnError) {
             return Result.failure(Exception())
         }
-        val header = NetworkTourContentHeader(
+        val header = NetworkTourApiHeader(
             resultCode = "0000",
             resultMessage = "OK",
         )
@@ -161,7 +161,7 @@ class FakeTourNetworkDataSource @Inject constructor() : TourNetworkDataSource {
         if (shouldReturnError) {
             return Result.failure(Exception())
         }
-        val header = NetworkTourContentHeader(
+        val header = NetworkTourApiHeader(
             resultCode = "0000",
             resultMessage = "OK",
         )
@@ -195,7 +195,7 @@ class FakeTourNetworkDataSource @Inject constructor() : TourNetworkDataSource {
         if (shouldReturnError) {
             return Result.failure(Exception())
         }
-        val header = NetworkTourContentHeader(
+        val header = NetworkTourApiHeader(
             resultCode = "0000",
             resultMessage = "OK",
         )

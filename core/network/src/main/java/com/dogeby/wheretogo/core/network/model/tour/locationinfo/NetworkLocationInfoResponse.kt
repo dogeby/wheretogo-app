@@ -1,6 +1,6 @@
 package com.dogeby.wheretogo.core.network.model.tour.locationinfo
 
-import com.dogeby.wheretogo.core.network.model.tour.tourcontent.NetworkTourContentHeader
+import com.dogeby.wheretogo.core.network.model.tour.NetworkTourApiHeader
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -12,6 +12,6 @@ data class NetworkLocationInfoResponse(
 
 @Serializable
 data class NetworkLocationInfoResponseContent(
-    val header: NetworkTourContentHeader,
+    val header: NetworkTourApiHeader,
     val body: NetworkLocationInfoBody,
 )
