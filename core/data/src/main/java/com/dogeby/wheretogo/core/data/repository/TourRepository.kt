@@ -6,6 +6,7 @@ import com.dogeby.wheretogo.core.data.model.tour.FestivalData
 import com.dogeby.wheretogo.core.data.model.tour.KeywordSearchData
 import com.dogeby.wheretogo.core.data.model.tour.LocationInfoData
 import com.dogeby.wheretogo.core.data.model.tour.TourContentData
+import com.dogeby.wheretogo.core.data.model.tour.serviceinfo.ContentTypeInfoData
 import com.dogeby.wheretogo.core.model.tour.ArrangeOption
 import kotlinx.coroutines.flow.Flow
 import kotlinx.datetime.Clock
@@ -58,4 +59,6 @@ interface TourRepository {
     ): Flow<Result<CommonInfoData>>
 
     fun getLocationInfoList(areaCode: String = ""): Flow<Result<List<LocationInfoData>>>
+
+    fun getContentTypeInfoList(): Flow<Result<Map<String, ContentTypeInfoData>>>
 }

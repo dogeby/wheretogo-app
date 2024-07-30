@@ -8,11 +8,13 @@ import com.dogeby.wheretogo.core.data.model.tour.FestivalData
 import com.dogeby.wheretogo.core.data.model.tour.KeywordSearchData
 import com.dogeby.wheretogo.core.data.model.tour.LocationInfoData
 import com.dogeby.wheretogo.core.data.model.tour.TourContentData
+import com.dogeby.wheretogo.core.data.model.tour.serviceinfo.ContentTypeInfoData
 import com.dogeby.wheretogo.core.data.model.tour.toCommonInfoData
 import com.dogeby.wheretogo.core.data.model.tour.toLocationInfoData
 import com.dogeby.wheretogo.core.data.paging.FestivalInfoPagingSource
 import com.dogeby.wheretogo.core.data.paging.KeywordSearchPagingSource
 import com.dogeby.wheretogo.core.data.paging.TourInfoByRegionPagingSource
+import com.dogeby.wheretogo.core.data.util.ContentTypeInfoLoader
 import com.dogeby.wheretogo.core.model.tour.ArrangeOption
 import com.dogeby.wheretogo.core.network.TourNetworkDataSource
 import com.dogeby.wheretogo.core.network.model.tour.locationinfo.NetworkLocationInfoData
@@ -31,6 +33,9 @@ import kotlinx.datetime.Instant
 class TourRepositoryImpl @Inject constructor(
     private val tourNetworkDataSource: TourNetworkDataSource,
 ) : TourRepository {
+
+    private val contentTypeInfoLoader: ContentTypeInfoLoader =
+        ContentTypeInfoLoader(tourNetworkDataSource)
 
     override fun getPagedTourInfoByRegion(
         currentPage: Int,
@@ -183,6 +188,17 @@ class TourRepositoryImpl @Inject constructor(
                 Result.failure(e)
             }
 
+            emit(result)
+        }
+    }
+
+    override fun getContentTypeInfoList(): Flow<Result<Map<String, ContentTypeInfoData>>> {
+        return flow {
+            val result = try {
+                Result.success(contentTypeInfoLoader.getContentTypeInfoList())
+            } catch (e: Exception) {
+                Result.failure(e)
+            }
             emit(result)
         }
     }
