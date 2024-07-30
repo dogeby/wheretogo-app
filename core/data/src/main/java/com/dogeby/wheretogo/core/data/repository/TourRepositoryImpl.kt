@@ -129,21 +129,21 @@ class TourRepositoryImpl @Inject constructor(
         isOverviewIncluded: Boolean,
     ): Flow<Result<CommonInfoData>> {
         return flow {
-            val response = tourNetworkDataSource.fetchCommonInfo(
-                commonInfoRequestBody = CommonInfoRequestBody(
-                    contentId = contentId,
-                    contentTypeId = contentTypeId,
-                    isDefaultInfoIncluded = isDefaultInfoIncluded,
-                    isFirstImgIncluded = isFirstImgIncluded,
-                    isAreaCodeIncluded = isAreaCodeIncluded,
-                    isCategoryIncluded = isCategoryIncluded,
-                    isAddrInfoIncluded = isAddrInfoIncluded,
-                    isMapInfoIncluded = isMapInfoIncluded,
-                    isOverviewIncluded = isOverviewIncluded,
-                ),
-            ).getOrThrow()
-
             val result = try {
+                val response = tourNetworkDataSource.fetchCommonInfo(
+                    commonInfoRequestBody = CommonInfoRequestBody(
+                        contentId = contentId,
+                        contentTypeId = contentTypeId,
+                        isDefaultInfoIncluded = isDefaultInfoIncluded,
+                        isFirstImgIncluded = isFirstImgIncluded,
+                        isAreaCodeIncluded = isAreaCodeIncluded,
+                        isCategoryIncluded = isCategoryIncluded,
+                        isAddrInfoIncluded = isAddrInfoIncluded,
+                        isMapInfoIncluded = isMapInfoIncluded,
+                        isOverviewIncluded = isOverviewIncluded,
+                    ),
+                ).getOrThrow()
+
                 if (response.content.header.resultCode != SUCCESS_RESULT_CODE) {
                     Result.failure(Exception(response.content.header.resultMessage))
                 } else {
@@ -161,13 +161,13 @@ class TourRepositoryImpl @Inject constructor(
 
     override fun getLocationInfoList(areaCode: String): Flow<Result<List<LocationInfoData>>> {
         return flow {
-            val response = tourNetworkDataSource.fetchLocationInfo(
-                LocationInfoRequestBody(
-                    areaCode = areaCode,
-                ),
-            ).getOrThrow()
-
             val result = try {
+                val response = tourNetworkDataSource.fetchLocationInfo(
+                    LocationInfoRequestBody(
+                        areaCode = areaCode,
+                    ),
+                ).getOrThrow()
+
                 if (response.content.header.resultCode != SUCCESS_RESULT_CODE) {
                     Result.failure(Exception(response.content.header.resultMessage))
                 } else {
