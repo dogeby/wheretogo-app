@@ -2,12 +2,7 @@ package com.dogeby.wheretogo.core.network.fake
 
 import com.dogeby.wheretogo.core.model.tour.ArrangeOption
 import com.dogeby.wheretogo.core.network.TourNetworkDataSource
-import com.dogeby.wheretogo.core.network.model.tour.CommonInfoRequestBody
-import com.dogeby.wheretogo.core.network.model.tour.FestivalInfoRequestBody
-import com.dogeby.wheretogo.core.network.model.tour.KeywordSearchRequestBody
-import com.dogeby.wheretogo.core.network.model.tour.LocationInfoRequestBody
 import com.dogeby.wheretogo.core.network.model.tour.NetworkTourApiHeader
-import com.dogeby.wheretogo.core.network.model.tour.TourInfoByRegionRequestBody
 import com.dogeby.wheretogo.core.network.model.tour.commoninfo.NetworkCommonInfoBody
 import com.dogeby.wheretogo.core.network.model.tour.commoninfo.NetworkCommonInfoData
 import com.dogeby.wheretogo.core.network.model.tour.commoninfo.NetworkCommonInfoResponse
@@ -28,6 +23,11 @@ import com.dogeby.wheretogo.core.network.model.tour.locationinfo.NetworkLocation
 import com.dogeby.wheretogo.core.network.model.tour.locationinfo.NetworkLocationInfoResponse
 import com.dogeby.wheretogo.core.network.model.tour.locationinfo.NetworkLocationInfoResponseContent
 import com.dogeby.wheretogo.core.network.model.tour.locationinfo.NetworkLocationInfoResult
+import com.dogeby.wheretogo.core.network.model.tour.requestbody.CommonInfoRequestBody
+import com.dogeby.wheretogo.core.network.model.tour.requestbody.FestivalInfoRequestBody
+import com.dogeby.wheretogo.core.network.model.tour.requestbody.KeywordSearchRequestBody
+import com.dogeby.wheretogo.core.network.model.tour.requestbody.LocationInfoRequestBody
+import com.dogeby.wheretogo.core.network.model.tour.requestbody.TourInfoByRegionRequestBody
 import com.dogeby.wheretogo.core.network.model.tour.tourcontent.NetworkTourContentBody
 import com.dogeby.wheretogo.core.network.model.tour.tourcontent.NetworkTourContentData
 import com.dogeby.wheretogo.core.network.model.tour.tourcontent.NetworkTourContentResponse

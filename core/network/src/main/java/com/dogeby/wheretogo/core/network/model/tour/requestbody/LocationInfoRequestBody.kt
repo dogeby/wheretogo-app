@@ -1,4 +1,4 @@
-package com.dogeby.wheretogo.core.network.model.tour
+package com.dogeby.wheretogo.core.network.model.tour.requestbody
 
 data class LocationInfoRequestBody(
     val currentPage: Int = 1,

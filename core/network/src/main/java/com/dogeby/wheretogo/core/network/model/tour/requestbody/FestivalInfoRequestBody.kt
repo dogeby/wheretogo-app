@@ -1,4 +1,4 @@
-package com.dogeby.wheretogo.core.network.model.tour
+package com.dogeby.wheretogo.core.network.model.tour.requestbody
 
 import kotlinx.datetime.Clock
 import kotlinx.datetime.Instant
