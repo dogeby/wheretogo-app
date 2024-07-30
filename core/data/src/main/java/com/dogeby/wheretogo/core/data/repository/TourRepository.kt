@@ -57,5 +57,5 @@ interface TourRepository {
         isOverviewIncluded: Boolean = true,
     ): Flow<Result<CommonInfoData>>
 
-    fun getLocationInfo(areaCode: String = ""): Flow<Result<List<LocationInfoData>>>
+    fun getLocationInfoList(areaCode: String = ""): Flow<Result<List<LocationInfoData>>>
 }

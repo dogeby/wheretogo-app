@@ -159,7 +159,7 @@ class TourRepositoryImpl @Inject constructor(
         }
     }
 
-    override fun getLocationInfo(areaCode: String): Flow<Result<List<LocationInfoData>>> {
+    override fun getLocationInfoList(areaCode: String): Flow<Result<List<LocationInfoData>>> {
         return flow {
             val response = tourNetworkDataSource.fetchLocationInfo(
                 LocationInfoRequestBody(
