@@ -2,9 +2,15 @@ package com.dogeby.wheretogo.core.network.fake
 
 import com.dogeby.wheretogo.core.model.tour.ArrangeOption
 import com.dogeby.wheretogo.core.network.TourNetworkDataSource
+import com.dogeby.wheretogo.core.network.model.tour.CommonInfoRequestBody
 import com.dogeby.wheretogo.core.network.model.tour.FestivalInfoRequestBody
 import com.dogeby.wheretogo.core.network.model.tour.KeywordSearchRequestBody
 import com.dogeby.wheretogo.core.network.model.tour.TourInfoByRegionRequestBody
+import com.dogeby.wheretogo.core.network.model.tour.commoninfo.NetworkCommonInfoBody
+import com.dogeby.wheretogo.core.network.model.tour.commoninfo.NetworkCommonInfoData
+import com.dogeby.wheretogo.core.network.model.tour.commoninfo.NetworkCommonInfoResponse
+import com.dogeby.wheretogo.core.network.model.tour.commoninfo.NetworkCommonInfoResponseContent
+import com.dogeby.wheretogo.core.network.model.tour.commoninfo.NetworkCommonInfoResult
 import com.dogeby.wheretogo.core.network.model.tour.festival.NetworkFestivalBody
 import com.dogeby.wheretogo.core.network.model.tour.festival.NetworkFestivalData
 import com.dogeby.wheretogo.core.network.model.tour.festival.NetworkFestivalResponse
@@ -136,6 +142,40 @@ class FakeTourNetworkDataSource @Inject constructor() : TourNetworkDataSource {
         return Result.success(
             NetworkKeywordSearchResponse(
                 content = NetworkKeywordSearchResponseContent(
+                    header = header,
+                    body = body,
+                ),
+            ),
+        )
+    }
+
+    override suspend fun fetchCommonInfo(
+        commonInfoRequestBody: CommonInfoRequestBody,
+    ): Result<NetworkCommonInfoResponse> {
+        if (shouldReturnError) {
+            return Result.failure(Exception())
+        }
+        val header = NetworkTourContentHeader(
+            resultCode = "0000",
+            resultMessage = "OK",
+        )
+        val body = NetworkCommonInfoBody(
+            numberOfRows = 1,
+            currentPage = 1,
+            totalCount = 1,
+            result = NetworkCommonInfoResult(
+                items = List(1) {
+                    NetworkCommonInfoData(
+                        contentId = "$it",
+                        contentTypeId = "38",
+                        title = "Title $it",
+                    )
+                },
+            ),
+        )
+        return Result.success(
+            NetworkCommonInfoResponse(
+                content = NetworkCommonInfoResponseContent(
                     header = header,
                     body = body,
                 ),
