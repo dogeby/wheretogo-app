@@ -240,11 +240,11 @@ class FakeTourNetworkDataSource @Inject constructor() : TourNetworkDataSource {
             resultMessage = "OK",
         )
         val body = NetworkServiceInfoBody(
-            numberOfRows = 1,
-            currentPage = 1,
-            totalCount = 1,
+            numberOfRows = serviceInfoRequestBody.numberOfRows,
+            currentPage = serviceInfoRequestBody.currentPage,
+            totalCount = SERVICE_INFO_TOTAL_COUNT,
             result = NetworkServiceInfoResult(
-                items = List(1) {
+                items = List(SERVICE_INFO_TOTAL_COUNT) {
                     NetworkServiceInfoData(
                         code = "$it",
                         name = "Name $it",
@@ -265,5 +265,6 @@ class FakeTourNetworkDataSource @Inject constructor() : TourNetworkDataSource {
 
     companion object {
         const val TOTAL_COUNT = 100
+        const val SERVICE_INFO_TOTAL_COUNT = 2
     }
 }
