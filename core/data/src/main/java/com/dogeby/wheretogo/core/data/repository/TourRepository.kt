@@ -4,6 +4,7 @@ import androidx.paging.PagingData
 import com.dogeby.wheretogo.core.data.model.tour.CommonInfoData
 import com.dogeby.wheretogo.core.data.model.tour.FestivalData
 import com.dogeby.wheretogo.core.data.model.tour.KeywordSearchData
+import com.dogeby.wheretogo.core.data.model.tour.LocationInfoData
 import com.dogeby.wheretogo.core.data.model.tour.TourContentData
 import com.dogeby.wheretogo.core.model.tour.ArrangeOption
 import kotlinx.coroutines.flow.Flow
@@ -55,4 +56,6 @@ interface TourRepository {
         isMapInfoIncluded: Boolean = true,
         isOverviewIncluded: Boolean = true,
     ): Flow<Result<CommonInfoData>>
+
+    fun getLocationInfo(areaCode: String = ""): Flow<Result<List<LocationInfoData>>>
 }
