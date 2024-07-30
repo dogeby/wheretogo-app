@@ -1,17 +1,17 @@
-package com.dogeby.wheretogo.core.network.model.tour.commoninfo
+package com.dogeby.wheretogo.core.network.model.tour.serviceinfo
 
 import com.dogeby.wheretogo.core.network.model.tour.NetworkTourApiHeader
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class NetworkCommonInfoResponse(
+data class NetworkServiceInfoResponse(
     @SerialName("response")
-    val content: NetworkCommonInfoResponseContent,
+    val content: NetworkServiceInfoResponseContent,
 )
 
 @Serializable
-data class NetworkCommonInfoResponseContent(
+data class NetworkServiceInfoResponseContent(
     val header: NetworkTourApiHeader,
-    val body: NetworkCommonInfoBody,
+    val body: NetworkServiceInfoBody,
 )

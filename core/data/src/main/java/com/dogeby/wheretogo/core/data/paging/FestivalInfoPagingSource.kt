@@ -7,8 +7,8 @@ import com.dogeby.wheretogo.core.data.model.tour.toFestivalData
 import com.dogeby.wheretogo.core.data.util.PagingUtil.calculateNextKey
 import com.dogeby.wheretogo.core.model.tour.ArrangeOption
 import com.dogeby.wheretogo.core.network.TourNetworkDataSource
-import com.dogeby.wheretogo.core.network.model.tour.FestivalInfoRequestBody
 import com.dogeby.wheretogo.core.network.model.tour.festival.NetworkFestivalData
+import com.dogeby.wheretogo.core.network.model.tour.requestbody.FestivalInfoRequestBody
 
 class FestivalInfoPagingSource(
     private val tourNetworkDataSource: TourNetworkDataSource,

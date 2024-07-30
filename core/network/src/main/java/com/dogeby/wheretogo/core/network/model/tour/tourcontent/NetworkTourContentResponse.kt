@@ -1,5 +1,6 @@
 package com.dogeby.wheretogo.core.network.model.tour.tourcontent
 
+import com.dogeby.wheretogo.core.network.model.tour.NetworkTourApiHeader
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -11,6 +12,6 @@ data class NetworkTourContentResponse(
 
 @Serializable
 data class NetworkTourContentResponseContent(
-    val header: NetworkTourContentHeader,
+    val header: NetworkTourApiHeader,
     val body: NetworkTourContentBody,
 )

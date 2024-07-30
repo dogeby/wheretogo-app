@@ -7,8 +7,8 @@ import com.dogeby.wheretogo.core.data.model.tour.toKeywordSearchData
 import com.dogeby.wheretogo.core.data.util.PagingUtil.calculateNextKey
 import com.dogeby.wheretogo.core.model.tour.ArrangeOption
 import com.dogeby.wheretogo.core.network.TourNetworkDataSource
-import com.dogeby.wheretogo.core.network.model.tour.KeywordSearchRequestBody
 import com.dogeby.wheretogo.core.network.model.tour.keywordsearch.NetworkKeywordSearchData
+import com.dogeby.wheretogo.core.network.model.tour.requestbody.KeywordSearchRequestBody
 
 class KeywordSearchPagingSource(
     private val tourNetworkDataSource: TourNetworkDataSource,

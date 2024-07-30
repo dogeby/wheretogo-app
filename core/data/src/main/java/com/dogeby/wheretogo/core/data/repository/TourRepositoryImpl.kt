@@ -6,17 +6,23 @@ import androidx.paging.PagingData
 import com.dogeby.wheretogo.core.data.model.tour.CommonInfoData
 import com.dogeby.wheretogo.core.data.model.tour.FestivalData
 import com.dogeby.wheretogo.core.data.model.tour.KeywordSearchData
+import com.dogeby.wheretogo.core.data.model.tour.LocationInfoData
 import com.dogeby.wheretogo.core.data.model.tour.TourContentData
+import com.dogeby.wheretogo.core.data.model.tour.serviceinfo.ContentTypeInfoData
 import com.dogeby.wheretogo.core.data.model.tour.toCommonInfoData
+import com.dogeby.wheretogo.core.data.model.tour.toLocationInfoData
 import com.dogeby.wheretogo.core.data.paging.FestivalInfoPagingSource
 import com.dogeby.wheretogo.core.data.paging.KeywordSearchPagingSource
 import com.dogeby.wheretogo.core.data.paging.TourInfoByRegionPagingSource
+import com.dogeby.wheretogo.core.data.util.ContentTypeInfoLoader
 import com.dogeby.wheretogo.core.model.tour.ArrangeOption
 import com.dogeby.wheretogo.core.network.TourNetworkDataSource
-import com.dogeby.wheretogo.core.network.model.tour.CommonInfoRequestBody
-import com.dogeby.wheretogo.core.network.model.tour.FestivalInfoRequestBody
-import com.dogeby.wheretogo.core.network.model.tour.KeywordSearchRequestBody
-import com.dogeby.wheretogo.core.network.model.tour.TourInfoByRegionRequestBody
+import com.dogeby.wheretogo.core.network.model.tour.locationinfo.NetworkLocationInfoData
+import com.dogeby.wheretogo.core.network.model.tour.requestbody.CommonInfoRequestBody
+import com.dogeby.wheretogo.core.network.model.tour.requestbody.FestivalInfoRequestBody
+import com.dogeby.wheretogo.core.network.model.tour.requestbody.KeywordSearchRequestBody
+import com.dogeby.wheretogo.core.network.model.tour.requestbody.LocationInfoRequestBody
+import com.dogeby.wheretogo.core.network.model.tour.requestbody.TourInfoByRegionRequestBody
 import javax.inject.Inject
 import javax.inject.Singleton
 import kotlinx.coroutines.flow.Flow
@@ -27,6 +33,9 @@ import kotlinx.datetime.Instant
 class TourRepositoryImpl @Inject constructor(
     private val tourNetworkDataSource: TourNetworkDataSource,
 ) : TourRepository {
+
+    private val contentTypeInfoLoader: ContentTypeInfoLoader =
+        ContentTypeInfoLoader(tourNetworkDataSource)
 
     override fun getPagedTourInfoByRegion(
         currentPage: Int,
@@ -125,20 +134,21 @@ class TourRepositoryImpl @Inject constructor(
         isOverviewIncluded: Boolean,
     ): Flow<Result<CommonInfoData>> {
         return flow {
-            val response = tourNetworkDataSource.fetchCommonInfo(
-                commonInfoRequestBody = CommonInfoRequestBody(
-                    contentId = contentId,
-                    contentTypeId = contentTypeId,
-                    isDefaultInfoIncluded = isDefaultInfoIncluded,
-                    isFirstImgIncluded = isFirstImgIncluded,
-                    isAreaCodeIncluded = isAreaCodeIncluded,
-                    isCategoryIncluded = isCategoryIncluded,
-                    isAddrInfoIncluded = isAddrInfoIncluded,
-                    isMapInfoIncluded = isMapInfoIncluded,
-                    isOverviewIncluded = isOverviewIncluded,
-                ),
-            ).getOrThrow()
             val result = try {
+                val response = tourNetworkDataSource.fetchCommonInfo(
+                    commonInfoRequestBody = CommonInfoRequestBody(
+                        contentId = contentId,
+                        contentTypeId = contentTypeId,
+                        isDefaultInfoIncluded = isDefaultInfoIncluded,
+                        isFirstImgIncluded = isFirstImgIncluded,
+                        isAreaCodeIncluded = isAreaCodeIncluded,
+                        isCategoryIncluded = isCategoryIncluded,
+                        isAddrInfoIncluded = isAddrInfoIncluded,
+                        isMapInfoIncluded = isMapInfoIncluded,
+                        isOverviewIncluded = isOverviewIncluded,
+                    ),
+                ).getOrThrow()
+
                 if (response.content.header.resultCode != SUCCESS_RESULT_CODE) {
                     Result.failure(Exception(response.content.header.resultMessage))
                 } else {
@@ -146,6 +156,46 @@ class TourRepositoryImpl @Inject constructor(
                         Result.success(result.items.first().toCommonInfoData())
                     }
                 }
+            } catch (e: Exception) {
+                Result.failure(e)
+            }
+
+            emit(result)
+        }
+    }
+
+    override fun getLocationInfoList(areaCode: String): Flow<Result<List<LocationInfoData>>> {
+        return flow {
+            val result = try {
+                val response = tourNetworkDataSource.fetchLocationInfo(
+                    LocationInfoRequestBody(
+                        areaCode = areaCode,
+                    ),
+                ).getOrThrow()
+
+                if (response.content.header.resultCode != SUCCESS_RESULT_CODE) {
+                    Result.failure(Exception(response.content.header.resultMessage))
+                } else {
+                    with(response.content.body) {
+                        Result.success(
+                            result
+                                .items
+                                .map(NetworkLocationInfoData::toLocationInfoData),
+                        )
+                    }
+                }
+            } catch (e: Exception) {
+                Result.failure(e)
+            }
+
+            emit(result)
+        }
+    }
+
+    override fun getContentTypeInfoList(): Flow<Result<Map<String, ContentTypeInfoData>>> {
+        return flow {
+            val result = try {
+                Result.success(contentTypeInfoLoader.getContentTypeInfoList())
             } catch (e: Exception) {
                 Result.failure(e)
             }

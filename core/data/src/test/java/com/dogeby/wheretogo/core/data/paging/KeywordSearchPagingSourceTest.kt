@@ -6,8 +6,8 @@ import androidx.paging.testing.TestPager
 import com.dogeby.wheretogo.core.data.model.tour.KeywordSearchData
 import com.dogeby.wheretogo.core.data.model.tour.toKeywordSearchData
 import com.dogeby.wheretogo.core.network.fake.FakeTourNetworkDataSource
-import com.dogeby.wheretogo.core.network.model.tour.KeywordSearchRequestBody
 import com.dogeby.wheretogo.core.network.model.tour.keywordsearch.NetworkKeywordSearchData
+import com.dogeby.wheretogo.core.network.model.tour.requestbody.KeywordSearchRequestBody
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert
 import org.junit.Before

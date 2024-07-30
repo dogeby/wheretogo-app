@@ -2,10 +2,7 @@ package com.dogeby.wheretogo.core.network.fake
 
 import com.dogeby.wheretogo.core.model.tour.ArrangeOption
 import com.dogeby.wheretogo.core.network.TourNetworkDataSource
-import com.dogeby.wheretogo.core.network.model.tour.CommonInfoRequestBody
-import com.dogeby.wheretogo.core.network.model.tour.FestivalInfoRequestBody
-import com.dogeby.wheretogo.core.network.model.tour.KeywordSearchRequestBody
-import com.dogeby.wheretogo.core.network.model.tour.TourInfoByRegionRequestBody
+import com.dogeby.wheretogo.core.network.model.tour.NetworkTourApiHeader
 import com.dogeby.wheretogo.core.network.model.tour.commoninfo.NetworkCommonInfoBody
 import com.dogeby.wheretogo.core.network.model.tour.commoninfo.NetworkCommonInfoData
 import com.dogeby.wheretogo.core.network.model.tour.commoninfo.NetworkCommonInfoResponse
@@ -21,9 +18,24 @@ import com.dogeby.wheretogo.core.network.model.tour.keywordsearch.NetworkKeyword
 import com.dogeby.wheretogo.core.network.model.tour.keywordsearch.NetworkKeywordSearchResponse
 import com.dogeby.wheretogo.core.network.model.tour.keywordsearch.NetworkKeywordSearchResponseContent
 import com.dogeby.wheretogo.core.network.model.tour.keywordsearch.NetworkKeywordSearchResult
+import com.dogeby.wheretogo.core.network.model.tour.locationinfo.NetworkLocationInfoBody
+import com.dogeby.wheretogo.core.network.model.tour.locationinfo.NetworkLocationInfoData
+import com.dogeby.wheretogo.core.network.model.tour.locationinfo.NetworkLocationInfoResponse
+import com.dogeby.wheretogo.core.network.model.tour.locationinfo.NetworkLocationInfoResponseContent
+import com.dogeby.wheretogo.core.network.model.tour.locationinfo.NetworkLocationInfoResult
+import com.dogeby.wheretogo.core.network.model.tour.requestbody.CommonInfoRequestBody
+import com.dogeby.wheretogo.core.network.model.tour.requestbody.FestivalInfoRequestBody
+import com.dogeby.wheretogo.core.network.model.tour.requestbody.KeywordSearchRequestBody
+import com.dogeby.wheretogo.core.network.model.tour.requestbody.LocationInfoRequestBody
+import com.dogeby.wheretogo.core.network.model.tour.requestbody.ServiceInfoRequestBody
+import com.dogeby.wheretogo.core.network.model.tour.requestbody.TourInfoByRegionRequestBody
+import com.dogeby.wheretogo.core.network.model.tour.serviceinfo.NetworkServiceInfoBody
+import com.dogeby.wheretogo.core.network.model.tour.serviceinfo.NetworkServiceInfoData
+import com.dogeby.wheretogo.core.network.model.tour.serviceinfo.NetworkServiceInfoResponse
+import com.dogeby.wheretogo.core.network.model.tour.serviceinfo.NetworkServiceInfoResponseContent
+import com.dogeby.wheretogo.core.network.model.tour.serviceinfo.NetworkServiceInfoResult
 import com.dogeby.wheretogo.core.network.model.tour.tourcontent.NetworkTourContentBody
 import com.dogeby.wheretogo.core.network.model.tour.tourcontent.NetworkTourContentData
-import com.dogeby.wheretogo.core.network.model.tour.tourcontent.NetworkTourContentHeader
 import com.dogeby.wheretogo.core.network.model.tour.tourcontent.NetworkTourContentResponse
 import com.dogeby.wheretogo.core.network.model.tour.tourcontent.NetworkTourContentResponseContent
 import com.dogeby.wheretogo.core.network.model.tour.tourcontent.NetworkTourContentResult
@@ -42,7 +54,7 @@ class FakeTourNetworkDataSource @Inject constructor() : TourNetworkDataSource {
         if (shouldReturnError) {
             return Result.failure(Exception())
         }
-        val header = NetworkTourContentHeader(
+        val header = NetworkTourApiHeader(
             resultCode = "0000",
             resultMessage = "OK",
         )
@@ -79,7 +91,7 @@ class FakeTourNetworkDataSource @Inject constructor() : TourNetworkDataSource {
         if (shouldReturnError) {
             return Result.failure(Exception())
         }
-        val header = NetworkTourContentHeader(
+        val header = NetworkTourApiHeader(
             resultCode = "0000",
             resultMessage = "OK",
         )
@@ -118,7 +130,7 @@ class FakeTourNetworkDataSource @Inject constructor() : TourNetworkDataSource {
         if (shouldReturnError) {
             return Result.failure(Exception())
         }
-        val header = NetworkTourContentHeader(
+        val header = NetworkTourApiHeader(
             resultCode = "0000",
             resultMessage = "OK",
         )
@@ -155,7 +167,7 @@ class FakeTourNetworkDataSource @Inject constructor() : TourNetworkDataSource {
         if (shouldReturnError) {
             return Result.failure(Exception())
         }
-        val header = NetworkTourContentHeader(
+        val header = NetworkTourApiHeader(
             resultCode = "0000",
             resultMessage = "OK",
         )
@@ -183,7 +195,76 @@ class FakeTourNetworkDataSource @Inject constructor() : TourNetworkDataSource {
         )
     }
 
+    override suspend fun fetchLocationInfo(
+        locationInfoRequestBody: LocationInfoRequestBody,
+    ): Result<NetworkLocationInfoResponse> {
+        if (shouldReturnError) {
+            return Result.failure(Exception())
+        }
+        val header = NetworkTourApiHeader(
+            resultCode = "0000",
+            resultMessage = "OK",
+        )
+        val body = NetworkLocationInfoBody(
+            numberOfRows = 1,
+            currentPage = 1,
+            totalCount = 1,
+            result = NetworkLocationInfoResult(
+                items = List(1) {
+                    NetworkLocationInfoData(
+                        code = "$it",
+                        name = "Name $it",
+                        rnum = it,
+                    )
+                },
+            ),
+        )
+        return Result.success(
+            NetworkLocationInfoResponse(
+                content = NetworkLocationInfoResponseContent(
+                    header = header,
+                    body = body,
+                ),
+            ),
+        )
+    }
+
+    override suspend fun fetchServiceInfo(
+        serviceInfoRequestBody: ServiceInfoRequestBody,
+    ): Result<NetworkServiceInfoResponse> {
+        if (shouldReturnError) {
+            return Result.failure(Exception())
+        }
+        val header = NetworkTourApiHeader(
+            resultCode = "0000",
+            resultMessage = "OK",
+        )
+        val body = NetworkServiceInfoBody(
+            numberOfRows = serviceInfoRequestBody.numberOfRows,
+            currentPage = serviceInfoRequestBody.currentPage,
+            totalCount = SERVICE_INFO_TOTAL_COUNT,
+            result = NetworkServiceInfoResult(
+                items = List(SERVICE_INFO_TOTAL_COUNT) {
+                    NetworkServiceInfoData(
+                        code = "$it",
+                        name = "Name $it",
+                        rnum = it,
+                    )
+                },
+            ),
+        )
+        return Result.success(
+            NetworkServiceInfoResponse(
+                content = NetworkServiceInfoResponseContent(
+                    header = header,
+                    body = body,
+                ),
+            ),
+        )
+    }
+
     companion object {
         const val TOTAL_COUNT = 100
+        const val SERVICE_INFO_TOTAL_COUNT = 2
     }
 }

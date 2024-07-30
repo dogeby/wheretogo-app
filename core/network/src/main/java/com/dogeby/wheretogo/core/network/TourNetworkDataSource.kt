@@ -1,13 +1,17 @@
 package com.dogeby.wheretogo.core.network
 
 import com.dogeby.wheretogo.core.model.tour.ArrangeOption
-import com.dogeby.wheretogo.core.network.model.tour.CommonInfoRequestBody
-import com.dogeby.wheretogo.core.network.model.tour.FestivalInfoRequestBody
-import com.dogeby.wheretogo.core.network.model.tour.KeywordSearchRequestBody
-import com.dogeby.wheretogo.core.network.model.tour.TourInfoByRegionRequestBody
 import com.dogeby.wheretogo.core.network.model.tour.commoninfo.NetworkCommonInfoResponse
 import com.dogeby.wheretogo.core.network.model.tour.festival.NetworkFestivalResponse
 import com.dogeby.wheretogo.core.network.model.tour.keywordsearch.NetworkKeywordSearchResponse
+import com.dogeby.wheretogo.core.network.model.tour.locationinfo.NetworkLocationInfoResponse
+import com.dogeby.wheretogo.core.network.model.tour.requestbody.CommonInfoRequestBody
+import com.dogeby.wheretogo.core.network.model.tour.requestbody.FestivalInfoRequestBody
+import com.dogeby.wheretogo.core.network.model.tour.requestbody.KeywordSearchRequestBody
+import com.dogeby.wheretogo.core.network.model.tour.requestbody.LocationInfoRequestBody
+import com.dogeby.wheretogo.core.network.model.tour.requestbody.ServiceInfoRequestBody
+import com.dogeby.wheretogo.core.network.model.tour.requestbody.TourInfoByRegionRequestBody
+import com.dogeby.wheretogo.core.network.model.tour.serviceinfo.NetworkServiceInfoResponse
 import com.dogeby.wheretogo.core.network.model.tour.tourcontent.NetworkTourContentResponse
 
 interface TourNetworkDataSource {
@@ -30,4 +34,12 @@ interface TourNetworkDataSource {
     suspend fun fetchCommonInfo(
         commonInfoRequestBody: CommonInfoRequestBody,
     ): Result<NetworkCommonInfoResponse>
+
+    suspend fun fetchLocationInfo(
+        locationInfoRequestBody: LocationInfoRequestBody,
+    ): Result<NetworkLocationInfoResponse>
+
+    suspend fun fetchServiceInfo(
+        serviceInfoRequestBody: ServiceInfoRequestBody,
+    ): Result<NetworkServiceInfoResponse>
 }
