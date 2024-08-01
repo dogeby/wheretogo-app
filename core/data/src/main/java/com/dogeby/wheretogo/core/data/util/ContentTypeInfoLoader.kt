@@ -1,33 +1,52 @@
 package com.dogeby.wheretogo.core.data.util
 
 import com.dogeby.wheretogo.core.data.model.tour.serviceinfo.ContentTypeInfoData
+import com.dogeby.wheretogo.core.data.model.tour.serviceinfo.ContentTypeInfoMap
 import com.dogeby.wheretogo.core.data.model.tour.serviceinfo.MajorCategoryInfoData
 import com.dogeby.wheretogo.core.data.model.tour.serviceinfo.MediumCategoryInfoData
 import com.dogeby.wheretogo.core.data.model.tour.serviceinfo.MinorCategoryInfoData
 import com.dogeby.wheretogo.core.data.model.tour.serviceinfo.ServiceInfoData
 import com.dogeby.wheretogo.core.data.model.tour.serviceinfo.toServiceInfoData
+import com.dogeby.wheretogo.core.datastore.cache.CachePreferencesManager
 import com.dogeby.wheretogo.core.network.TourNetworkDataSource
 import com.dogeby.wheretogo.core.network.model.tour.requestbody.ServiceInfoRequestBody
 import com.dogeby.wheretogo.core.network.model.tour.serviceinfo.NetworkServiceInfoData
+import kotlinx.coroutines.flow.first
 
 internal class ContentTypeInfoLoader(
     private val tourNetworkDataSource: TourNetworkDataSource,
+    private val cachePreferencesManager: CachePreferencesManager,
 ) {
 
-    suspend fun getContentTypeInfoList(): Map<String, ContentTypeInfoData> {
-        return getServiceInfoData().map { contentTypes ->
-            contentTypes.associateBy(
-                keySelector = { it.code },
-                valueTransform = { contentType ->
-                    val majorCategories = getMajorCategories(contentType.code)
-                    ContentTypeInfoData(
-                        code = contentType.code,
-                        name = contentType.name,
-                        majorCategories = majorCategories,
-                    )
-                },
+    suspend fun getContentTypeInfoList(): ContentTypeInfoMap {
+        val cachedContentTypeInfoMap = cachePreferencesManager.loadValue(
+            key = CONTENT_TYPE_CACHE_KEY,
+            deserializer = ContentTypeInfoMap.serializer(),
+        ).first()
+        if (cachedContentTypeInfoMap.isFailure) {
+            val contentTypeInfos = getServiceInfoData().map { contentTypes ->
+                contentTypes.associateBy(
+                    keySelector = { it.code },
+                    valueTransform = { contentType ->
+                        val majorCategories = getMajorCategories(contentType.code)
+                        ContentTypeInfoData(
+                            code = contentType.code,
+                            name = contentType.name,
+                            majorCategories = majorCategories,
+                        )
+                    },
+                )
+            }.getOrThrow()
+            val contentTypeInfoMap = ContentTypeInfoMap(contentTypeInfos)
+            cachePreferencesManager.saveValue(
+                key = CONTENT_TYPE_CACHE_KEY,
+                value = contentTypeInfoMap,
+                serializer = ContentTypeInfoMap.serializer(),
             )
-        }.getOrThrow()
+            return contentTypeInfoMap
+        } else {
+            return cachedContentTypeInfoMap.getOrThrow()
+        }
     }
 
     private suspend fun getMajorCategories(
@@ -109,5 +128,6 @@ internal class ContentTypeInfoLoader(
 
     private companion object {
         const val SUCCESS_RESULT_CODE = "0000"
+        const val CONTENT_TYPE_CACHE_KEY = "contentTypeCacheKey"
     }
 }

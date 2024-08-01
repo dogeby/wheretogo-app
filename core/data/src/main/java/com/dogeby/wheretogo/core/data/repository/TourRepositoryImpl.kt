@@ -15,6 +15,7 @@ import com.dogeby.wheretogo.core.data.paging.FestivalInfoPagingSource
 import com.dogeby.wheretogo.core.data.paging.KeywordSearchPagingSource
 import com.dogeby.wheretogo.core.data.paging.TourInfoByRegionPagingSource
 import com.dogeby.wheretogo.core.data.util.ContentTypeInfoLoader
+import com.dogeby.wheretogo.core.datastore.cache.CachePreferencesManager
 import com.dogeby.wheretogo.core.model.tour.ArrangeOption
 import com.dogeby.wheretogo.core.network.TourNetworkDataSource
 import com.dogeby.wheretogo.core.network.model.tour.locationinfo.NetworkLocationInfoData
@@ -32,10 +33,14 @@ import kotlinx.datetime.Instant
 @Singleton
 class TourRepositoryImpl @Inject constructor(
     private val tourNetworkDataSource: TourNetworkDataSource,
+    cachePreferencesManager: CachePreferencesManager,
 ) : TourRepository {
 
     private val contentTypeInfoLoader: ContentTypeInfoLoader =
-        ContentTypeInfoLoader(tourNetworkDataSource)
+        ContentTypeInfoLoader(
+            tourNetworkDataSource = tourNetworkDataSource,
+            cachePreferencesManager = cachePreferencesManager,
+        )
 
     override fun getPagedTourInfoByRegion(
         currentPage: Int,
@@ -199,7 +204,7 @@ class TourRepositoryImpl @Inject constructor(
             } catch (e: Exception) {
                 Result.failure(e)
             }
-            emit(result)
+            emit(result.map { it.contentTypeInfos })
         }
     }
 

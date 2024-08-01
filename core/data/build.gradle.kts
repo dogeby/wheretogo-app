@@ -3,6 +3,7 @@ plugins {
     alias(libs.plugins.jetbrains.kotlin.android)
     alias(libs.plugins.hilt.android)
     alias(libs.plugins.jetbrains.kotlin.kapt)
+    alias(libs.plugins.kotlin.serialization)
 }
 
 android {
@@ -38,12 +39,14 @@ dependencies {
     implementation(project(":core:common"))
     implementation(project(":core:model"))
     implementation(project(":core:network"))
+    implementation(project(":core:datastore"))
 
     implementation(libs.kotlinx.coroutines.android)
     implementation(libs.hilt.android)
     kapt(libs.hilt.compiler)
     implementation(libs.paging.runtime)
     implementation(libs.kotlinx.datetime)
+    implementation(libs.kotlinx.serialization.json)
 
     testImplementation(libs.junit)
     testImplementation(libs.kotlinx.coroutines.test)
