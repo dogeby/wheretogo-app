@@ -22,6 +22,9 @@ kotlinxSerializationJson = "1.5.0"
 okhttp = "4.12.0"
 paging = "3.3.1"
 kotlinxDatetime = "0.6.0-RC.2"
+dataStore = "1.1.1"
+protobuf = "3.25.2"
+protobufPlugin = "0.9.4"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -55,6 +58,10 @@ okhttp-logging = { group = "com.squareup.okhttp3", name = "logging-interceptor",
 paging-runtime = { group = "androidx.paging", name = "paging-runtime", version.ref = "paging" }
 paging-testing = { module = "androidx.paging:paging-testing", version.ref = "paging" }
 kotlinx-datetime = { group = "org.jetbrains.kotlinx", name = "kotlinx-datetime", version.ref = "kotlinxDatetime" }
+datastore = { group = "androidx.datastore", name = "datastore", version.ref = "dataStore"}
+datastore-preferences = { group = "androidx.datastore", name = "datastore-preferences", version.ref = "dataStore"}
+protobuf-kotlin-lite = { group = "com.google.protobuf", name = "protobuf-kotlin-lite", version.ref = "protobuf" }
+protobuf-protoc = { group = "com.google.protobuf", name = "protoc", version.ref = "protobuf" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
@@ -66,3 +73,4 @@ jetbrains-kotlin-kapt = { id = "org.jetbrains.kotlin.kapt", version.ref = "kotli
 compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
 secrets = { id = "com.google.android.libraries.mapsplatform.secrets-gradle-plugin", version.ref = "secrets" }
+protobuf = { id = "com.google.protobuf", version.ref = "protobufPlugin" }

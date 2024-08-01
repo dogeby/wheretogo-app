@@ -1,13 +1,13 @@
 plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.jetbrains.kotlin.android)
-    alias(libs.plugins.hilt.android)
     alias(libs.plugins.jetbrains.kotlin.kapt)
+    alias(libs.plugins.protobuf)
     alias(libs.plugins.kotlin.serialization)
 }
 
 android {
-    namespace = "com.dogeby.wheretogo.core.data"
+    namespace = "com.dogeby.wheretogo.core.datastore"
     compileSdk = 34
 
     defaultConfig {
@@ -35,20 +35,39 @@ android {
     }
 }
 
+protobuf {
+    protoc {
+        artifact = libs.protobuf.protoc.get().toString()
+    }
+    generateProtoTasks {
+        all().forEach { task ->
+            task.builtins {
+                val java by registering {
+                    option("lite")
+                }
+                val kotlin by registering {
+                    option("lite")
+                }
+            }
+        }
+    }
+}
+
 dependencies {
     implementation(project(":core:common"))
-    implementation(project(":core:model"))
-    implementation(project(":core:network"))
-    implementation(project(":core:datastore"))
 
-    implementation(libs.kotlinx.coroutines.android)
+    implementation(libs.androidx.core.ktx)
     implementation(libs.hilt.android)
     kapt(libs.hilt.compiler)
-    implementation(libs.paging.runtime)
-    implementation(libs.kotlinx.datetime)
+    implementation(libs.kotlinx.coroutines.android)
+    implementation(libs.datastore)
+    implementation(libs.protobuf.kotlin.lite)
+    implementation(libs.datastore.preferences)
     implementation(libs.kotlinx.serialization.json)
 
     testImplementation(libs.junit)
     testImplementation(libs.kotlinx.coroutines.test)
-    testImplementation(libs.paging.testing)
+    androidTestImplementation(libs.androidx.junit)
+    androidTestImplementation(libs.kotlinx.coroutines.test)
+    androidTestImplementation(libs.androidx.espresso.core)
 }

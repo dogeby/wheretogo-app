@@ -7,6 +7,7 @@ import com.dogeby.wheretogo.core.data.model.tour.CommonInfoData
 import com.dogeby.wheretogo.core.data.model.tour.FestivalData
 import com.dogeby.wheretogo.core.data.model.tour.KeywordSearchData
 import com.dogeby.wheretogo.core.data.model.tour.LocationInfoData
+import com.dogeby.wheretogo.core.data.model.tour.LocationInfoDataList
 import com.dogeby.wheretogo.core.data.model.tour.TourContentData
 import com.dogeby.wheretogo.core.data.model.tour.serviceinfo.ContentTypeInfoData
 import com.dogeby.wheretogo.core.data.model.tour.toCommonInfoData
@@ -15,6 +16,7 @@ import com.dogeby.wheretogo.core.data.paging.FestivalInfoPagingSource
 import com.dogeby.wheretogo.core.data.paging.KeywordSearchPagingSource
 import com.dogeby.wheretogo.core.data.paging.TourInfoByRegionPagingSource
 import com.dogeby.wheretogo.core.data.util.ContentTypeInfoLoader
+import com.dogeby.wheretogo.core.datastore.cache.CachePreferencesManager
 import com.dogeby.wheretogo.core.model.tour.ArrangeOption
 import com.dogeby.wheretogo.core.network.TourNetworkDataSource
 import com.dogeby.wheretogo.core.network.model.tour.locationinfo.NetworkLocationInfoData
@@ -26,16 +28,21 @@ import com.dogeby.wheretogo.core.network.model.tour.requestbody.TourInfoByRegion
 import javax.inject.Inject
 import javax.inject.Singleton
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flow
 import kotlinx.datetime.Instant
 
 @Singleton
 class TourRepositoryImpl @Inject constructor(
     private val tourNetworkDataSource: TourNetworkDataSource,
+    private val cachePreferencesManager: CachePreferencesManager,
 ) : TourRepository {
 
     private val contentTypeInfoLoader: ContentTypeInfoLoader =
-        ContentTypeInfoLoader(tourNetworkDataSource)
+        ContentTypeInfoLoader(
+            tourNetworkDataSource = tourNetworkDataSource,
+            cachePreferencesManager = cachePreferencesManager,
+        )
 
     override fun getPagedTourInfoByRegion(
         currentPage: Int,
@@ -167,22 +174,34 @@ class TourRepositoryImpl @Inject constructor(
     override fun getLocationInfoList(areaCode: String): Flow<Result<List<LocationInfoData>>> {
         return flow {
             val result = try {
-                val response = tourNetworkDataSource.fetchLocationInfo(
-                    LocationInfoRequestBody(
-                        areaCode = areaCode,
-                    ),
-                ).getOrThrow()
+                val key = "$AREA_CODE_CACHE_KEY/$areaCode"
+                val cachedLocationInfoDataList = cachePreferencesManager.loadValue(
+                    key = key,
+                    deserializer = LocationInfoDataList.serializer(),
+                ).first()
 
-                if (response.content.header.resultCode != SUCCESS_RESULT_CODE) {
-                    Result.failure(Exception(response.content.header.resultMessage))
-                } else {
-                    with(response.content.body) {
-                        Result.success(
-                            result
-                                .items
-                                .map(NetworkLocationInfoData::toLocationInfoData),
+                if (cachedLocationInfoDataList.isFailure) {
+                    val response = tourNetworkDataSource.fetchLocationInfo(
+                        LocationInfoRequestBody(
+                            areaCode = areaCode,
+                        ),
+                    ).getOrThrow()
+
+                    if (response.content.header.resultCode != SUCCESS_RESULT_CODE) {
+                        Result.failure(Exception(response.content.header.resultMessage))
+                    } else {
+                        val locationInfos = response.content.body.result
+                            .items
+                            .map(NetworkLocationInfoData::toLocationInfoData)
+                        cachePreferencesManager.saveValue(
+                            key = key,
+                            serializer = LocationInfoDataList.serializer(),
+                            value = LocationInfoDataList(locationInfos),
                         )
+                        Result.success(locationInfos)
                     }
+                } else {
+                    Result.success(cachedLocationInfoDataList.getOrThrow().locationInfos)
                 }
             } catch (e: Exception) {
                 Result.failure(e)
@@ -199,11 +218,12 @@ class TourRepositoryImpl @Inject constructor(
             } catch (e: Exception) {
                 Result.failure(e)
             }
-            emit(result)
+            emit(result.map { it.contentTypeInfos })
         }
     }
 
     private companion object {
         const val SUCCESS_RESULT_CODE = "0000"
+        const val AREA_CODE_CACHE_KEY = "AreaCodeCacheKey"
     }
 }
