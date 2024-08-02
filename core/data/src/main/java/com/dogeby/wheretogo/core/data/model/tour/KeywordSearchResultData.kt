@@ -1,8 +1,8 @@
 package com.dogeby.wheretogo.core.data.model.tour
 
-import com.dogeby.wheretogo.core.network.model.tour.keywordsearch.NetworkKeywordSearchData
+import com.dogeby.wheretogo.core.network.model.tour.keywordsearch.NetworkKeywordSearchResultData
 
-data class KeywordSearchData(
+data class KeywordSearchResultData(
     val contentId: String,
     val contentTypeId: String,
     val createdTime: String,
@@ -25,7 +25,7 @@ data class KeywordSearchData(
     val copyrightType: String? = null,
 )
 
-internal fun NetworkKeywordSearchData.toKeywordSearchData() = KeywordSearchData(
+internal fun NetworkKeywordSearchResultData.toKeywordSearchResultData() = KeywordSearchResultData(
     contentId = contentId,
     contentTypeId = contentTypeId,
     createdTime = createdTime,

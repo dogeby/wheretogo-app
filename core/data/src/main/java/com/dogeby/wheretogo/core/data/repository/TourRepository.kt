@@ -3,7 +3,7 @@ package com.dogeby.wheretogo.core.data.repository
 import androidx.paging.PagingData
 import com.dogeby.wheretogo.core.data.model.tour.CommonInfoData
 import com.dogeby.wheretogo.core.data.model.tour.FestivalData
-import com.dogeby.wheretogo.core.data.model.tour.KeywordSearchData
+import com.dogeby.wheretogo.core.data.model.tour.KeywordSearchResultData
 import com.dogeby.wheretogo.core.data.model.tour.LocationInfoData
 import com.dogeby.wheretogo.core.data.model.tour.TourContentData
 import com.dogeby.wheretogo.core.data.model.tour.serviceinfo.ContentTypeInfoData
@@ -44,7 +44,7 @@ interface TourRepository {
         category2: String = "",
         category3: String = "",
         arrangeOption: ArrangeOption = ArrangeOption.MODIFIED_TIME,
-    ): Flow<PagingData<KeywordSearchData>>
+    ): Flow<PagingData<KeywordSearchResultData>>
 
     fun getCommonInfo(
         contentId: String,

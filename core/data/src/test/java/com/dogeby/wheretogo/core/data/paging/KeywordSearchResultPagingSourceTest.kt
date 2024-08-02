@@ -3,17 +3,17 @@ package com.dogeby.wheretogo.core.data.paging
 import androidx.paging.PagingConfig
 import androidx.paging.PagingSource
 import androidx.paging.testing.TestPager
-import com.dogeby.wheretogo.core.data.model.tour.KeywordSearchData
-import com.dogeby.wheretogo.core.data.model.tour.toKeywordSearchData
+import com.dogeby.wheretogo.core.data.model.tour.KeywordSearchResultData
+import com.dogeby.wheretogo.core.data.model.tour.toKeywordSearchResultData
 import com.dogeby.wheretogo.core.network.fake.FakeTourNetworkDataSource
-import com.dogeby.wheretogo.core.network.model.tour.keywordsearch.NetworkKeywordSearchData
+import com.dogeby.wheretogo.core.network.model.tour.keywordsearch.NetworkKeywordSearchResultData
 import com.dogeby.wheretogo.core.network.model.tour.requestbody.KeywordSearchRequestBody
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert
 import org.junit.Before
 import org.junit.Test
 
-class KeywordSearchPagingSourceTest {
+class KeywordSearchResultPagingSourceTest {
 
     private lateinit var fakeTourNetworkDataSource: FakeTourNetworkDataSource
 
@@ -34,7 +34,7 @@ class KeywordSearchPagingSourceTest {
                 .body
                 .result
                 .items
-                .map(NetworkKeywordSearchData::toKeywordSearchData),
+                .map(NetworkKeywordSearchResultData::toKeywordSearchResultData),
             prevKey = null,
             nextKey = 2,
         )
@@ -96,8 +96,8 @@ class KeywordSearchPagingSourceTest {
 
     private fun createTestPager(
         requestBody: KeywordSearchRequestBody = KeywordSearchRequestBody("cafe"),
-    ): TestPager<Int, KeywordSearchData> {
-        val pagingSource = KeywordSearchPagingSource(
+    ): TestPager<Int, KeywordSearchResultData> {
+        val pagingSource = KeywordSearchResultPagingSource(
             tourNetworkDataSource = fakeTourNetworkDataSource,
             keywordSearchRequestBody = requestBody,
         )

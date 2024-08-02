@@ -2,28 +2,28 @@ package com.dogeby.wheretogo.core.data.paging
 
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
-import com.dogeby.wheretogo.core.data.model.tour.KeywordSearchData
-import com.dogeby.wheretogo.core.data.model.tour.toKeywordSearchData
+import com.dogeby.wheretogo.core.data.model.tour.KeywordSearchResultData
+import com.dogeby.wheretogo.core.data.model.tour.toKeywordSearchResultData
 import com.dogeby.wheretogo.core.data.util.PagingUtil.calculateNextKey
 import com.dogeby.wheretogo.core.model.tour.ArrangeOption
 import com.dogeby.wheretogo.core.network.TourNetworkDataSource
-import com.dogeby.wheretogo.core.network.model.tour.keywordsearch.NetworkKeywordSearchData
+import com.dogeby.wheretogo.core.network.model.tour.keywordsearch.NetworkKeywordSearchResultData
 import com.dogeby.wheretogo.core.network.model.tour.requestbody.KeywordSearchRequestBody
 
-class KeywordSearchPagingSource(
+class KeywordSearchResultPagingSource(
     private val tourNetworkDataSource: TourNetworkDataSource,
     private val keywordSearchRequestBody: KeywordSearchRequestBody,
     private val arrangeOption: ArrangeOption = ArrangeOption.MODIFIED_TIME,
-) : PagingSource<Int, KeywordSearchData>() {
+) : PagingSource<Int, KeywordSearchResultData>() {
 
-    override fun getRefreshKey(state: PagingState<Int, KeywordSearchData>): Int? {
+    override fun getRefreshKey(state: PagingState<Int, KeywordSearchResultData>): Int? {
         return state.anchorPosition?.let { anchorPosition ->
             val anchorPage = state.closestPageToPosition(anchorPosition)
             anchorPage?.prevKey?.plus(1) ?: anchorPage?.nextKey?.minus(1)
         }
     }
 
-    override suspend fun load(params: LoadParams<Int>): LoadResult<Int, KeywordSearchData> {
+    override suspend fun load(params: LoadParams<Int>): LoadResult<Int, KeywordSearchResultData> {
         return try {
             val nextPageNumber = params.key ?: 1
             val response = tourNetworkDataSource
@@ -41,7 +41,7 @@ class KeywordSearchPagingSource(
             with(response.content.body) {
                 LoadResult.Page(
                     data = result.items.map(
-                        NetworkKeywordSearchData::toKeywordSearchData,
+                        NetworkKeywordSearchResultData::toKeywordSearchResultData,
                     ),
                     prevKey = null,
                     nextKey = calculateNextKey(
