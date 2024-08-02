@@ -31,7 +31,7 @@ class ContentTypeInfoLoaderTest {
         assertEquals(2, result.size)
 
         result.forEach { (key, contentType) ->
-            assertEquals("${key.last()}", contentType.code)
+            assertEquals("${key.last()}", contentType.serviceInfoData.code)
             assertEquals(SERVICE_INFO_TOTAL_COUNT, contentType.majorCategories.size)
 
             contentType.majorCategories.forEach { (_, majorCategory) ->

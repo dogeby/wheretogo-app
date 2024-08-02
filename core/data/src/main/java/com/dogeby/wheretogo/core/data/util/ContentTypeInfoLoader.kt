@@ -4,7 +4,6 @@ import com.dogeby.wheretogo.core.data.model.tour.serviceinfo.ContentTypeInfoData
 import com.dogeby.wheretogo.core.data.model.tour.serviceinfo.ContentTypeInfoMap
 import com.dogeby.wheretogo.core.data.model.tour.serviceinfo.MajorCategoryInfoData
 import com.dogeby.wheretogo.core.data.model.tour.serviceinfo.MediumCategoryInfoData
-import com.dogeby.wheretogo.core.data.model.tour.serviceinfo.MinorCategoryInfoData
 import com.dogeby.wheretogo.core.data.model.tour.serviceinfo.ServiceInfoData
 import com.dogeby.wheretogo.core.data.model.tour.serviceinfo.toServiceInfoData
 import com.dogeby.wheretogo.core.datastore.cache.CachePreferencesManager
@@ -30,8 +29,7 @@ internal class ContentTypeInfoLoader(
                     valueTransform = { contentType ->
                         val majorCategories = getMajorCategories(contentType.code)
                         ContentTypeInfoData(
-                            code = contentType.code,
-                            name = contentType.name,
+                            serviceInfoData = contentType,
                             majorCategories = majorCategories,
                         )
                     },
@@ -59,8 +57,7 @@ internal class ContentTypeInfoLoader(
                 valueTransform = { majorCategory ->
                     val mediumCategories = getMediumCategories(majorCategory.code)
                     MajorCategoryInfoData(
-                        code = majorCategory.code,
-                        name = majorCategory.name,
+                        serviceInfoData = majorCategory,
                         mediumCategories = mediumCategories,
                     )
                 },
@@ -77,8 +74,7 @@ internal class ContentTypeInfoLoader(
                 valueTransform = { mediumCategory ->
                     val minorCategories = getMinorCategories(mediumCategory.code)
                     MediumCategoryInfoData(
-                        code = mediumCategory.code,
-                        name = mediumCategory.name,
+                        serviceInfoData = mediumCategory,
                         minorCategories = minorCategories,
                     )
                 },
@@ -87,21 +83,14 @@ internal class ContentTypeInfoLoader(
 
     private suspend fun getMinorCategories(
         mediumCategoryId: String,
-    ): Map<String, MinorCategoryInfoData> {
+    ): Map<String, ServiceInfoData> {
         return getServiceInfoData(
             contentTypeId = mediumCategoryId,
             cat1 = mediumCategoryId,
             cat2 = mediumCategoryId,
         )
             .getOrThrow()
-            .associateBy(
-                keySelector = { it.code },
-            ) {
-                MinorCategoryInfoData(
-                    code = it.code,
-                    name = it.name,
-                )
-            }
+            .associateBy { it.code }
     }
 
     private suspend fun getServiceInfoData(
