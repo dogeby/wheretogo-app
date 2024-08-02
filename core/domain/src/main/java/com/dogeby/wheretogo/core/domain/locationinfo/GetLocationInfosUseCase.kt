@@ -2,8 +2,8 @@ package com.dogeby.wheretogo.core.domain.locationinfo
 
 import com.dogeby.wheretogo.core.data.model.tour.LocationInfoData
 import com.dogeby.wheretogo.core.data.repository.TourRepository
-import com.dogeby.wheretogo.core.domain.model.tour.LocationInfo
-import com.dogeby.wheretogo.core.domain.model.tour.toLocationInfo
+import com.dogeby.wheretogo.core.domain.model.tour.locationinfo.LocationInfo
+import com.dogeby.wheretogo.core.domain.model.tour.locationinfo.toLocationInfo
 import javax.inject.Inject
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
