@@ -1,12 +1,11 @@
-package com.dogeby.wheretogo.core.domain.tourcontent
+package com.dogeby.wheretogo.core.domain.tour
 
 import androidx.paging.PagingData
 import androidx.paging.map
 import com.dogeby.wheretogo.core.data.repository.TourRepository
-import com.dogeby.wheretogo.core.domain.locationinfo.GetLocationInfoMapUseCase
-import com.dogeby.wheretogo.core.domain.model.tour.tourcontent.TourContent
-import com.dogeby.wheretogo.core.domain.model.tour.tourcontent.toTourContent
-import com.dogeby.wheretogo.core.domain.serviceinfo.GetContentTypeInfoMapUseCase
+import com.dogeby.wheretogo.core.domain.model.tour.TourContent
+import com.dogeby.wheretogo.core.domain.model.tour.toTourContent
+import com.dogeby.wheretogo.core.domain.tour.locationinfo.GetLocationInfoMapUseCase
 import com.dogeby.wheretogo.core.model.tour.ArrangeOption
 import javax.inject.Inject
 import kotlinx.coroutines.flow.Flow

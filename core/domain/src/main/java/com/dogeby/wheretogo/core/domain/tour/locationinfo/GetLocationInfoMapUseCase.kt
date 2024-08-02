@@ -1,4 +1,4 @@
-package com.dogeby.wheretogo.core.domain.locationinfo
+package com.dogeby.wheretogo.core.domain.tour.locationinfo
 
 import com.dogeby.wheretogo.core.data.repository.TourRepository
 import com.dogeby.wheretogo.core.domain.model.tour.locationinfo.AreaInfo

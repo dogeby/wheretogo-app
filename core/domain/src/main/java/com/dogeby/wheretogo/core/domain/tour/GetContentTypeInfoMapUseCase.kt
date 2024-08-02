@@ -1,4 +1,4 @@
-package com.dogeby.wheretogo.core.domain.serviceinfo
+package com.dogeby.wheretogo.core.domain.tour
 
 import com.dogeby.wheretogo.core.data.repository.TourRepository
 import com.dogeby.wheretogo.core.domain.model.tour.serviceinfo.ContentTypeInfo
