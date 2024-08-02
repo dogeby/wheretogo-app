@@ -211,7 +211,7 @@ class TourRepositoryImpl @Inject constructor(
         }
     }
 
-    override fun getContentTypeInfoList(): Flow<Result<Map<String, ContentTypeInfoData>>> {
+    override fun getContentTypeInfoMap(): Flow<Result<Map<String, ContentTypeInfoData>>> {
         return flow {
             val result = try {
                 Result.success(contentTypeInfoLoader.getContentTypeInfoList())

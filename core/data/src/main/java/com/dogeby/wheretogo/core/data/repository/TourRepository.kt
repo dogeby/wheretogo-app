@@ -60,5 +60,5 @@ interface TourRepository {
 
     fun getLocationInfoList(areaCode: String = ""): Flow<Result<List<LocationInfoData>>>
 
-    fun getContentTypeInfoList(): Flow<Result<Map<String, ContentTypeInfoData>>>
+    fun getContentTypeInfoMap(): Flow<Result<Map<String, ContentTypeInfoData>>>
 }
