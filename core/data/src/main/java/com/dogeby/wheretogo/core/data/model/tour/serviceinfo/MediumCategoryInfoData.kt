@@ -4,7 +4,6 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class MediumCategoryInfoData(
-    val code: String,
-    val name: String,
-    val minorCategories: Map<String, MinorCategoryInfoData>,
+    val serviceInfoData: ServiceInfoData,
+    val minorCategories: Map<String, ServiceInfoData>,
 )

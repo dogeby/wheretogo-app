@@ -21,5 +21,5 @@ data class NetworkKeywordSearchBody(
 @Serializable
 data class NetworkKeywordSearchResult(
     @SerialName("item")
-    val items: List<NetworkKeywordSearchData>,
+    val items: List<NetworkKeywordSearchResultData>,
 )

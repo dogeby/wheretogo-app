@@ -14,10 +14,10 @@ import com.dogeby.wheretogo.core.network.model.tour.festival.NetworkFestivalResp
 import com.dogeby.wheretogo.core.network.model.tour.festival.NetworkFestivalResponseContent
 import com.dogeby.wheretogo.core.network.model.tour.festival.NetworkFestivalResult
 import com.dogeby.wheretogo.core.network.model.tour.keywordsearch.NetworkKeywordSearchBody
-import com.dogeby.wheretogo.core.network.model.tour.keywordsearch.NetworkKeywordSearchData
 import com.dogeby.wheretogo.core.network.model.tour.keywordsearch.NetworkKeywordSearchResponse
 import com.dogeby.wheretogo.core.network.model.tour.keywordsearch.NetworkKeywordSearchResponseContent
 import com.dogeby.wheretogo.core.network.model.tour.keywordsearch.NetworkKeywordSearchResult
+import com.dogeby.wheretogo.core.network.model.tour.keywordsearch.NetworkKeywordSearchResultData
 import com.dogeby.wheretogo.core.network.model.tour.locationinfo.NetworkLocationInfoBody
 import com.dogeby.wheretogo.core.network.model.tour.locationinfo.NetworkLocationInfoData
 import com.dogeby.wheretogo.core.network.model.tour.locationinfo.NetworkLocationInfoResponse
@@ -140,7 +140,7 @@ class FakeTourNetworkDataSource @Inject constructor() : TourNetworkDataSource {
             totalCount = TOTAL_COUNT,
             result = NetworkKeywordSearchResult(
                 items = List(keywordSearchRequestBody.numberOfRows) {
-                    NetworkKeywordSearchData(
+                    NetworkKeywordSearchResultData(
                         contentId = "${keywordSearchRequestBody.currentPage} $it",
                         contentTypeId = "38",
                         createdTime = "20111111014944",

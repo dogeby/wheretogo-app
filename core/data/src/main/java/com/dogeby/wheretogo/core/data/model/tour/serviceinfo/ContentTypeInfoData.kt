@@ -4,8 +4,7 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class ContentTypeInfoData(
-    val code: String,
-    val name: String,
+    val serviceInfoData: ServiceInfoData,
     val majorCategories: Map<String, MajorCategoryInfoData>,
 )
 

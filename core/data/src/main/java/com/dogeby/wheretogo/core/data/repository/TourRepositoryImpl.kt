@@ -5,7 +5,7 @@ import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import com.dogeby.wheretogo.core.data.model.tour.CommonInfoData
 import com.dogeby.wheretogo.core.data.model.tour.FestivalData
-import com.dogeby.wheretogo.core.data.model.tour.KeywordSearchData
+import com.dogeby.wheretogo.core.data.model.tour.KeywordSearchResultData
 import com.dogeby.wheretogo.core.data.model.tour.LocationInfoData
 import com.dogeby.wheretogo.core.data.model.tour.LocationInfoDataList
 import com.dogeby.wheretogo.core.data.model.tour.TourContentData
@@ -13,7 +13,7 @@ import com.dogeby.wheretogo.core.data.model.tour.serviceinfo.ContentTypeInfoData
 import com.dogeby.wheretogo.core.data.model.tour.toCommonInfoData
 import com.dogeby.wheretogo.core.data.model.tour.toLocationInfoData
 import com.dogeby.wheretogo.core.data.paging.FestivalInfoPagingSource
-import com.dogeby.wheretogo.core.data.paging.KeywordSearchPagingSource
+import com.dogeby.wheretogo.core.data.paging.KeywordSearchResultPagingSource
 import com.dogeby.wheretogo.core.data.paging.TourInfoByRegionPagingSource
 import com.dogeby.wheretogo.core.data.util.ContentTypeInfoLoader
 import com.dogeby.wheretogo.core.datastore.cache.CachePreferencesManager
@@ -107,11 +107,11 @@ class TourRepositoryImpl @Inject constructor(
         category2: String,
         category3: String,
         arrangeOption: ArrangeOption,
-    ): Flow<PagingData<KeywordSearchData>> {
+    ): Flow<PagingData<KeywordSearchResultData>> {
         return Pager(
             PagingConfig(numberOfRows),
         ) {
-            KeywordSearchPagingSource(
+            KeywordSearchResultPagingSource(
                 tourNetworkDataSource = tourNetworkDataSource,
                 keywordSearchRequestBody = KeywordSearchRequestBody(
                     keyword = keyword,

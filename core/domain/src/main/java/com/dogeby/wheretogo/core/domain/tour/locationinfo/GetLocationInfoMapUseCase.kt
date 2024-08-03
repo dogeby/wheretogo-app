@@ -1,4 +1,4 @@
-package com.dogeby.wheretogo.core.domain.locationinfo
+package com.dogeby.wheretogo.core.domain.tour.locationinfo
 
 import com.dogeby.wheretogo.core.data.repository.TourRepository
 import com.dogeby.wheretogo.core.domain.model.tour.locationinfo.AreaInfo
@@ -13,9 +13,9 @@ class GetLocationInfoMapUseCase @Inject constructor(
     private val tourRepository: TourRepository,
 ) {
 
-    operator fun invoke(areaCode: String = ""): Flow<Result<Map<String, AreaInfo>>> {
+    operator fun invoke(): Flow<Result<Map<String, AreaInfo>>> {
         return tourRepository
-            .getLocationInfoList(areaCode)
+            .getLocationInfoList()
             .map { result ->
                 result.mapCatching { areaInfoDataList ->
                     areaInfoDataList.associateBy(

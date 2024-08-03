@@ -4,7 +4,7 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class NetworkKeywordSearchData(
+data class NetworkKeywordSearchResultData(
     @SerialName("contentid")
     val contentId: String,
 

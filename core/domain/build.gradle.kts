@@ -36,11 +36,13 @@ android {
 
 dependencies {
     implementation(project(":core:data"))
+    implementation(project(":core:model"))
 
     implementation(libs.kotlinx.coroutines.android)
     implementation(libs.hilt.android)
     kapt(libs.hilt.compiler)
     implementation(libs.paging.runtime)
+    implementation(libs.kotlinx.datetime)
 
     testImplementation(libs.junit)
     testImplementation(libs.kotlinx.coroutines.test)
