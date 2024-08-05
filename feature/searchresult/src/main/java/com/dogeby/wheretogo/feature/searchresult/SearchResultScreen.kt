@@ -15,6 +15,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.paging.PagingData
+import androidx.paging.compose.LazyPagingItems
+import androidx.paging.compose.collectAsLazyPagingItems
 import com.dogeby.wheretogo.core.ui.R
 import com.dogeby.wheretogo.core.ui.components.common.LoadingDisplay
 import com.dogeby.wheretogo.core.ui.components.common.NoSearchResultsDisplay
@@ -25,10 +28,12 @@ import com.dogeby.wheretogo.core.ui.model.ContentListUiState
 import com.dogeby.wheretogo.core.ui.model.FestivalListItemUiState
 import com.dogeby.wheretogo.core.ui.model.FestivalListUiState
 import com.dogeby.wheretogo.feature.searchresult.model.SearchResultScreenUiState
+import kotlinx.coroutines.flow.flowOf
 
 @Composable
 internal fun SearchResultScreen(
     searchResultScreenState: SearchResultScreenUiState,
+    festivals: LazyPagingItems<FestivalListItemUiState>,
     onClickContent: (id: String) -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -43,6 +48,7 @@ internal fun SearchResultScreen(
                 SearchResultList(
                     attractionListState = attractionListState,
                     festivalListState = festivalListState,
+                    festivals = festivals,
                     restaurantListState = restaurantListState,
                     accommodationListState = accommodationListState,
                     onClickContent = onClickContent,
@@ -57,6 +63,7 @@ internal fun SearchResultScreen(
 private fun SearchResultList(
     attractionListState: ContentListUiState,
     festivalListState: FestivalListUiState,
+    festivals: LazyPagingItems<FestivalListItemUiState>,
     restaurantListState: ContentListUiState,
     accommodationListState: ContentListUiState,
     onClickContent: (id: String) -> Unit,
@@ -75,7 +82,7 @@ private fun SearchResultList(
         when (festivalListState) {
             FestivalListUiState.Loading -> Unit
             is FestivalListUiState.Success -> {
-                if (festivalListState.festivals.isNotEmpty()) {
+                if (festivals.itemCount != 0) {
                     item(
                         span = {
                             GridItemSpan(maxLineSpan)
@@ -89,6 +96,7 @@ private fun SearchResultList(
                     }
                     festivalList(
                         festivalsState = festivalListState,
+                        festivals = festivals,
                         onClickItem = onClickContent,
                     )
                 }
@@ -139,8 +147,12 @@ private fun LazyGridScope.contentSearchResultList(
 @Preview(showBackground = true)
 @Composable
 private fun SearchResultScreenPreview_Empty() {
+    val festivals = emptyList<FestivalListItemUiState>()
+    val pagedFestivals = flowOf(PagingData.from(festivals)).collectAsLazyPagingItems()
+
     SearchResultScreen(
         searchResultScreenState = SearchResultScreenUiState.Empty,
+        festivals = pagedFestivals,
         onClickContent = {},
     )
 }
@@ -148,8 +160,12 @@ private fun SearchResultScreenPreview_Empty() {
 @Preview(showBackground = true)
 @Composable
 private fun SearchResultScreenPreview_Loading() {
+    val festivals = emptyList<FestivalListItemUiState>()
+    val pagedFestivals = flowOf(PagingData.from(festivals)).collectAsLazyPagingItems()
+
     SearchResultScreen(
         searchResultScreenState = SearchResultScreenUiState.Loading,
+        festivals = pagedFestivals,
         onClickContent = {},
     )
 }
@@ -157,6 +173,21 @@ private fun SearchResultScreenPreview_Loading() {
 @Preview(showBackground = true)
 @Composable
 private fun SearchResultScreenPreview_Success() {
+    val festivals = List(10) {
+        FestivalListItemUiState(
+            id = "$it",
+            title = "Title",
+            startDate = "20210306",
+            endDate = "20211030",
+            imgSrc = "http://tong.visitkorea.or.kr/cms/resource/54/" +
+                "2483454_image2_1.JPG",
+            avgStarRating = 4.5,
+            areaName = "area",
+            sigunguName = "sigungu",
+        )
+    }
+    val pagedFestivals = flowOf(PagingData.from(festivals)).collectAsLazyPagingItems()
+
     Column {
         SearchResultScreen(
             searchResultScreenState = SearchResultScreenUiState.Success(
@@ -179,19 +210,6 @@ private fun SearchResultScreenPreview_Success() {
                 festivalListState = FestivalListUiState.Success(
                     contentTypeId = "15",
                     contentTypeName = "축제/공연/행사",
-                    festivals = List(10) {
-                        FestivalListItemUiState(
-                            id = "$it",
-                            title = "Title",
-                            startDate = "20210306",
-                            endDate = "20211030",
-                            imgSrc = "http://tong.visitkorea.or.kr/cms/resource/54/" +
-                                "2483454_image2_1.JPG",
-                            avgStarRating = 4.5,
-                            areaName = "area",
-                            sigunguName = "sigungu",
-                        )
-                    },
                 ),
                 restaurantListState = ContentListUiState.Success(
                     contentTypeId = "39",
@@ -204,6 +222,7 @@ private fun SearchResultScreenPreview_Success() {
                     contents = emptyList(),
                 ),
             ),
+            festivals = pagedFestivals,
             onClickContent = {},
         )
     }
