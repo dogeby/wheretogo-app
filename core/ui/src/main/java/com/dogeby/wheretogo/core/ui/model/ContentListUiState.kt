@@ -11,7 +11,6 @@ sealed interface ContentListUiState {
         val areaName: String = "",
         val sigunguCode: String = "",
         val sigunguName: String = "",
-        val contents: List<ContentListItemUiState>,
     ) : ContentListUiState
 }
 
