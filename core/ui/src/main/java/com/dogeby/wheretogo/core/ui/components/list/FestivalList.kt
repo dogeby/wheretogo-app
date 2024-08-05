@@ -38,6 +38,14 @@ fun LazyGridScope.festivalCardList(
     when (festivalsState) {
         FestivalListUiState.Loading -> Unit
         is FestivalListUiState.Success -> {
+            if (festivals.loadState.refresh == LoadState.Loading) {
+                item(span = { GridItemSpan(maxLineSpan) }) {
+                    CircularProgressIndicator(
+                        modifier = Modifier.fillMaxSize()
+                            .wrapContentSize(Alignment.Center),
+                    )
+                }
+            }
             items(festivals.itemCount) { index ->
                 festivals[index]?.let {
                     FestivalCard(
@@ -74,6 +82,14 @@ fun LazyGridScope.festivalList(
     when (festivalsState) {
         FestivalListUiState.Loading -> Unit
         is FestivalListUiState.Success -> {
+            if (festivals.loadState.refresh == LoadState.Loading) {
+                item(span = { GridItemSpan(maxLineSpan) }) {
+                    CircularProgressIndicator(
+                        modifier = Modifier.fillMaxSize()
+                            .wrapContentSize(Alignment.Center),
+                    )
+                }
+            }
             items(festivals.itemCount) { index ->
                 festivals[index]?.let {
                     FestivalListItem(

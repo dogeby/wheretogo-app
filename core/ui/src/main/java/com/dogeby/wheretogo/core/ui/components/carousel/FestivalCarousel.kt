@@ -2,7 +2,7 @@ package com.dogeby.wheretogo.core.ui.components.carousel
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.PageSize
@@ -18,6 +18,7 @@ import androidx.paging.LoadState
 import androidx.paging.PagingData
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
+import com.dogeby.wheretogo.core.ui.components.card.FESTIVAL_CARD_DEFAULT_ASPECT_RATIO
 import com.dogeby.wheretogo.core.ui.components.card.FestivalCard
 import com.dogeby.wheretogo.core.ui.model.FestivalListItemUiState
 import com.dogeby.wheretogo.core.ui.model.FestivalListUiState
@@ -40,6 +41,13 @@ fun FestivalCardCarousel(
             val pagerState = rememberPagerState {
                 festivals.itemCount
             }
+            if (festivals.loadState.refresh == LoadState.Loading) {
+                CircularProgressIndicator(
+                    modifier = Modifier
+                        .aspectRatio(FESTIVAL_CARD_DEFAULT_ASPECT_RATIO)
+                        .wrapContentSize(Alignment.Center),
+                )
+            }
             HorizontalPager(
                 state = pagerState,
                 modifier = modifier,
@@ -59,13 +67,6 @@ fun FestivalCardCarousel(
                         onClick = {
                             onClickItem(it.id)
                         },
-                    )
-                }
-                if (festivals.loadState.append == LoadState.Loading) {
-                    CircularProgressIndicator(
-                        modifier = Modifier
-                            .fillMaxSize()
-                            .wrapContentSize(Alignment.Center),
                     )
                 }
             }
