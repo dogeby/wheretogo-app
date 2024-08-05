@@ -25,6 +25,8 @@ import com.dogeby.wheretogo.core.ui.components.common.DateRangeDisplay
 import com.dogeby.wheretogo.core.ui.components.common.LocationDisplay
 import com.dogeby.wheretogo.core.ui.components.common.StarRatingDisplay
 
+const val FESTIVAL_CARD_DEFAULT_ASPECT_RATIO = 1.6f
+
 @Composable
 fun FestivalCard(
     title: String,
@@ -38,6 +40,7 @@ fun FestivalCard(
     modifier: Modifier = Modifier,
     shape: Shape = CardDefaults.shape,
     colors: CardColors = CardDefaults.cardColors(containerColor = Color.Transparent),
+    ratio: Float = FESTIVAL_CARD_DEFAULT_ASPECT_RATIO,
 ) {
     Card(
         onClick = onClick,
@@ -49,7 +52,7 @@ fun FestivalCard(
             AsyncImageWithFallback(
                 imgSrc = imgSrc,
                 modifier = Modifier
-                    .aspectRatio(1.6f)
+                    .aspectRatio(ratio)
                     .clip(RoundedCornerShape(12.dp)),
             )
             Column(modifier = Modifier.padding(vertical = 4.dp)) {

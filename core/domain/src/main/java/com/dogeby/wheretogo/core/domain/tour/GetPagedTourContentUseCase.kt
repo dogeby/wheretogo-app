@@ -24,7 +24,7 @@ class GetPagedTourContentUseCase @Inject constructor(
         majorCategoryCode: String = "",
         mediumCategoryCode: String = "",
         minorCategoryCode: String = "",
-        arrangeOption: ArrangeOption = ArrangeOption.MODIFIED_TIME,
+        arrangeOption: ArrangeOption = ArrangeOption.ModifiedTime,
     ): Flow<Result<PagingData<TourContent>>> {
         return combine(
             getLocationInfoMapUseCase(),

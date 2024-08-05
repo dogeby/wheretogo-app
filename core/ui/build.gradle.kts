@@ -49,6 +49,7 @@ dependencies {
     implementation(libs.coil.compose)
     implementation(libs.zoomable)
     implementation(libs.androidx.activity.compose)
+    implementation(libs.paging.compose)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

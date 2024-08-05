@@ -1,10 +1,10 @@
 package com.dogeby.wheretogo.core.network.retrofit
 
+import com.dogeby.wheretogo.core.network.model.tour.requestbody.CategoryInfoRequestBody
 import com.dogeby.wheretogo.core.network.model.tour.requestbody.CommonInfoRequestBody
 import com.dogeby.wheretogo.core.network.model.tour.requestbody.FestivalInfoRequestBody
 import com.dogeby.wheretogo.core.network.model.tour.requestbody.KeywordSearchRequestBody
 import com.dogeby.wheretogo.core.network.model.tour.requestbody.LocationInfoRequestBody
-import com.dogeby.wheretogo.core.network.model.tour.requestbody.ServiceInfoRequestBody
 import com.dogeby.wheretogo.core.network.model.tour.requestbody.TourInfoByRegionRequestBody
 import kotlinx.coroutines.test.runTest
 import kotlinx.serialization.json.Json
@@ -92,8 +92,8 @@ class RetrofitTourNetworkTest {
     }
 
     @Test
-    fun test_fetchServiceInfo_success() = runTest {
-        retrofitTourNetwork.fetchServiceInfo(ServiceInfoRequestBody())
+    fun test_fetchCategoryInfo_success() = runTest {
+        retrofitTourNetwork.fetchCategoryInfo(CategoryInfoRequestBody())
             .onSuccess {
                 Assert.assertEquals(
                     "0000",

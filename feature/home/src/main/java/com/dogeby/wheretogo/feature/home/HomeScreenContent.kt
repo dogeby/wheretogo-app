@@ -17,6 +17,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.paging.PagingData
+import androidx.paging.compose.LazyPagingItems
+import androidx.paging.compose.collectAsLazyPagingItems
 import com.dogeby.wheretogo.core.ui.components.carousel.ContentCardCarousel
 import com.dogeby.wheretogo.core.ui.components.carousel.ContentCarousel
 import com.dogeby.wheretogo.core.ui.components.carousel.FestivalCardCarousel
@@ -27,11 +30,13 @@ import com.dogeby.wheretogo.core.ui.model.FestivalListItemUiState
 import com.dogeby.wheretogo.core.ui.model.FestivalListUiState
 import com.dogeby.wheretogo.core.ui.util.buildLocationContentTypeText
 import com.dogeby.wheretogo.feature.home.model.HomeScreenUiState
+import kotlinx.coroutines.flow.flowOf
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 internal fun HomeScreenContent(
     homeScreenUiState: HomeScreenUiState.Success,
+    festivals: LazyPagingItems<FestivalListItemUiState>,
     onNavigateToList: (contentTypeId: String, areaCode: String, sigunguCode: String) -> Unit,
     onNavigateToContentDetail: (id: String) -> Unit,
     modifier: Modifier = Modifier,
@@ -45,6 +50,7 @@ internal fun HomeScreenContent(
             item {
                 FestivalCardCarousel(
                     festivalsState = festivalPerformanceEventListState,
+                    festivals = festivals,
                     onClickItem = onNavigateToContentDetail,
                     contentPadding = PaddingValues(horizontal = 16.dp),
                     pageSize = PageSize.Fixed(360.dp),
@@ -60,31 +66,21 @@ internal fun HomeScreenContent(
                     modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp),
                 )
             }
-            contentsWithTitleRow(
-                contentsState = touristSpotListState,
-                onNavigateToContents = onNavigateToList,
-                onNavigateToContentDetail = onNavigateToContentDetail,
-            )
-            contentCardsWithTitleRow(
-                contentsState = culturalFacilityListState,
-                onNavigateToList = onNavigateToList,
-                onNavigateToContentDetail = onNavigateToContentDetail,
-            )
-            contentsWithTitleRow(
-                contentsState = leisureSpotListState,
-                onNavigateToContents = onNavigateToList,
-                onNavigateToContentDetail = onNavigateToContentDetail,
-            )
-            contentCardsWithTitleRow(
-                contentsState = restaurantListState,
-                onNavigateToList = onNavigateToList,
-                onNavigateToContentDetail = onNavigateToContentDetail,
-            )
-            contentsWithTitleRow(
-                contentsState = accommodationListState,
-                onNavigateToContents = onNavigateToList,
-                onNavigateToContentDetail = onNavigateToContentDetail,
-            )
+            contentListStates.forEachIndexed { index, contentListUiState ->
+                if (index % 3 == 1) {
+                    contentCardsWithTitleRow(
+                        contentsState = contentListUiState,
+                        onNavigateToList = onNavigateToList,
+                        onNavigateToContentDetail = onNavigateToContentDetail,
+                    )
+                } else {
+                    contentsWithTitleRow(
+                        contentsState = contentListUiState,
+                        onNavigateToContents = onNavigateToList,
+                        onNavigateToContentDetail = onNavigateToContentDetail,
+                    )
+                }
+            }
         }
     }
 }
@@ -167,19 +163,6 @@ private fun HomeScreenContentPreview() {
     val festivalListUiState = FestivalListUiState.Success(
         contentTypeId = "15",
         contentTypeName = "축제/공연/행사",
-        festivals = List(10) {
-            FestivalListItemUiState(
-                id = "$it",
-                title = "Title",
-                startDate = "20210306",
-                endDate = "20211030",
-                imgSrc = "http://tong.visitkorea.or.kr/cms/resource/54/" +
-                    "2483454_image2_1.JPG",
-                avgStarRating = 4.5,
-                areaName = "area",
-                sigunguName = "sigungu",
-            )
-        },
     )
     val contentListUiState = ContentListUiState.Success(
         contentTypeId = "12",
@@ -197,15 +180,29 @@ private fun HomeScreenContentPreview() {
             )
         },
     )
+    val festivals = List(10) {
+        FestivalListItemUiState(
+            id = "$it",
+            title = "Title",
+            startDate = "20210306",
+            endDate = "20211030",
+            imgSrc = "http://tong.visitkorea.or.kr/cms/resource/54/" +
+                "2483454_image2_1.JPG",
+            avgStarRating = 4.5,
+            areaName = "area",
+            sigunguName = "sigungu",
+        )
+    }
+    val pagedFestivals = flowOf(PagingData.from(festivals)).collectAsLazyPagingItems()
+
     HomeScreenContent(
         homeScreenUiState = HomeScreenUiState.Success(
             festivalPerformanceEventListState = festivalListUiState,
-            touristSpotListState = contentListUiState,
-            culturalFacilityListState = contentListUiState,
-            leisureSpotListState = contentListUiState,
-            restaurantListState = contentListUiState,
-            accommodationListState = contentListUiState,
+            contentListStates = List(7) {
+                contentListUiState
+            },
         ),
+        festivals = pagedFestivals,
         onNavigateToList = { _, _, _ -> },
         onNavigateToContentDetail = {},
     )

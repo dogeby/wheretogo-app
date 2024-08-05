@@ -13,7 +13,7 @@ import com.dogeby.wheretogo.core.network.model.tour.requestbody.KeywordSearchReq
 class KeywordSearchResultPagingSource(
     private val tourNetworkDataSource: TourNetworkDataSource,
     private val keywordSearchRequestBody: KeywordSearchRequestBody,
-    private val arrangeOption: ArrangeOption = ArrangeOption.MODIFIED_TIME,
+    private val arrangeOption: ArrangeOption = ArrangeOption.ModifiedTime,
 ) : PagingSource<Int, KeywordSearchResultData>() {
 
     override fun getRefreshKey(state: PagingState<Int, KeywordSearchResultData>): Int? {

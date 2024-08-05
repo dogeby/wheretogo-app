@@ -3,6 +3,11 @@ package com.dogeby.wheretogo.core.network.fake
 import com.dogeby.wheretogo.core.model.tour.ArrangeOption
 import com.dogeby.wheretogo.core.network.TourNetworkDataSource
 import com.dogeby.wheretogo.core.network.model.tour.NetworkTourApiHeader
+import com.dogeby.wheretogo.core.network.model.tour.categoryinfo.NetworkCategoryInfoBody
+import com.dogeby.wheretogo.core.network.model.tour.categoryinfo.NetworkCategoryInfoData
+import com.dogeby.wheretogo.core.network.model.tour.categoryinfo.NetworkCategoryInfoResponse
+import com.dogeby.wheretogo.core.network.model.tour.categoryinfo.NetworkCategoryInfoResponseContent
+import com.dogeby.wheretogo.core.network.model.tour.categoryinfo.NetworkCategoryInfoResult
 import com.dogeby.wheretogo.core.network.model.tour.commoninfo.NetworkCommonInfoBody
 import com.dogeby.wheretogo.core.network.model.tour.commoninfo.NetworkCommonInfoData
 import com.dogeby.wheretogo.core.network.model.tour.commoninfo.NetworkCommonInfoResponse
@@ -23,17 +28,12 @@ import com.dogeby.wheretogo.core.network.model.tour.locationinfo.NetworkLocation
 import com.dogeby.wheretogo.core.network.model.tour.locationinfo.NetworkLocationInfoResponse
 import com.dogeby.wheretogo.core.network.model.tour.locationinfo.NetworkLocationInfoResponseContent
 import com.dogeby.wheretogo.core.network.model.tour.locationinfo.NetworkLocationInfoResult
+import com.dogeby.wheretogo.core.network.model.tour.requestbody.CategoryInfoRequestBody
 import com.dogeby.wheretogo.core.network.model.tour.requestbody.CommonInfoRequestBody
 import com.dogeby.wheretogo.core.network.model.tour.requestbody.FestivalInfoRequestBody
 import com.dogeby.wheretogo.core.network.model.tour.requestbody.KeywordSearchRequestBody
 import com.dogeby.wheretogo.core.network.model.tour.requestbody.LocationInfoRequestBody
-import com.dogeby.wheretogo.core.network.model.tour.requestbody.ServiceInfoRequestBody
 import com.dogeby.wheretogo.core.network.model.tour.requestbody.TourInfoByRegionRequestBody
-import com.dogeby.wheretogo.core.network.model.tour.serviceinfo.NetworkServiceInfoBody
-import com.dogeby.wheretogo.core.network.model.tour.serviceinfo.NetworkServiceInfoData
-import com.dogeby.wheretogo.core.network.model.tour.serviceinfo.NetworkServiceInfoResponse
-import com.dogeby.wheretogo.core.network.model.tour.serviceinfo.NetworkServiceInfoResponseContent
-import com.dogeby.wheretogo.core.network.model.tour.serviceinfo.NetworkServiceInfoResult
 import com.dogeby.wheretogo.core.network.model.tour.tourcontent.NetworkTourContentBody
 import com.dogeby.wheretogo.core.network.model.tour.tourcontent.NetworkTourContentData
 import com.dogeby.wheretogo.core.network.model.tour.tourcontent.NetworkTourContentResponse
@@ -229,9 +229,9 @@ class FakeTourNetworkDataSource @Inject constructor() : TourNetworkDataSource {
         )
     }
 
-    override suspend fun fetchServiceInfo(
-        serviceInfoRequestBody: ServiceInfoRequestBody,
-    ): Result<NetworkServiceInfoResponse> {
+    override suspend fun fetchCategoryInfo(
+        categoryInfoRequestBody: CategoryInfoRequestBody,
+    ): Result<NetworkCategoryInfoResponse> {
         if (shouldReturnError) {
             return Result.failure(Exception())
         }
@@ -239,13 +239,13 @@ class FakeTourNetworkDataSource @Inject constructor() : TourNetworkDataSource {
             resultCode = "0000",
             resultMessage = "OK",
         )
-        val body = NetworkServiceInfoBody(
-            numberOfRows = serviceInfoRequestBody.numberOfRows,
-            currentPage = serviceInfoRequestBody.currentPage,
-            totalCount = SERVICE_INFO_TOTAL_COUNT,
-            result = NetworkServiceInfoResult(
-                items = List(SERVICE_INFO_TOTAL_COUNT) {
-                    NetworkServiceInfoData(
+        val body = NetworkCategoryInfoBody(
+            numberOfRows = categoryInfoRequestBody.numberOfRows,
+            currentPage = categoryInfoRequestBody.currentPage,
+            totalCount = CATEGORY_INFO_TOTAL_COUNT,
+            result = NetworkCategoryInfoResult(
+                items = List(CATEGORY_INFO_TOTAL_COUNT) {
+                    NetworkCategoryInfoData(
                         code = "$it",
                         name = "Name $it",
                         rnum = it,
@@ -254,8 +254,8 @@ class FakeTourNetworkDataSource @Inject constructor() : TourNetworkDataSource {
             ),
         )
         return Result.success(
-            NetworkServiceInfoResponse(
-                content = NetworkServiceInfoResponseContent(
+            NetworkCategoryInfoResponse(
+                content = NetworkCategoryInfoResponseContent(
                     header = header,
                     body = body,
                 ),
@@ -265,6 +265,6 @@ class FakeTourNetworkDataSource @Inject constructor() : TourNetworkDataSource {
 
     companion object {
         const val TOTAL_COUNT = 100
-        const val SERVICE_INFO_TOTAL_COUNT = 2
+        const val CATEGORY_INFO_TOTAL_COUNT = 2
     }
 }

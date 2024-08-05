@@ -1,6 +1,6 @@
 package com.dogeby.wheretogo.core.network.model.tour.requestbody
 
-data class ServiceInfoRequestBody(
+data class CategoryInfoRequestBody(
     val currentPage: Int = 1,
     val numberOfRows: Int = 1000,
     val contentTypeId: String = "",

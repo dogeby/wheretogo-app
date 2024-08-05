@@ -23,14 +23,14 @@ interface TourRepository {
         category1: String = "",
         category2: String = "",
         category3: String = "",
-        arrangeOption: ArrangeOption = ArrangeOption.MODIFIED_TIME,
+        arrangeOption: ArrangeOption = ArrangeOption.ModifiedTime,
     ): Flow<PagingData<TourContentData>>
 
     fun getPagedFestivalInfo(
         eventStartDate: Instant = Clock.System.now(),
         currentPage: Int = 1,
         numberOfRows: Int = 12,
-        arrangeOption: ArrangeOption = ArrangeOption.MODIFIED_TIME,
+        arrangeOption: ArrangeOption = ArrangeOption.ModifiedTime,
     ): Flow<PagingData<FestivalData>>
 
     fun searchKeyword(
@@ -43,7 +43,7 @@ interface TourRepository {
         category1: String = "",
         category2: String = "",
         category3: String = "",
-        arrangeOption: ArrangeOption = ArrangeOption.MODIFIED_TIME,
+        arrangeOption: ArrangeOption = ArrangeOption.ModifiedTime,
     ): Flow<PagingData<KeywordSearchResultData>>
 
     fun getCommonInfo(

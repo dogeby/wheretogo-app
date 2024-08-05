@@ -9,10 +9,6 @@ sealed interface HomeScreenUiState {
 
     data class Success(
         val festivalPerformanceEventListState: FestivalListUiState,
-        val touristSpotListState: ContentListUiState,
-        val culturalFacilityListState: ContentListUiState,
-        val leisureSpotListState: ContentListUiState,
-        val restaurantListState: ContentListUiState,
-        val accommodationListState: ContentListUiState,
+        val contentListStates: List<ContentListUiState>,
     ) : HomeScreenUiState
 }

@@ -11,7 +11,6 @@ sealed interface FestivalListUiState {
         val areaName: String = "",
         val sigunguCode: String = "",
         val sigunguName: String = "",
-        val festivals: List<FestivalListItemUiState>,
     ) : FestivalListUiState
 }
 

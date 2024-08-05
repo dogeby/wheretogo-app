@@ -3,17 +3,17 @@ package com.dogeby.wheretogo.core.network.retrofit
 import com.dogeby.wheretogo.core.model.tour.ArrangeOption
 import com.dogeby.wheretogo.core.network.BuildConfig
 import com.dogeby.wheretogo.core.network.TourNetworkDataSource
+import com.dogeby.wheretogo.core.network.model.tour.categoryinfo.NetworkCategoryInfoResponse
 import com.dogeby.wheretogo.core.network.model.tour.commoninfo.NetworkCommonInfoResponse
 import com.dogeby.wheretogo.core.network.model.tour.festival.NetworkFestivalResponse
 import com.dogeby.wheretogo.core.network.model.tour.keywordsearch.NetworkKeywordSearchResponse
 import com.dogeby.wheretogo.core.network.model.tour.locationinfo.NetworkLocationInfoResponse
+import com.dogeby.wheretogo.core.network.model.tour.requestbody.CategoryInfoRequestBody
 import com.dogeby.wheretogo.core.network.model.tour.requestbody.CommonInfoRequestBody
 import com.dogeby.wheretogo.core.network.model.tour.requestbody.FestivalInfoRequestBody
 import com.dogeby.wheretogo.core.network.model.tour.requestbody.KeywordSearchRequestBody
 import com.dogeby.wheretogo.core.network.model.tour.requestbody.LocationInfoRequestBody
-import com.dogeby.wheretogo.core.network.model.tour.requestbody.ServiceInfoRequestBody
 import com.dogeby.wheretogo.core.network.model.tour.requestbody.TourInfoByRegionRequestBody
-import com.dogeby.wheretogo.core.network.model.tour.serviceinfo.NetworkServiceInfoResponse
 import com.dogeby.wheretogo.core.network.model.tour.tourcontent.NetworkTourContentResponse
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import javax.inject.Inject
@@ -109,11 +109,11 @@ class RetrofitTourNetwork @Inject constructor(
         }
     }
 
-    override suspend fun fetchServiceInfo(
-        serviceInfoRequestBody: ServiceInfoRequestBody,
-    ): Result<NetworkServiceInfoResponse> = runCatching {
-        val response = networkApi.fetchServiceInfo(
-            queryParams = serviceInfoRequestBody.toQueryMap().putCommonQueryParams(),
+    override suspend fun fetchCategoryInfo(
+        categoryInfoRequestBody: CategoryInfoRequestBody,
+    ): Result<NetworkCategoryInfoResponse> = runCatching {
+        val response = networkApi.fetchCategoryInfo(
+            queryParams = categoryInfoRequestBody.toQueryMap().putCommonQueryParams(),
         )
         if (response.isSuccessful) {
             response.body() ?: throw NullPointerException()
@@ -180,7 +180,7 @@ private interface RetrofitTourNetworkApi {
     ): Response<NetworkLocationInfoResponse>
 
     @GET("categoryCode1")
-    suspend fun fetchServiceInfo(
+    suspend fun fetchCategoryInfo(
         @QueryMap queryParams: Map<String, String>,
-    ): Response<NetworkServiceInfoResponse>
+    ): Response<NetworkCategoryInfoResponse>
 }

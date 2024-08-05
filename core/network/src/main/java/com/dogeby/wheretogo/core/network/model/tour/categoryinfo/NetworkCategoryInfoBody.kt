@@ -1,10 +1,10 @@
-package com.dogeby.wheretogo.core.network.model.tour.serviceinfo
+package com.dogeby.wheretogo.core.network.model.tour.categoryinfo
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class NetworkServiceInfoBody(
+data class NetworkCategoryInfoBody(
     @SerialName("numOfRows")
     val numberOfRows: Int,
 
@@ -15,11 +15,11 @@ data class NetworkServiceInfoBody(
     val totalCount: Int,
 
     @SerialName("items")
-    val result: NetworkServiceInfoResult,
+    val result: NetworkCategoryInfoResult,
 )
 
 @Serializable
-data class NetworkServiceInfoResult(
+data class NetworkCategoryInfoResult(
     @SerialName("item")
-    val items: List<NetworkServiceInfoData>,
+    val items: List<NetworkCategoryInfoData>,
 )

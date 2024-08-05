@@ -1,9 +1,9 @@
 package com.dogeby.wheretogo.core.domain.util
 
+import com.dogeby.wheretogo.core.domain.model.tour.serviceinfo.CategoryInfo
 import com.dogeby.wheretogo.core.domain.model.tour.serviceinfo.ContentTypeInfo
 import com.dogeby.wheretogo.core.domain.model.tour.serviceinfo.MajorCategoryInfo
 import com.dogeby.wheretogo.core.domain.model.tour.serviceinfo.MediumCategoryInfo
-import com.dogeby.wheretogo.core.domain.model.tour.serviceinfo.ServiceInfo
 
 internal object CategoryInfoUtil {
 
@@ -23,7 +23,7 @@ internal object CategoryInfoUtil {
         category1: String?,
         category2: String? = null,
         category3: String? = null,
-    ): Triple<MajorCategoryInfo?, MediumCategoryInfo?, ServiceInfo?> {
+    ): Triple<MajorCategoryInfo?, MediumCategoryInfo?, CategoryInfo?> {
         val majorCategoryInfo = majorCategories?.get(category1)
         val mediumCategoryInfo = majorCategoryInfo?.mediumCategories?.get(category2)
         val minorCategoryInfo = mediumCategoryInfo?.minorCategories?.get(category3)

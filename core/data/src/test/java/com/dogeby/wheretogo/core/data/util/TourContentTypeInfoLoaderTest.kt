@@ -2,14 +2,15 @@ package com.dogeby.wheretogo.core.data.util
 
 import com.dogeby.wheretogo.core.common.di.CommonModule
 import com.dogeby.wheretogo.core.datastore.fake.FakeCachePreferencesManager
+import com.dogeby.wheretogo.core.model.tour.TourContentType
 import com.dogeby.wheretogo.core.network.fake.FakeTourNetworkDataSource
-import com.dogeby.wheretogo.core.network.fake.FakeTourNetworkDataSource.Companion.SERVICE_INFO_TOTAL_COUNT
+import com.dogeby.wheretogo.core.network.fake.FakeTourNetworkDataSource.Companion.CATEGORY_INFO_TOTAL_COUNT
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test
 
-class ContentTypeInfoLoaderTest {
+class TourContentTypeInfoLoaderTest {
 
     private lateinit var contentTypeInfoLoader: ContentTypeInfoLoader
 
@@ -28,17 +29,17 @@ class ContentTypeInfoLoaderTest {
     fun test_getContentTypeInfoList_success() = runTest {
         val result = contentTypeInfoLoader.getContentTypeInfoList().contentTypeInfos
 
-        assertEquals(2, result.size)
+        assertEquals(TourContentType.entries.size, result.size)
 
         result.forEach { (key, contentType) ->
-            assertEquals("${key.last()}", contentType.serviceInfoData.code)
-            assertEquals(SERVICE_INFO_TOTAL_COUNT, contentType.majorCategories.size)
+            assertEquals(key, contentType.contentType.id)
+            assertEquals(CATEGORY_INFO_TOTAL_COUNT, contentType.majorCategories.size)
 
             contentType.majorCategories.forEach { (_, majorCategory) ->
-                assertEquals(SERVICE_INFO_TOTAL_COUNT, majorCategory.mediumCategories.size)
+                assertEquals(CATEGORY_INFO_TOTAL_COUNT, majorCategory.mediumCategories.size)
 
                 majorCategory.mediumCategories.forEach { (_, mediumCategory) ->
-                    assertEquals(SERVICE_INFO_TOTAL_COUNT, mediumCategory.minorCategories.size)
+                    assertEquals(CATEGORY_INFO_TOTAL_COUNT, mediumCategory.minorCategories.size)
                 }
             }
         }

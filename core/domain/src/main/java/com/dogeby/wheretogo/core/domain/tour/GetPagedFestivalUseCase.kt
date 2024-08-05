@@ -21,7 +21,7 @@ class GetPagedFestivalUseCase @Inject constructor(
 
     operator fun invoke(
         eventStartDate: Instant = Clock.System.now(),
-        arrangeOption: ArrangeOption = ArrangeOption.MODIFIED_TIME,
+        arrangeOption: ArrangeOption = ArrangeOption.ModifiedTime,
     ): Flow<Result<PagingData<Festival>>> {
         return combine(
             getLocationInfoMapUseCase(),
