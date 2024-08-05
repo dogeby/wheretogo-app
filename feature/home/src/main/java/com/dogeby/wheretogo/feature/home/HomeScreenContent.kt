@@ -60,31 +60,21 @@ internal fun HomeScreenContent(
                     modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp),
                 )
             }
-            contentsWithTitleRow(
-                contentsState = touristSpotListState,
-                onNavigateToContents = onNavigateToList,
-                onNavigateToContentDetail = onNavigateToContentDetail,
-            )
-            contentCardsWithTitleRow(
-                contentsState = culturalFacilityListState,
-                onNavigateToList = onNavigateToList,
-                onNavigateToContentDetail = onNavigateToContentDetail,
-            )
-            contentsWithTitleRow(
-                contentsState = leisureSpotListState,
-                onNavigateToContents = onNavigateToList,
-                onNavigateToContentDetail = onNavigateToContentDetail,
-            )
-            contentCardsWithTitleRow(
-                contentsState = restaurantListState,
-                onNavigateToList = onNavigateToList,
-                onNavigateToContentDetail = onNavigateToContentDetail,
-            )
-            contentsWithTitleRow(
-                contentsState = accommodationListState,
-                onNavigateToContents = onNavigateToList,
-                onNavigateToContentDetail = onNavigateToContentDetail,
-            )
+            contentListStates.forEachIndexed { index, contentListUiState ->
+                if (index % 3 == 1) {
+                    contentCardsWithTitleRow(
+                        contentsState = contentListUiState,
+                        onNavigateToList = onNavigateToList,
+                        onNavigateToContentDetail = onNavigateToContentDetail,
+                    )
+                } else {
+                    contentsWithTitleRow(
+                        contentsState = contentListUiState,
+                        onNavigateToContents = onNavigateToList,
+                        onNavigateToContentDetail = onNavigateToContentDetail,
+                    )
+                }
+            }
         }
     }
 }
@@ -200,11 +190,9 @@ private fun HomeScreenContentPreview() {
     HomeScreenContent(
         homeScreenUiState = HomeScreenUiState.Success(
             festivalPerformanceEventListState = festivalListUiState,
-            touristSpotListState = contentListUiState,
-            culturalFacilityListState = contentListUiState,
-            leisureSpotListState = contentListUiState,
-            restaurantListState = contentListUiState,
-            accommodationListState = contentListUiState,
+            contentListStates = List(7) {
+                contentListUiState
+            },
         ),
         onNavigateToList = { _, _, _ -> },
         onNavigateToContentDetail = {},

@@ -71,11 +71,9 @@ private fun HomeScreenPreview() {
     HomeScreen(
         homeScreenUiState = HomeScreenUiState.Success(
             festivalPerformanceEventListState = festivalListUiState,
-            touristSpotListState = contentListUiState,
-            culturalFacilityListState = contentListUiState,
-            leisureSpotListState = contentListUiState,
-            restaurantListState = contentListUiState,
-            accommodationListState = contentListUiState,
+            contentListStates = List(7) {
+                contentListUiState
+            },
         ),
         onNavigateToList = { _, _, _ -> },
         onNavigateToContentDetail = {},
