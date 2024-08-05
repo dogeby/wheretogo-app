@@ -3,13 +3,13 @@ package com.dogeby.wheretogo.core.domain.model.tour.serviceinfo
 import com.dogeby.wheretogo.core.data.model.tour.serviceinfo.MediumCategoryInfoData
 
 data class MediumCategoryInfo(
-    val serviceInfo: ServiceInfo,
-    val minorCategories: Map<String, ServiceInfo>,
+    val categoryInfo: CategoryInfo,
+    val minorCategories: Map<String, CategoryInfo>,
 )
 
 internal fun MediumCategoryInfoData.toMediumCategoryInfo() = MediumCategoryInfo(
-    serviceInfo = serviceInfoData.toServiceInfo(),
+    categoryInfo = categoryInfoData.toCategoryInfo(),
     minorCategories = minorCategories.mapValues {
-        it.value.toServiceInfo()
+        it.value.toCategoryInfo()
     },
 )

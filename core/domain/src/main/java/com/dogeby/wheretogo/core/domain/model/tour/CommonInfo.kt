@@ -3,14 +3,15 @@ package com.dogeby.wheretogo.core.domain.model.tour
 import com.dogeby.wheretogo.core.data.model.tour.CommonInfoData
 import com.dogeby.wheretogo.core.domain.model.tour.locationinfo.AreaInfo
 import com.dogeby.wheretogo.core.domain.model.tour.locationinfo.LocationInfo
+import com.dogeby.wheretogo.core.domain.model.tour.serviceinfo.CategoryInfo
 import com.dogeby.wheretogo.core.domain.model.tour.serviceinfo.ContentTypeInfo
-import com.dogeby.wheretogo.core.domain.model.tour.serviceinfo.ServiceInfo
 import com.dogeby.wheretogo.core.domain.util.CategoryInfoUtil.getCategoryInfo
 import com.dogeby.wheretogo.core.domain.util.CategoryInfoUtil.getContentTypeInfo
+import com.dogeby.wheretogo.core.model.tour.TourContentType
 
 data class CommonInfo(
     val contentId: String,
-    val contentTypeInfo: ServiceInfo,
+    val contentType: TourContentType,
     val createdTime: String? = null,
     val modifiedTime: String? = null,
     val title: String? = null,
@@ -19,9 +20,9 @@ data class CommonInfo(
     val addr2: String? = null,
     val areaInfo: LocationInfo? = null,
     val sigunguInfo: LocationInfo? = null,
-    val majorCategoryInfo: ServiceInfo? = null,
-    val mediumCategoryInfo: ServiceInfo? = null,
-    val minorCategoryInfo: ServiceInfo? = null,
+    val majorCategoryInfo: CategoryInfo? = null,
+    val mediumCategoryInfo: CategoryInfo? = null,
+    val minorCategoryInfo: CategoryInfo? = null,
     val firstImageSrc: String? = null,
     val firstImageThumbnailSrc: String? = null,
     val longitude: String? = null,
@@ -59,7 +60,7 @@ internal fun CommonInfoData.toCommonInfo(
 
     return CommonInfo(
         contentId = contentId,
-        contentTypeInfo = contentTypeInfo.serviceInfo,
+        contentType = contentTypeInfo.contentType,
         createdTime = createdTime,
         modifiedTime = modifiedTime,
         title = title,
@@ -68,8 +69,8 @@ internal fun CommonInfoData.toCommonInfo(
         addr2 = addr2,
         areaInfo = areaInfo?.locationInfo,
         sigunguInfo = sigunguInfo,
-        majorCategoryInfo = majorCatInfo?.serviceInfo,
-        mediumCategoryInfo = mediumCatInfo?.serviceInfo,
+        majorCategoryInfo = majorCatInfo?.categoryInfo,
+        mediumCategoryInfo = mediumCatInfo?.categoryInfo,
         minorCategoryInfo = minorCatInfo,
         firstImageSrc = firstImageSrc,
         firstImageThumbnailSrc = firstImageThumbnailSrc,
