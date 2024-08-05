@@ -18,17 +18,17 @@ interface TourNetworkDataSource {
 
     suspend fun fetchTourInfoByRegion(
         tourInfoByRegionRequestBody: TourInfoByRegionRequestBody,
-        arrangeOption: ArrangeOption = ArrangeOption.MODIFIED_TIME,
+        arrangeOption: ArrangeOption = ArrangeOption.ModifiedTime,
     ): Result<NetworkTourContentResponse>
 
     suspend fun fetchFestivalInfo(
         festivalInfoRequestBody: FestivalInfoRequestBody,
-        arrangeOption: ArrangeOption = ArrangeOption.MODIFIED_TIME,
+        arrangeOption: ArrangeOption = ArrangeOption.ModifiedTime,
     ): Result<NetworkFestivalResponse>
 
     suspend fun searchKeyword(
         keywordSearchRequestBody: KeywordSearchRequestBody,
-        arrangeOption: ArrangeOption = ArrangeOption.MODIFIED_TIME,
+        arrangeOption: ArrangeOption = ArrangeOption.ModifiedTime,
     ): Result<NetworkKeywordSearchResponse>
 
     suspend fun fetchCommonInfo(

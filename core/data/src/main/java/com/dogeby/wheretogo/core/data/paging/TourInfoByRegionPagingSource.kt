@@ -14,7 +14,7 @@ import kotlin.Exception
 class TourInfoByRegionPagingSource(
     private val tourNetworkDataSource: TourNetworkDataSource,
     private val tourInfoByRegionRequestBody: TourInfoByRegionRequestBody,
-    private val arrangeOption: ArrangeOption = ArrangeOption.MODIFIED_TIME,
+    private val arrangeOption: ArrangeOption = ArrangeOption.ModifiedTime,
 ) : PagingSource<Int, TourContentData>() {
 
     override fun getRefreshKey(state: PagingState<Int, TourContentData>): Int? {

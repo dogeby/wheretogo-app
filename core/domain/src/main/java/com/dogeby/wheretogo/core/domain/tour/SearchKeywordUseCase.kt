@@ -25,7 +25,7 @@ class SearchKeywordUseCase @Inject constructor(
         majorCategoryCode: String = "",
         mediumCategoryCode: String = "",
         minorCategoryCode: String = "",
-        arrangeOption: ArrangeOption = ArrangeOption.MODIFIED_TIME,
+        arrangeOption: ArrangeOption = ArrangeOption.ModifiedTime,
     ): Flow<Result<PagingData<KeywordSearchResult>>> {
         return combine(
             getLocationInfoMapUseCase(),

@@ -13,7 +13,7 @@ import com.dogeby.wheretogo.core.network.model.tour.requestbody.FestivalInfoRequ
 class FestivalInfoPagingSource(
     private val tourNetworkDataSource: TourNetworkDataSource,
     private val festivalInfoRequestBody: FestivalInfoRequestBody,
-    private val arrangeOption: ArrangeOption = ArrangeOption.MODIFIED_TIME,
+    private val arrangeOption: ArrangeOption = ArrangeOption.ModifiedTime,
 ) : PagingSource<Int, FestivalData>() {
 
     override fun getRefreshKey(state: PagingState<Int, FestivalData>): Int? {
