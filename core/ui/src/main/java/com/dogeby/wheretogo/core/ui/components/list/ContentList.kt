@@ -3,6 +3,7 @@ package com.dogeby.wheretogo.core.ui.components.list
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentSize
@@ -27,6 +28,7 @@ import androidx.paging.LoadStates
 import androidx.paging.PagingData
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
+import com.dogeby.wheretogo.core.ui.components.card.CONTENT_CARD_DEFAULT_ASPECT_RATIO
 import com.dogeby.wheretogo.core.ui.components.card.ContentCard
 import com.dogeby.wheretogo.core.ui.components.listitem.ContentListItem
 import com.dogeby.wheretogo.core.ui.model.ContentListItemUiState
@@ -39,7 +41,8 @@ fun LazyGridScope.contentList(
     if (contents.loadState.refresh is LoadState.Loading) {
         item(span = { GridItemSpan(maxLineSpan) }) {
             CircularProgressIndicator(
-                modifier = Modifier.fillMaxSize()
+                modifier = Modifier
+                    .fillMaxSize()
                     .wrapContentSize(Alignment.Center),
             )
         }
@@ -63,16 +66,28 @@ fun LazyGridScope.contentList(
             )
         }
     }
+    if (contents.loadState.append is LoadState.Loading) {
+        item(span = { GridItemSpan(maxLineSpan) }) {
+            CircularProgressIndicator(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .wrapContentSize(Alignment.Center),
+            )
+        }
+    }
 }
 
 fun LazyListScope.contentCardList(
     contents: LazyPagingItems<ContentListItemUiState>,
     onClickItem: (id: String) -> Unit,
 ) {
+    val contentCardWidth = 240.dp
     if (contents.loadState.refresh is LoadState.Loading) {
         item {
             CircularProgressIndicator(
-                modifier = Modifier.fillMaxSize()
+                modifier = Modifier
+                    .width(contentCardWidth)
+                    .aspectRatio(CONTENT_CARD_DEFAULT_ASPECT_RATIO)
                     .wrapContentSize(Alignment.Center),
             )
         }
@@ -90,6 +105,16 @@ fun LazyListScope.contentCardList(
                     onClickItem(it.id)
                 },
                 modifier = Modifier.width(240.dp),
+            )
+        }
+    }
+    if (contents.loadState.append is LoadState.Loading) {
+        item {
+            CircularProgressIndicator(
+                modifier = Modifier
+                    .width(contentCardWidth)
+                    .aspectRatio(CONTENT_CARD_DEFAULT_ASPECT_RATIO)
+                    .wrapContentSize(Alignment.Center),
             )
         }
     }
@@ -134,6 +159,43 @@ private fun ContentListPreview() {
 
 @Preview(showBackground = true)
 @Composable
+private fun ContentListPreview_Loading() {
+    val contents = List(3) {
+        ContentListItemUiState(
+            id = "$it",
+            title = "Title",
+            imgSrc = "http://tong.visitkorea.or.kr/cms/resource/23/" +
+                "2678623_image3_1.jpg",
+            categories = listOf("cat1", "cat2", "cat3"),
+            avgStarRating = 4.5,
+            areaName = "area",
+            sigunguName = "sigungu",
+        )
+    }
+    val pagedContents = flowOf(
+        PagingData.from(
+            data = contents,
+            sourceLoadStates = LoadStates(
+                refresh = LoadState.Loading,
+                prepend = LoadState.NotLoading(false),
+                append = LoadState.Loading,
+            ),
+        ),
+    ).collectAsLazyPagingItems()
+
+    LazyVerticalGrid(
+        columns = GridCells.Adaptive(360.dp),
+        verticalArrangement = Arrangement.spacedBy(8.dp),
+    ) {
+        contentList(
+            contents = pagedContents,
+            onClickItem = {},
+        )
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
 private fun ContentCardListPreview_LazyListScope() {
     val contents = List(10) {
         ContentListItemUiState(
@@ -154,6 +216,42 @@ private fun ContentCardListPreview_LazyListScope() {
                 refresh = LoadState.NotLoading(false),
                 prepend = LoadState.NotLoading(false),
                 append = LoadState.NotLoading(false),
+            ),
+        ),
+    ).collectAsLazyPagingItems()
+
+    LazyRow(
+        horizontalArrangement = Arrangement.spacedBy(16.dp),
+    ) {
+        contentCardList(
+            contents = pagedContents,
+            onClickItem = {},
+        )
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun ContentCardListPreview_LazyListScope_Loading() {
+    val contents = List(3) {
+        ContentListItemUiState(
+            id = "$it",
+            title = "Title",
+            imgSrc = "http://tong.visitkorea.or.kr/cms/resource/23/" +
+                "2678623_image3_1.jpg",
+            categories = listOf("cat1", "cat2", "cat3"),
+            avgStarRating = 4.5,
+            areaName = "area",
+            sigunguName = "sigungu",
+        )
+    }
+    val pagedContents = flowOf(
+        PagingData.from(
+            data = contents,
+            sourceLoadStates = LoadStates(
+                refresh = LoadState.Loading,
+                prepend = LoadState.NotLoading(false),
+                append = LoadState.Loading,
             ),
         ),
     ).collectAsLazyPagingItems()
