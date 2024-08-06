@@ -152,6 +152,46 @@ private fun FestivalCardListPreview() {
 
 @Preview(showBackground = true)
 @Composable
+private fun FestivalCardListPreview_Loading() {
+    val festivals = List(3) {
+        FestivalListItemUiState(
+            id = "$it",
+            title = "Title",
+            startDate = "20210306",
+            endDate = "20211030",
+            imgSrc = "http://tong.visitkorea.or.kr/cms/resource/54/" +
+                "2483454_image2_1.JPG",
+            avgStarRating = 4.5,
+            areaName = "area",
+            sigunguName = "sigungu",
+        )
+    }
+    val pagedFestivals = flowOf(
+        PagingData.from(
+            data = festivals,
+            sourceLoadStates = LoadStates(
+                refresh = LoadState.Loading,
+                prepend = LoadState.NotLoading(false),
+                append = LoadState.Loading,
+            ),
+        ),
+    ).collectAsLazyPagingItems()
+
+    LazyVerticalGrid(
+        columns = GridCells.Adaptive(360.dp),
+        contentPadding = PaddingValues(16.dp),
+        verticalArrangement = Arrangement.spacedBy(16.dp),
+        horizontalArrangement = Arrangement.spacedBy(16.dp),
+    ) {
+        festivalCardList(
+            festivals = pagedFestivals,
+            onClickItem = {},
+        )
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
 private fun FestivalListPreview() {
     val festivals = List(10) {
         FestivalListItemUiState(
@@ -173,6 +213,44 @@ private fun FestivalListPreview() {
                 refresh = LoadState.NotLoading(false),
                 prepend = LoadState.NotLoading(false),
                 append = LoadState.NotLoading(false),
+            ),
+        ),
+    ).collectAsLazyPagingItems()
+
+    LazyVerticalGrid(
+        columns = GridCells.Adaptive(360.dp),
+        contentPadding = PaddingValues(16.dp),
+    ) {
+        festivalList(
+            festivals = pagedFestivals,
+            onClickItem = {},
+        )
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun FestivalListPreview_Loading() {
+    val festivals = List(3) {
+        FestivalListItemUiState(
+            id = "$it",
+            title = "Title",
+            startDate = "20210306",
+            endDate = "20211030",
+            imgSrc = "http://tong.visitkorea.or.kr/cms/resource/54/" +
+                "2483454_image2_1.JPG",
+            avgStarRating = 4.5,
+            areaName = "area",
+            sigunguName = "sigungu",
+        )
+    }
+    val pagedFestivals = flowOf(
+        PagingData.from(
+            data = festivals,
+            sourceLoadStates = LoadStates(
+                refresh = LoadState.Loading,
+                prepend = LoadState.NotLoading(false),
+                append = LoadState.Loading,
             ),
         ),
     ).collectAsLazyPagingItems()
