@@ -41,7 +41,7 @@ internal fun HomeScreenContent(
     homeScreenUiState: HomeScreenUiState.Success,
     festivals: LazyPagingItems<FestivalListItemUiState>,
     contentsList: List<LazyPagingItems<ContentListItemUiState>>,
-    onNavigateToList: (contentTypeId: String, areaCode: String, sigunguCode: String) -> Unit,
+    onNavigateToList: (contentType: TourContentType, areaCode: String, sigunguCode: String) -> Unit,
     onNavigateToContentDetail: (id: String) -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -94,7 +94,7 @@ internal fun HomeScreenContent(
 private fun LazyListScope.contentCardsWithTitleRow(
     contentsState: ContentListUiState,
     contents: LazyPagingItems<ContentListItemUiState>,
-    onNavigateToList: (contentTypeId: String, areaCode: String, sigunguCode: String) -> Unit,
+    onNavigateToList: (contentType: TourContentType, areaCode: String, sigunguCode: String) -> Unit,
     onNavigateToContentDetail: (id: String) -> Unit,
 ) {
     when (contentsState) {
@@ -109,7 +109,7 @@ private fun LazyListScope.contentCardsWithTitleRow(
                             contentTypeName = contentType.getDisplayName(),
                         ),
                         onClick = {
-                            onNavigateToList(contentType.id, areaCode, sigunguCode)
+                            onNavigateToList(contentType, areaCode, sigunguCode)
                         },
                         trailingIcon = Icons.AutoMirrored.Filled.ArrowForward,
                         colors = ListItemDefaults.colors(containerColor = Color.Transparent),
@@ -131,7 +131,11 @@ private fun LazyListScope.contentCardsWithTitleRow(
 private fun LazyListScope.contentsWithTitleRow(
     contentsState: ContentListUiState,
     contents: LazyPagingItems<ContentListItemUiState>,
-    onNavigateToContents: (contentTypeId: String, areaCode: String, sigunguCode: String) -> Unit,
+    onNavigateToContents: (
+        contentType: TourContentType,
+        areaCode: String,
+        sigunguCode: String,
+    ) -> Unit,
     onNavigateToContentDetail: (id: String) -> Unit,
 ) {
     when (contentsState) {
@@ -146,7 +150,7 @@ private fun LazyListScope.contentsWithTitleRow(
                             contentTypeName = contentType.getDisplayName(),
                         ),
                         onClick = {
-                            onNavigateToContents(contentType.id, areaCode, sigunguCode)
+                            onNavigateToContents(contentType, areaCode, sigunguCode)
                         },
                         trailingIcon = Icons.AutoMirrored.Filled.ArrowForward,
                         colors = ListItemDefaults.colors(containerColor = Color.Transparent),

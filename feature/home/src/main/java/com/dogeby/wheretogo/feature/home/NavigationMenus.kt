@@ -8,13 +8,14 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import com.dogeby.wheretogo.core.model.tour.TourContentType
 import com.dogeby.wheretogo.core.ui.components.button.MenuIconButton
 import com.dogeby.wheretogo.feature.home.model.ContentTypeMenu
 
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun NavigationMenus(
-    onNavigateToList: (contentTypeId: String) -> Unit,
+    onNavigateToList: (contentType: TourContentType) -> Unit,
     modifier: Modifier = Modifier,
     horizontalArrangement: Arrangement.Horizontal = Arrangement.Start,
     verticalArrangement: Arrangement.Vertical = Arrangement.Top,
@@ -28,7 +29,7 @@ fun NavigationMenus(
             MenuIconButton(
                 icon = it.icon,
                 text = stringResource(id = it.nameResId),
-                onClick = { onNavigateToList(it.contentTypeId) },
+                onClick = { onNavigateToList(it.contentType) },
             )
         }
     }

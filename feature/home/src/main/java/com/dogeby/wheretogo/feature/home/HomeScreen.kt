@@ -21,7 +21,7 @@ internal fun HomeScreen(
     homeScreenUiState: HomeScreenUiState,
     festivals: LazyPagingItems<FestivalListItemUiState>,
     contentsList: List<LazyPagingItems<ContentListItemUiState>>,
-    onNavigateToList: (contentTypeId: String, areaCode: String, sigunguCode: String) -> Unit,
+    onNavigateToList: (contentType: TourContentType, areaCode: String, sigunguCode: String) -> Unit,
     onNavigateToContentDetail: (id: String) -> Unit,
     modifier: Modifier = Modifier,
 ) {
