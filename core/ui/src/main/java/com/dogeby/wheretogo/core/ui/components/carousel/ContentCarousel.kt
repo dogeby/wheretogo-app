@@ -30,13 +30,11 @@ import com.dogeby.wheretogo.core.ui.components.card.CONTENT_CARD_DEFAULT_ASPECT_
 import com.dogeby.wheretogo.core.ui.components.card.ContentCard
 import com.dogeby.wheretogo.core.ui.components.listitem.ContentListItem
 import com.dogeby.wheretogo.core.ui.model.ContentListItemUiState
-import com.dogeby.wheretogo.core.ui.model.ContentListUiState
 import kotlinx.coroutines.flow.flowOf
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun ContentCardCarousel(
-    contentsState: ContentListUiState,
     contents: LazyPagingItems<ContentListItemUiState>,
     onClickItem: (id: String) -> Unit,
     modifier: Modifier = Modifier,
@@ -44,41 +42,36 @@ fun ContentCardCarousel(
     pageSize: PageSize = PageSize.Fill,
     pageSpacing: Dp = 0.dp,
 ) {
-    when (contentsState) {
-        ContentListUiState.Loading -> Unit
-        is ContentListUiState.Success -> {
-            val pagerState = rememberPagerState {
-                contents.itemCount
-            }
-            if (contents.loadState.refresh == LoadState.Loading) {
-                CircularProgressIndicator(
-                    modifier = Modifier
-                        .aspectRatio(CONTENT_CARD_DEFAULT_ASPECT_RATIO)
-                        .wrapContentSize(Alignment.Center),
-                )
-            }
+    val pagerState = rememberPagerState {
+        contents.itemCount
+    }
+    if (contents.loadState.refresh == LoadState.Loading) {
+        CircularProgressIndicator(
+            modifier = Modifier
+                .aspectRatio(CONTENT_CARD_DEFAULT_ASPECT_RATIO)
+                .wrapContentSize(Alignment.Center),
+        )
+    }
 
-            HorizontalPager(
-                state = pagerState,
-                modifier = modifier,
-                contentPadding = contentPadding,
-                pageSize = pageSize,
-                pageSpacing = pageSpacing,
-            ) { index ->
-                contents[index]?.let {
-                    ContentCard(
-                        title = it.title,
-                        imgSrc = it.imgSrc,
-                        categories = it.categories,
-                        avgStarRating = it.avgStarRating,
-                        areaName = it.areaName,
-                        sigunguName = it.sigunguName,
-                        onClick = {
-                            onClickItem(it.id)
-                        },
-                    )
-                }
-            }
+    HorizontalPager(
+        state = pagerState,
+        modifier = modifier,
+        contentPadding = contentPadding,
+        pageSize = pageSize,
+        pageSpacing = pageSpacing,
+    ) { index ->
+        contents[index]?.let {
+            ContentCard(
+                title = it.title,
+                imgSrc = it.imgSrc,
+                categories = it.categories,
+                avgStarRating = it.avgStarRating,
+                areaName = it.areaName,
+                sigunguName = it.sigunguName,
+                onClick = {
+                    onClickItem(it.id)
+                },
+            )
         }
     }
 }
@@ -86,7 +79,6 @@ fun ContentCardCarousel(
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun ContentCarousel(
-    contentsState: ContentListUiState,
     contents: LazyPagingItems<ContentListItemUiState>,
     onClickItem: (id: String) -> Unit,
     modifier: Modifier = Modifier,
@@ -96,46 +88,48 @@ fun ContentCarousel(
     verticalAlignment: Alignment.Vertical = Alignment.CenterVertically,
     @IntRange(from = 1) columns: Int = 1,
 ) {
-    when (contentsState) {
-        ContentListUiState.Loading -> Unit
-        is ContentListUiState.Success -> {
-            val pagerState = rememberPagerState {
-                (contents.itemCount + columns - 1) / columns
-            }
+    val pagerState = rememberPagerState {
+        (contents.itemCount + columns - 1) / columns
+    }
+    if (contents.loadState.refresh == LoadState.Loading) {
+        CircularProgressIndicator(
+            modifier = Modifier
+                .aspectRatio(CONTENT_CARD_DEFAULT_ASPECT_RATIO)
+                .wrapContentSize(Alignment.Center),
+        )
+    }
 
-            HorizontalPager(
-                state = pagerState,
-                modifier = modifier,
-                contentPadding = contentPadding,
-                pageSize = pageSize,
-                verticalAlignment = verticalAlignment,
-                pageSpacing = pageSpacing,
-            ) { page ->
-                val startIndex = page * columns
-                val endExclusiveIndex = minOf(startIndex + columns, contents.itemCount)
+    HorizontalPager(
+        state = pagerState,
+        modifier = modifier,
+        contentPadding = contentPadding,
+        pageSize = pageSize,
+        verticalAlignment = verticalAlignment,
+        pageSpacing = pageSpacing,
+    ) { page ->
+        val startIndex = page * columns
+        val endExclusiveIndex = minOf(startIndex + columns, contents.itemCount)
 
-                Column {
-                    (startIndex until endExclusiveIndex).forEach { index ->
-                        contents[index]?.let {
-                            ContentListItem(
-                                title = it.title,
-                                imgSrc = it.imgSrc,
-                                categories = it.categories,
-                                avgStarRating = it.avgStarRating,
-                                areaName = it.areaName,
-                                sigunguName = it.sigunguName,
-                                modifier = Modifier.clickable(
-                                    interactionSource = remember { MutableInteractionSource() },
-                                    indication = rememberRipple(),
-                                ) {
-                                    onClickItem(it.id)
-                                },
-                                colors = ListItemDefaults.colors(
-                                    containerColor = Color.Transparent,
-                                ),
-                            )
-                        }
-                    }
+        Column {
+            (startIndex until endExclusiveIndex).forEach { index ->
+                contents[index]?.let {
+                    ContentListItem(
+                        title = it.title,
+                        imgSrc = it.imgSrc,
+                        categories = it.categories,
+                        avgStarRating = it.avgStarRating,
+                        areaName = it.areaName,
+                        sigunguName = it.sigunguName,
+                        modifier = Modifier.clickable(
+                            interactionSource = remember { MutableInteractionSource() },
+                            indication = rememberRipple(),
+                        ) {
+                            onClickItem(it.id)
+                        },
+                        colors = ListItemDefaults.colors(
+                            containerColor = Color.Transparent,
+                        ),
+                    )
                 }
             }
         }
@@ -161,10 +155,6 @@ private fun ContentCardCarouselPreview() {
     val pagedContents = flowOf(PagingData.from(contents)).collectAsLazyPagingItems()
 
     ContentCardCarousel(
-        contentsState = ContentListUiState.Success(
-            contentTypeId = "12",
-            contentTypeName = "관광지",
-        ),
         contents = pagedContents,
         onClickItem = {},
         contentPadding = PaddingValues(16.dp),
@@ -192,10 +182,6 @@ private fun ContentCarouselPreview() {
     val pagedContents = flowOf(PagingData.from(contents)).collectAsLazyPagingItems()
 
     ContentCarousel(
-        contentsState = ContentListUiState.Success(
-            contentTypeId = "12",
-            contentTypeName = "관광지",
-        ),
         contents = pagedContents,
         onClickItem = {},
         contentPadding = PaddingValues(16.dp),

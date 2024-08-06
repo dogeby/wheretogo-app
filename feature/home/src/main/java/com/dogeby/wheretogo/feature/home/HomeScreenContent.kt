@@ -113,7 +113,6 @@ private fun LazyListScope.contentCardsWithTitleRow(
                         colors = ListItemDefaults.colors(containerColor = Color.Transparent),
                     )
                     ContentCardCarousel(
-                        contentsState = this,
                         contents = contents,
                         onClickItem = onNavigateToContentDetail,
                         contentPadding = PaddingValues(horizontal = 16.dp),
@@ -151,7 +150,6 @@ private fun LazyListScope.contentsWithTitleRow(
                         colors = ListItemDefaults.colors(containerColor = Color.Transparent),
                     )
                     ContentCarousel(
-                        contentsState = this,
                         contents = contents,
                         onClickItem = onNavigateToContentDetail,
                         pageSize = PageSize.Fixed(360.dp),

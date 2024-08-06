@@ -29,80 +29,67 @@ import androidx.paging.compose.collectAsLazyPagingItems
 import com.dogeby.wheretogo.core.ui.components.card.ContentCard
 import com.dogeby.wheretogo.core.ui.components.listitem.ContentListItem
 import com.dogeby.wheretogo.core.ui.model.ContentListItemUiState
-import com.dogeby.wheretogo.core.ui.model.ContentListUiState
 import kotlinx.coroutines.flow.flowOf
 
 fun LazyGridScope.contentList(
-    contentsState: ContentListUiState,
     contents: LazyPagingItems<ContentListItemUiState>,
     onClickItem: (id: String) -> Unit,
 ) {
-    when (contentsState) {
-        ContentListUiState.Loading -> Unit
-        is ContentListUiState.Success -> {
-            if (contents.loadState.refresh == LoadState.Loading) {
-                item(span = { GridItemSpan(maxLineSpan) }) {
-                    CircularProgressIndicator(
-                        modifier = Modifier.fillMaxSize()
-                            .wrapContentSize(Alignment.Center),
-                    )
-                }
-            }
-            items(contents.itemCount) { index ->
-                contents[index]?.let {
-                    ContentListItem(
-                        title = it.title,
-                        imgSrc = it.imgSrc,
-                        categories = it.categories,
-                        avgStarRating = it.avgStarRating,
-                        areaName = it.areaName,
-                        sigunguName = it.sigunguName,
-                        modifier = Modifier.clickable(
-                            interactionSource = remember { MutableInteractionSource() },
-                            indication = rememberRipple(),
-                        ) {
-                            onClickItem(it.id)
-                        },
-                        colors = ListItemDefaults.colors(containerColor = Color.Transparent),
-                    )
-                }
-            }
+    if (contents.loadState.refresh == LoadState.Loading) {
+        item(span = { GridItemSpan(maxLineSpan) }) {
+            CircularProgressIndicator(
+                modifier = Modifier.fillMaxSize()
+                    .wrapContentSize(Alignment.Center),
+            )
+        }
+    }
+    items(contents.itemCount) { index ->
+        contents[index]?.let {
+            ContentListItem(
+                title = it.title,
+                imgSrc = it.imgSrc,
+                categories = it.categories,
+                avgStarRating = it.avgStarRating,
+                areaName = it.areaName,
+                sigunguName = it.sigunguName,
+                modifier = Modifier.clickable(
+                    interactionSource = remember { MutableInteractionSource() },
+                    indication = rememberRipple(),
+                ) {
+                    onClickItem(it.id)
+                },
+                colors = ListItemDefaults.colors(containerColor = Color.Transparent),
+            )
         }
     }
 }
 
 fun LazyListScope.contentCardList(
-    contentsState: ContentListUiState,
     contents: LazyPagingItems<ContentListItemUiState>,
     onClickItem: (id: String) -> Unit,
 ) {
-    when (contentsState) {
-        ContentListUiState.Loading -> Unit
-        is ContentListUiState.Success -> {
-            if (contents.loadState.refresh == LoadState.Loading) {
-                item {
-                    CircularProgressIndicator(
-                        modifier = Modifier.fillMaxSize()
-                            .wrapContentSize(Alignment.Center),
-                    )
-                }
-            }
-            items(contents.itemCount) { index ->
-                contents[index]?.let {
-                    ContentCard(
-                        title = it.title,
-                        imgSrc = it.imgSrc,
-                        categories = it.categories,
-                        avgStarRating = it.avgStarRating,
-                        areaName = it.areaName,
-                        sigunguName = it.sigunguName,
-                        onClick = {
-                            onClickItem(it.id)
-                        },
-                        modifier = Modifier.width(240.dp),
-                    )
-                }
-            }
+    if (contents.loadState.refresh == LoadState.Loading) {
+        item {
+            CircularProgressIndicator(
+                modifier = Modifier.fillMaxSize()
+                    .wrapContentSize(Alignment.Center),
+            )
+        }
+    }
+    items(contents.itemCount) { index ->
+        contents[index]?.let {
+            ContentCard(
+                title = it.title,
+                imgSrc = it.imgSrc,
+                categories = it.categories,
+                avgStarRating = it.avgStarRating,
+                areaName = it.areaName,
+                sigunguName = it.sigunguName,
+                onClick = {
+                    onClickItem(it.id)
+                },
+                modifier = Modifier.width(240.dp),
+            )
         }
     }
 }
@@ -129,10 +116,6 @@ private fun ContentListPreview() {
         verticalArrangement = Arrangement.spacedBy(8.dp),
     ) {
         contentList(
-            contentsState = ContentListUiState.Success(
-                contentTypeId = "12",
-                contentTypeName = "관광지",
-            ),
             contents = pagedContents,
             onClickItem = {},
         )
@@ -160,10 +143,6 @@ private fun ContentCardListPreview_LazyListScope() {
         horizontalArrangement = Arrangement.spacedBy(16.dp),
     ) {
         contentCardList(
-            contentsState = ContentListUiState.Success(
-                contentTypeId = "12",
-                contentTypeName = "관광지",
-            ),
             contents = pagedContents,
             onClickItem = {},
         )

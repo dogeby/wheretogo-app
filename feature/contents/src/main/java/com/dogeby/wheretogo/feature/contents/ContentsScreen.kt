@@ -27,7 +27,6 @@ import com.dogeby.wheretogo.core.ui.components.list.contentList
 import com.dogeby.wheretogo.core.ui.components.tab.ContentTypeTabRow
 import com.dogeby.wheretogo.core.ui.model.CategoryChipUiState
 import com.dogeby.wheretogo.core.ui.model.ContentListItemUiState
-import com.dogeby.wheretogo.core.ui.model.ContentListUiState
 import com.dogeby.wheretogo.core.ui.model.ContentTypeTabUiState
 import com.dogeby.wheretogo.feature.contents.model.ContentsPageUiState
 import com.dogeby.wheretogo.feature.contents.model.ContentsScreenUiState
@@ -83,23 +82,17 @@ internal fun ContentsScreen(
                                 state = LazyListState(),
                                 contentPadding = PaddingValues(horizontal = 16.dp),
                             )
-                            when (contentsState) {
-                                ContentListUiState.Loading -> LoadingDisplay()
-                                is ContentListUiState.Success -> {
-                                    if (contents.itemCount == 0) {
-                                        EmptyListDisplay()
-                                    } else {
-                                        LazyVerticalGrid(
-                                            columns = GridCells.Adaptive(360.dp),
-                                            contentPadding = PaddingValues(bottom = 16.dp),
-                                        ) {
-                                            contentList(
-                                                contentsState = contentsState,
-                                                contents = contents,
-                                                onClickItem = onClickContent,
-                                            )
-                                        }
-                                    }
+                            if (contents.itemCount == 0) {
+                                EmptyListDisplay()
+                            } else {
+                                LazyVerticalGrid(
+                                    columns = GridCells.Adaptive(360.dp),
+                                    contentPadding = PaddingValues(bottom = 16.dp),
+                                ) {
+                                    contentList(
+                                        contents = contents,
+                                        onClickItem = onClickContent,
+                                    )
                                 }
                             }
                         }
@@ -132,10 +125,6 @@ private fun ContentScreenPreview() {
                     isSelected = tabAndCategory["$tabIndex"] == "$tabIndex$it",
                 )
             },
-            contentsState = ContentListUiState.Success(
-                contentTypeId = "12",
-                contentTypeName = "관광지",
-            ),
         )
     }
     val contents = List(20) {
@@ -198,10 +187,6 @@ private fun ContentScreenPreview_Empty() {
                     isSelected = tabAndCategory["$tabIndex"] == "$tabIndex$it",
                 )
             },
-            contentsState = ContentListUiState.Success(
-                contentTypeId = "12",
-                contentTypeName = "관광지",
-            ),
         )
     }
     val contents = emptyList<ContentListItemUiState>()

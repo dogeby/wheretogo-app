@@ -47,12 +47,9 @@ internal fun SearchResultScreen(
         is SearchResultScreenUiState.Success -> {
             with(searchResultScreenState) {
                 SearchResultList(
-                    attractionListState = attractionListState,
                     festivalListState = festivalListState,
                     festivals = festivals,
                     contents = contents,
-                    restaurantListState = restaurantListState,
-                    accommodationListState = accommodationListState,
                     onClickContent = onClickContent,
                     modifier = modifier,
                 )
@@ -63,12 +60,9 @@ internal fun SearchResultScreen(
 
 @Composable
 private fun SearchResultList(
-    attractionListState: ContentListUiState,
     festivalListState: FestivalListUiState,
     festivals: LazyPagingItems<FestivalListItemUiState>,
     contents: LazyPagingItems<ContentListItemUiState>,
-    restaurantListState: ContentListUiState,
-    accommodationListState: ContentListUiState,
     onClickContent: (id: String) -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -79,7 +73,6 @@ private fun SearchResultList(
     ) {
         contentSearchResultList(
             titleResId = R.string.destination,
-            contentListState = attractionListState,
             contents = contents,
             onClickContent = onClickContent,
         )
@@ -108,13 +101,11 @@ private fun SearchResultList(
         }
         contentSearchResultList(
             titleResId = R.string.restaurant,
-            contentListState = restaurantListState,
             contents = contents,
             onClickContent = onClickContent,
         )
         contentSearchResultList(
             titleResId = R.string.accommodation,
-            contentListState = accommodationListState,
             contents = contents,
             onClickContent = onClickContent,
         )
@@ -123,32 +114,25 @@ private fun SearchResultList(
 
 private fun LazyGridScope.contentSearchResultList(
     @StringRes titleResId: Int,
-    contentListState: ContentListUiState,
     contents: LazyPagingItems<ContentListItemUiState>,
     onClickContent: (id: String) -> Unit,
 ) {
-    when (contentListState) {
-        ContentListUiState.Loading -> Unit
-        is ContentListUiState.Success -> {
-            if (contents.itemCount != 0) {
-                item(
-                    span = {
-                        GridItemSpan(maxLineSpan)
-                    },
-                ) {
-                    Text(
-                        text = stringResource(id = titleResId),
-                        style = MaterialTheme.typography.titleMedium,
-                        modifier = Modifier.padding(horizontal = 16.dp),
-                    )
-                }
-                contentList(
-                    contentsState = contentListState,
-                    contents = contents,
-                    onClickItem = onClickContent,
-                )
-            }
+    if (contents.itemCount != 0) {
+        item(
+            span = {
+                GridItemSpan(maxLineSpan)
+            },
+        ) {
+            Text(
+                text = stringResource(id = titleResId),
+                style = MaterialTheme.typography.titleMedium,
+                modifier = Modifier.padding(horizontal = 16.dp),
+            )
         }
+        contentList(
+            contents = contents,
+            onClickItem = onClickContent,
+        )
     }
 }
 
