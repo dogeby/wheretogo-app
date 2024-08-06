@@ -17,7 +17,11 @@ fun CategoryDisplay(
     style: TextStyle = MaterialTheme.typography.labelMedium,
 ) {
     Text(
-        text = categories.joinToString(" • "),
+        text = if (categories.isEmpty() || categories.all { it.isBlank() }) {
+            ""
+        } else {
+            categories.joinToString(" • ")
+        },
         modifier = modifier,
         color = color,
         overflow = TextOverflow.Ellipsis,
@@ -30,4 +34,10 @@ fun CategoryDisplay(
 @Composable
 private fun CategoryDisplayPreview() {
     CategoryDisplay(categories = listOf("cat1", "cat2", "cat3"))
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun CategoryDisplayPreview_Empty() {
+    CategoryDisplay(categories = listOf("", "", ""))
 }
