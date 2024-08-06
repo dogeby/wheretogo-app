@@ -4,10 +4,10 @@ enum class TourContentType(val id: String) {
     TouristSpot("12"),
     CulturalFacility("14"),
     Festival("15"),
-    TravelCourse("25"),
     LeisureSport("28"),
-    Accommodation("32"),
     Shopping("38"),
+    TravelCourse("25"),
+    Accommodation("32"),
     Restaurant("39"),
     ;
 

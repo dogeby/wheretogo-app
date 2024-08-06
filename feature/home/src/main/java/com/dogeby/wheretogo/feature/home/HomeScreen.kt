@@ -3,11 +3,13 @@ package com.dogeby.wheretogo.feature.home
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.paging.LoadState
 import androidx.paging.LoadStates
 import androidx.paging.PagingData
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
+import com.dogeby.wheretogo.core.model.tour.TourContentType
 import com.dogeby.wheretogo.core.ui.components.common.LoadingDisplay
 import com.dogeby.wheretogo.core.ui.model.ContentListItemUiState
 import com.dogeby.wheretogo.core.ui.model.ContentListUiState
@@ -16,11 +18,33 @@ import com.dogeby.wheretogo.feature.home.model.HomeScreenUiState
 import kotlinx.coroutines.flow.flowOf
 
 @Composable
+fun HomeRoute(
+    navigateToList: (contentType: TourContentType, areaCode: String, sigunguCode: String) -> Unit,
+    navigateToContentDetail: (id: String) -> Unit,
+    modifier: Modifier = Modifier,
+    viewModel: HomeViewModel = hiltViewModel(),
+) {
+    val homeScreenUiState = viewModel.homeScreenUiState
+    val festivals = viewModel.festivalPerformanceEventListState.collectAsLazyPagingItems()
+    val contentsList = viewModel.contentListStates.map {
+        it.collectAsLazyPagingItems()
+    }
+    HomeScreen(
+        homeScreenUiState = homeScreenUiState,
+        festivals = festivals,
+        contentsList = contentsList,
+        onNavigateToList = navigateToList,
+        onNavigateToContentDetail = navigateToContentDetail,
+        modifier = modifier,
+    )
+}
+
+@Composable
 internal fun HomeScreen(
     homeScreenUiState: HomeScreenUiState,
     festivals: LazyPagingItems<FestivalListItemUiState>,
     contentsList: List<LazyPagingItems<ContentListItemUiState>>,
-    onNavigateToList: (contentTypeId: String, areaCode: String, sigunguCode: String) -> Unit,
+    onNavigateToList: (contentType: TourContentType, areaCode: String, sigunguCode: String) -> Unit,
     onNavigateToContentDetail: (id: String) -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -70,8 +94,7 @@ private fun HomeScreenPreview() {
 
     val contentListStatesSize = 7
     val contentListUiState = ContentListUiState.Success(
-        contentTypeId = "12",
-        contentTypeName = "관광지",
+        contentType = TourContentType.TouristSpot,
     )
     val contents = List(10) {
         ContentListItemUiState(

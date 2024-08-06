@@ -7,30 +7,31 @@ import androidx.compose.material.icons.outlined.Festival
 import androidx.compose.material.icons.outlined.Hotel
 import androidx.compose.material.icons.outlined.Restaurant
 import androidx.compose.ui.graphics.vector.ImageVector
+import com.dogeby.wheretogo.core.model.tour.TourContentType
 import com.dogeby.wheretogo.core.ui.R
 
 enum class ContentTypeMenu(
-    val contentTypeId: String,
+    val contentType: TourContentType,
     val icon: ImageVector,
     @StringRes val nameResId: Int,
 ) {
     Destination(
-        contentTypeId = "12",
+        contentType = TourContentType.TouristSpot,
         icon = Icons.Outlined.BeachAccess,
         nameResId = R.string.destination,
     ),
     Festival(
-        contentTypeId = "15",
+        contentType = TourContentType.Festival,
         icon = Icons.Outlined.Festival,
         nameResId = R.string.festival,
     ),
     Accommodation(
-        contentTypeId = "32",
+        contentType = TourContentType.Accommodation,
         icon = Icons.Outlined.Hotel,
         nameResId = R.string.accommodation,
     ),
     Restaurant(
-        contentTypeId = "39",
+        contentType = TourContentType.Restaurant,
         icon = Icons.Outlined.Restaurant,
         nameResId = R.string.restaurant,
     ),
