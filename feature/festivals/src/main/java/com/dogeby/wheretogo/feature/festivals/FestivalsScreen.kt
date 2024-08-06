@@ -8,6 +8,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.paging.LoadState
+import androidx.paging.LoadStates
 import androidx.paging.PagingData
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
@@ -17,7 +19,6 @@ import com.dogeby.wheretogo.core.ui.components.common.LoadingDisplay
 import com.dogeby.wheretogo.core.ui.components.list.festivalList
 import com.dogeby.wheretogo.core.ui.model.CategoryChipUiState
 import com.dogeby.wheretogo.core.ui.model.FestivalListItemUiState
-import com.dogeby.wheretogo.core.ui.model.FestivalListUiState
 import com.dogeby.wheretogo.feature.festivals.model.FestivalsScreenUiState
 import kotlinx.coroutines.flow.flowOf
 
@@ -42,23 +43,17 @@ internal fun FestivalsScreen(
                             },
                             contentPadding = PaddingValues(horizontal = 16.dp),
                         )
-                        when (festivalsState) {
-                            FestivalListUiState.Loading -> LoadingDisplay()
-                            is FestivalListUiState.Success -> {
-                                if (festivals.itemCount == 0) {
-                                    EmptyListDisplay()
-                                } else {
-                                    LazyVerticalGrid(
-                                        columns = GridCells.Adaptive(360.dp),
-                                        contentPadding = PaddingValues(bottom = 16.dp),
-                                    ) {
-                                        festivalList(
-                                            festivalsState = festivalsState,
-                                            festivals = festivals,
-                                            onClickItem = onClickContent,
-                                        )
-                                    }
-                                }
+                        if (festivals.itemCount == 0) {
+                            EmptyListDisplay()
+                        } else {
+                            LazyVerticalGrid(
+                                columns = GridCells.Adaptive(360.dp),
+                                contentPadding = PaddingValues(bottom = 16.dp),
+                            ) {
+                                festivalList(
+                                    festivals = festivals,
+                                    onClickItem = onClickContent,
+                                )
                             }
                         }
                     }
@@ -84,7 +79,16 @@ private fun FestivalsScreenPreview() {
             sigunguName = "sigungu",
         )
     }
-    val pagedFestivals = flowOf(PagingData.from(festivals)).collectAsLazyPagingItems()
+    val pagedFestivals = flowOf(
+        PagingData.from(
+            data = festivals,
+            sourceLoadStates = LoadStates(
+                refresh = LoadState.NotLoading(false),
+                prepend = LoadState.NotLoading(false),
+                append = LoadState.NotLoading(false),
+            ),
+        ),
+    ).collectAsLazyPagingItems()
 
     FestivalsScreen(
         festivalsScreenState = FestivalsScreenUiState.Success(
@@ -94,10 +98,6 @@ private fun FestivalsScreenPreview() {
                     name = "name $it",
                 )
             },
-            festivalsState = FestivalListUiState.Success(
-                contentTypeId = "15",
-                contentTypeName = "축제/공연/행사",
-            ),
         ),
         festivals = pagedFestivals,
         onClickCategoryChip = {},
@@ -108,8 +108,9 @@ private fun FestivalsScreenPreview() {
 @Preview(showBackground = true)
 @Composable
 private fun FestivalsScreenPreview_Empty() {
-    val festivals = emptyList<FestivalListItemUiState>()
-    val pagedFestivals = flowOf(PagingData.from(festivals)).collectAsLazyPagingItems()
+    val pagedFestivals = flowOf(
+        PagingData.empty<FestivalListItemUiState>(),
+    ).collectAsLazyPagingItems()
 
     FestivalsScreen(
         festivalsScreenState = FestivalsScreenUiState.Success(
@@ -119,10 +120,6 @@ private fun FestivalsScreenPreview_Empty() {
                     name = "name $it",
                 )
             },
-            festivalsState = FestivalListUiState.Success(
-                contentTypeId = "15",
-                contentTypeName = "축제/공연/행사",
-            ),
         ),
         festivals = pagedFestivals,
         onClickCategoryChip = {},

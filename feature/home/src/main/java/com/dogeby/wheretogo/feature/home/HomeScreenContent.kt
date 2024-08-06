@@ -17,6 +17,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.paging.LoadState
+import androidx.paging.LoadStates
 import androidx.paging.PagingData
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
@@ -27,7 +29,6 @@ import com.dogeby.wheretogo.core.ui.components.common.ListTitleRow
 import com.dogeby.wheretogo.core.ui.model.ContentListItemUiState
 import com.dogeby.wheretogo.core.ui.model.ContentListUiState
 import com.dogeby.wheretogo.core.ui.model.FestivalListItemUiState
-import com.dogeby.wheretogo.core.ui.model.FestivalListUiState
 import com.dogeby.wheretogo.core.ui.util.buildLocationContentTypeText
 import com.dogeby.wheretogo.feature.home.model.HomeScreenUiState
 import kotlinx.coroutines.flow.flowOf
@@ -42,47 +43,44 @@ internal fun HomeScreenContent(
     onNavigateToContentDetail: (id: String) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    with(homeScreenUiState) {
-        LazyColumn(
-            modifier = modifier,
-            contentPadding = PaddingValues(vertical = 16.dp),
-            verticalArrangement = Arrangement.spacedBy(16.dp),
-        ) {
-            item {
-                FestivalCardCarousel(
-                    festivalsState = festivalPerformanceEventListState,
-                    festivals = festivals,
-                    onClickItem = onNavigateToContentDetail,
-                    contentPadding = PaddingValues(horizontal = 16.dp),
-                    pageSize = PageSize.Fixed(360.dp),
-                    pageSpacing = 16.dp,
+    LazyColumn(
+        modifier = modifier,
+        contentPadding = PaddingValues(vertical = 16.dp),
+        verticalArrangement = Arrangement.spacedBy(16.dp),
+    ) {
+        item {
+            FestivalCardCarousel(
+                festivals = festivals,
+                onClickItem = onNavigateToContentDetail,
+                contentPadding = PaddingValues(horizontal = 16.dp),
+                pageSize = PageSize.Fixed(360.dp),
+                pageSpacing = 16.dp,
+            )
+        }
+        item {
+            NavigationMenus(
+                onNavigateToList = {
+                    onNavigateToList(it, "", "")
+                },
+                horizontalArrangement = Arrangement.Center,
+                modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp),
+            )
+        }
+        homeScreenUiState.contentListStates.forEachIndexed { index, contentListUiState ->
+            if (index % 3 == 1) {
+                contentCardsWithTitleRow(
+                    contentsState = contentListUiState,
+                    contents = contentsList[index],
+                    onNavigateToList = onNavigateToList,
+                    onNavigateToContentDetail = onNavigateToContentDetail,
                 )
-            }
-            item {
-                NavigationMenus(
-                    onNavigateToList = {
-                        onNavigateToList(it, "", "")
-                    },
-                    horizontalArrangement = Arrangement.Center,
-                    modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp),
+            } else {
+                contentsWithTitleRow(
+                    contentsState = contentListUiState,
+                    contents = contentsList[index],
+                    onNavigateToContents = onNavigateToList,
+                    onNavigateToContentDetail = onNavigateToContentDetail,
                 )
-            }
-            contentListStates.forEachIndexed { index, contentListUiState ->
-                if (index % 3 == 1) {
-                    contentCardsWithTitleRow(
-                        contentsState = contentListUiState,
-                        contents = contentsList[index],
-                        onNavigateToList = onNavigateToList,
-                        onNavigateToContentDetail = onNavigateToContentDetail,
-                    )
-                } else {
-                    contentsWithTitleRow(
-                        contentsState = contentListUiState,
-                        contents = contentsList[index],
-                        onNavigateToContents = onNavigateToList,
-                        onNavigateToContentDetail = onNavigateToContentDetail,
-                    )
-                }
             }
         }
     }
@@ -165,10 +163,6 @@ private fun LazyListScope.contentsWithTitleRow(
 @Preview(showBackground = true)
 @Composable
 private fun HomeScreenContentPreview() {
-    val festivalListUiState = FestivalListUiState.Success(
-        contentTypeId = "15",
-        contentTypeName = "축제/공연/행사",
-    )
     val festivals = List(10) {
         FestivalListItemUiState(
             id = "$it",
@@ -182,7 +176,16 @@ private fun HomeScreenContentPreview() {
             sigunguName = "sigungu",
         )
     }
-    val pagedFestivals = flowOf(PagingData.from(festivals)).collectAsLazyPagingItems()
+    val pagedFestivals = flowOf(
+        PagingData.from(
+            data = festivals,
+            sourceLoadStates = LoadStates(
+                refresh = LoadState.NotLoading(false),
+                prepend = LoadState.NotLoading(false),
+                append = LoadState.NotLoading(false),
+            ),
+        ),
+    ).collectAsLazyPagingItems()
 
     val contentListStatesSize = 7
     val contentListUiState = ContentListUiState.Success(
@@ -201,11 +204,19 @@ private fun HomeScreenContentPreview() {
             sigunguName = "sigungu",
         )
     }
-    val pagedContents = flowOf(PagingData.from(contents)).collectAsLazyPagingItems()
+    val pagedContents = flowOf(
+        PagingData.from(
+            data = contents,
+            sourceLoadStates = LoadStates(
+                refresh = LoadState.NotLoading(false),
+                prepend = LoadState.NotLoading(false),
+                append = LoadState.NotLoading(false),
+            ),
+        ),
+    ).collectAsLazyPagingItems()
 
     HomeScreenContent(
         homeScreenUiState = HomeScreenUiState.Success(
-            festivalPerformanceEventListState = festivalListUiState,
             contentListStates = List(7) {
                 contentListUiState
             },

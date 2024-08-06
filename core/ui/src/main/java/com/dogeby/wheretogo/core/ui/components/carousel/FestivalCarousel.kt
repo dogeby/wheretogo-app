@@ -15,19 +15,18 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.paging.LoadState
+import androidx.paging.LoadStates
 import androidx.paging.PagingData
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
 import com.dogeby.wheretogo.core.ui.components.card.FESTIVAL_CARD_DEFAULT_ASPECT_RATIO
 import com.dogeby.wheretogo.core.ui.components.card.FestivalCard
 import com.dogeby.wheretogo.core.ui.model.FestivalListItemUiState
-import com.dogeby.wheretogo.core.ui.model.FestivalListUiState
 import kotlinx.coroutines.flow.flowOf
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun FestivalCardCarousel(
-    festivalsState: FestivalListUiState,
     festivals: LazyPagingItems<FestivalListItemUiState>,
     onClickItem: (id: String) -> Unit,
     modifier: Modifier = Modifier,
@@ -35,41 +34,36 @@ fun FestivalCardCarousel(
     pageSize: PageSize = PageSize.Fill,
     pageSpacing: Dp = 0.dp,
 ) {
-    when (festivalsState) {
-        FestivalListUiState.Loading -> Unit
-        is FestivalListUiState.Success -> {
-            val pagerState = rememberPagerState {
-                festivals.itemCount
-            }
-            if (festivals.loadState.refresh == LoadState.Loading) {
-                CircularProgressIndicator(
-                    modifier = Modifier
-                        .aspectRatio(FESTIVAL_CARD_DEFAULT_ASPECT_RATIO)
-                        .wrapContentSize(Alignment.Center),
-                )
-            }
-            HorizontalPager(
-                state = pagerState,
-                modifier = modifier,
-                contentPadding = contentPadding,
-                pageSize = pageSize,
-                pageSpacing = pageSpacing,
-            ) { index ->
-                festivals[index]?.let {
-                    FestivalCard(
-                        title = it.title,
-                        imgSrc = it.imgSrc,
-                        startDate = it.startDate,
-                        endDate = it.endDate,
-                        avgStarRating = it.avgStarRating,
-                        areaName = it.areaName,
-                        sigunguName = it.sigunguName,
-                        onClick = {
-                            onClickItem(it.id)
-                        },
-                    )
-                }
-            }
+    val pagerState = rememberPagerState {
+        festivals.itemCount
+    }
+    if (festivals.loadState.refresh == LoadState.Loading) {
+        CircularProgressIndicator(
+            modifier = Modifier
+                .aspectRatio(FESTIVAL_CARD_DEFAULT_ASPECT_RATIO)
+                .wrapContentSize(Alignment.Center),
+        )
+    }
+    HorizontalPager(
+        state = pagerState,
+        modifier = modifier,
+        contentPadding = contentPadding,
+        pageSize = pageSize,
+        pageSpacing = pageSpacing,
+    ) { index ->
+        festivals[index]?.let {
+            FestivalCard(
+                title = it.title,
+                imgSrc = it.imgSrc,
+                startDate = it.startDate,
+                endDate = it.endDate,
+                avgStarRating = it.avgStarRating,
+                areaName = it.areaName,
+                sigunguName = it.sigunguName,
+                onClick = {
+                    onClickItem(it.id)
+                },
+            )
         }
     }
 }
@@ -91,13 +85,18 @@ private fun FestivalCardCarouselPreview() {
             sigunguName = "sigungu",
         )
     }
-    val pagedFestivals = flowOf(PagingData.from(festivals)).collectAsLazyPagingItems()
+    val pagedFestivals = flowOf(
+        PagingData.from(
+            data = festivals,
+            sourceLoadStates = LoadStates(
+                refresh = LoadState.NotLoading(false),
+                prepend = LoadState.NotLoading(false),
+                append = LoadState.NotLoading(false),
+            ),
+        ),
+    ).collectAsLazyPagingItems()
 
     FestivalCardCarousel(
-        festivalsState = FestivalListUiState.Success(
-            contentTypeId = "15",
-            contentTypeName = "축제/공연/행사",
-        ),
         festivals = pagedFestivals,
         onClickItem = {},
         contentPadding = PaddingValues(16.dp),

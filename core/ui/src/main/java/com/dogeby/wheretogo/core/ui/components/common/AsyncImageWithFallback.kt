@@ -1,25 +1,23 @@
 package com.dogeby.wheretogo.core.ui.components.common
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.aspectRatio
-import androidx.compose.foundation.layout.requiredSizeIn
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.Image
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import coil.ImageLoader
 import coil.compose.SubcomposeAsyncImage
 import coil.request.ImageRequest
-import com.dogeby.wheretogo.core.ui.R
 
 @Composable
 fun AsyncImageWithFallback(
@@ -45,14 +43,18 @@ fun AsyncImageWithFallback(
         },
         error = {
             Surface(
-                color = MaterialTheme.colorScheme.errorContainer,
+                color = MaterialTheme.colorScheme.surfaceContainer,
             ) {
-                Image(
-                    painter = painterResource(id = R.drawable.ic_broken_image),
-                    contentDescription = null,
-                    modifier = Modifier.requiredSizeIn(maxWidth = 120.dp),
-                    colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.onErrorContainer),
-                )
+                Box(
+                    contentAlignment = Alignment.Center,
+                ) {
+                    Icon(
+                        imageVector = Icons.Outlined.Image,
+                        contentDescription = null,
+                        modifier = Modifier.fillMaxSize(0.5f),
+                        tint = MaterialTheme.colorScheme.onSurfaceVariant,
+                    )
+                }
             }
         },
     )

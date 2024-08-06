@@ -17,6 +17,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.paging.LoadState
+import androidx.paging.LoadStates
 import androidx.paging.PagingData
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
@@ -139,7 +141,16 @@ private fun ContentScreenPreview() {
             sigunguName = "sigungu",
         )
     }
-    val pagedContents = flowOf(PagingData.from(contents)).collectAsLazyPagingItems()
+    val pagedContents = flowOf(
+        PagingData.from(
+            data = contents,
+            sourceLoadStates = LoadStates(
+                refresh = LoadState.NotLoading(false),
+                prepend = LoadState.NotLoading(false),
+                append = LoadState.NotLoading(false),
+            ),
+        ),
+    ).collectAsLazyPagingItems()
 
     ContentsScreen(
         contentsScreenState = ContentsScreenUiState.Success(pageStates),
@@ -153,8 +164,9 @@ private fun ContentScreenPreview() {
 @Preview(showBackground = true)
 @Composable
 private fun ContentScreenPreview_Loading() {
-    val contents = emptyList<ContentListItemUiState>()
-    val pagedContents = flowOf(PagingData.from(contents)).collectAsLazyPagingItems()
+    val pagedContents = flowOf(
+        PagingData.empty<ContentListItemUiState>(),
+    ).collectAsLazyPagingItems()
 
     ContentsScreen(
         contentsScreenState = ContentsScreenUiState.Loading,
@@ -189,8 +201,9 @@ private fun ContentScreenPreview_Empty() {
             },
         )
     }
-    val contents = emptyList<ContentListItemUiState>()
-    val pagedContents = flowOf(PagingData.from(contents)).collectAsLazyPagingItems()
+    val pagedContents = flowOf(
+        PagingData.empty<ContentListItemUiState>(),
+    ).collectAsLazyPagingItems()
 
     ContentsScreen(
         contentsScreenState = ContentsScreenUiState.Success(pageStates),

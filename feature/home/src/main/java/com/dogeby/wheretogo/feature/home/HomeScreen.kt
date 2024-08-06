@@ -3,6 +3,8 @@ package com.dogeby.wheretogo.feature.home
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.paging.LoadState
+import androidx.paging.LoadStates
 import androidx.paging.PagingData
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
@@ -10,7 +12,6 @@ import com.dogeby.wheretogo.core.ui.components.common.LoadingDisplay
 import com.dogeby.wheretogo.core.ui.model.ContentListItemUiState
 import com.dogeby.wheretogo.core.ui.model.ContentListUiState
 import com.dogeby.wheretogo.core.ui.model.FestivalListItemUiState
-import com.dogeby.wheretogo.core.ui.model.FestivalListUiState
 import com.dogeby.wheretogo.feature.home.model.HomeScreenUiState
 import kotlinx.coroutines.flow.flowOf
 
@@ -43,10 +44,6 @@ internal fun HomeScreen(
 @Preview(showBackground = true)
 @Composable
 private fun HomeScreenPreview() {
-    val festivalListUiState = FestivalListUiState.Success(
-        contentTypeId = "15",
-        contentTypeName = "축제/공연/행사",
-    )
     val festivals = List(10) {
         FestivalListItemUiState(
             id = "$it",
@@ -60,7 +57,16 @@ private fun HomeScreenPreview() {
             sigunguName = "sigungu",
         )
     }
-    val pagedFestivals = flowOf(PagingData.from(festivals)).collectAsLazyPagingItems()
+    val pagedFestivals = flowOf(
+        PagingData.from(
+            data = festivals,
+            sourceLoadStates = LoadStates(
+                refresh = LoadState.NotLoading(false),
+                prepend = LoadState.NotLoading(false),
+                append = LoadState.NotLoading(false),
+            ),
+        ),
+    ).collectAsLazyPagingItems()
 
     val contentListStatesSize = 7
     val contentListUiState = ContentListUiState.Success(
@@ -79,11 +85,19 @@ private fun HomeScreenPreview() {
             sigunguName = "sigungu",
         )
     }
-    val pagedContents = flowOf(PagingData.from(contents)).collectAsLazyPagingItems()
+    val pagedContents = flowOf(
+        PagingData.from(
+            data = contents,
+            sourceLoadStates = LoadStates(
+                refresh = LoadState.NotLoading(false),
+                prepend = LoadState.NotLoading(false),
+                append = LoadState.NotLoading(false),
+            ),
+        ),
+    ).collectAsLazyPagingItems()
 
     HomeScreen(
         homeScreenUiState = HomeScreenUiState.Success(
-            festivalPerformanceEventListState = festivalListUiState,
             contentListStates = List(contentListStatesSize) {
                 contentListUiState
             },

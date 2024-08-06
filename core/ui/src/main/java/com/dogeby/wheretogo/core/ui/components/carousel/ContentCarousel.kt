@@ -23,6 +23,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.paging.LoadState
+import androidx.paging.LoadStates
 import androidx.paging.PagingData
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
@@ -45,7 +46,7 @@ fun ContentCardCarousel(
     val pagerState = rememberPagerState {
         contents.itemCount
     }
-    if (contents.loadState.refresh == LoadState.Loading) {
+    if (contents.loadState.refresh is LoadState.Loading) {
         CircularProgressIndicator(
             modifier = Modifier
                 .aspectRatio(CONTENT_CARD_DEFAULT_ASPECT_RATIO)
@@ -91,7 +92,7 @@ fun ContentCarousel(
     val pagerState = rememberPagerState {
         (contents.itemCount + columns - 1) / columns
     }
-    if (contents.loadState.refresh == LoadState.Loading) {
+    if (contents.loadState.refresh is LoadState.Loading) {
         CircularProgressIndicator(
             modifier = Modifier
                 .aspectRatio(CONTENT_CARD_DEFAULT_ASPECT_RATIO)
@@ -152,7 +153,16 @@ private fun ContentCardCarouselPreview() {
             sigunguName = "sigungu",
         )
     }
-    val pagedContents = flowOf(PagingData.from(contents)).collectAsLazyPagingItems()
+    val pagedContents = flowOf(
+        PagingData.from(
+            data = contents,
+            sourceLoadStates = LoadStates(
+                refresh = LoadState.NotLoading(false),
+                prepend = LoadState.NotLoading(false),
+                append = LoadState.NotLoading(false),
+            ),
+        ),
+    ).collectAsLazyPagingItems()
 
     ContentCardCarousel(
         contents = pagedContents,
@@ -179,7 +189,16 @@ private fun ContentCarouselPreview() {
             sigunguName = "sigungu",
         )
     }
-    val pagedContents = flowOf(PagingData.from(contents)).collectAsLazyPagingItems()
+    val pagedContents = flowOf(
+        PagingData.from(
+            data = contents,
+            sourceLoadStates = LoadStates(
+                refresh = LoadState.NotLoading(false),
+                prepend = LoadState.NotLoading(false),
+                append = LoadState.NotLoading(false),
+            ),
+        ),
+    ).collectAsLazyPagingItems()
 
     ContentCarousel(
         contents = pagedContents,
