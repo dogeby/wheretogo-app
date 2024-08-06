@@ -8,6 +8,7 @@ import androidx.paging.LoadStates
 import androidx.paging.PagingData
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
+import com.dogeby.wheretogo.core.model.tour.TourContentType
 import com.dogeby.wheretogo.core.ui.components.common.LoadingDisplay
 import com.dogeby.wheretogo.core.ui.model.ContentListItemUiState
 import com.dogeby.wheretogo.core.ui.model.ContentListUiState
@@ -70,8 +71,7 @@ private fun HomeScreenPreview() {
 
     val contentListStatesSize = 7
     val contentListUiState = ContentListUiState.Success(
-        contentTypeId = "12",
-        contentTypeName = "관광지",
+        contentType = TourContentType.TouristSpot,
     )
     val contents = List(10) {
         ContentListItemUiState(

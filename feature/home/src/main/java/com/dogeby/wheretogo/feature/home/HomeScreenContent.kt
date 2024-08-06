@@ -22,6 +22,7 @@ import androidx.paging.LoadStates
 import androidx.paging.PagingData
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
+import com.dogeby.wheretogo.core.model.tour.TourContentType
 import com.dogeby.wheretogo.core.ui.components.carousel.ContentCardCarousel
 import com.dogeby.wheretogo.core.ui.components.carousel.ContentCarousel
 import com.dogeby.wheretogo.core.ui.components.carousel.FestivalCardCarousel
@@ -30,6 +31,7 @@ import com.dogeby.wheretogo.core.ui.model.ContentListItemUiState
 import com.dogeby.wheretogo.core.ui.model.ContentListUiState
 import com.dogeby.wheretogo.core.ui.model.FestivalListItemUiState
 import com.dogeby.wheretogo.core.ui.util.buildLocationContentTypeText
+import com.dogeby.wheretogo.core.ui.util.getDisplayName
 import com.dogeby.wheretogo.feature.home.model.HomeScreenUiState
 import kotlinx.coroutines.flow.flowOf
 
@@ -63,7 +65,9 @@ internal fun HomeScreenContent(
                     onNavigateToList(it, "", "")
                 },
                 horizontalArrangement = Arrangement.Center,
-                modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 16.dp),
             )
         }
         homeScreenUiState.contentListStates.forEachIndexed { index, contentListUiState ->
@@ -102,10 +106,10 @@ private fun LazyListScope.contentCardsWithTitleRow(
                         title = buildLocationContentTypeText(
                             areaName = areaName,
                             sigunguName = sigunguName,
-                            contentTypeName = contentTypeName,
+                            contentTypeName = contentType.getDisplayName(),
                         ),
                         onClick = {
-                            onNavigateToList(contentTypeId, areaCode, sigunguCode)
+                            onNavigateToList(contentType.id, areaCode, sigunguCode)
                         },
                         trailingIcon = Icons.AutoMirrored.Filled.ArrowForward,
                         colors = ListItemDefaults.colors(containerColor = Color.Transparent),
@@ -139,10 +143,10 @@ private fun LazyListScope.contentsWithTitleRow(
                         title = buildLocationContentTypeText(
                             areaName = areaName,
                             sigunguName = sigunguName,
-                            contentTypeName = contentTypeName,
+                            contentTypeName = contentType.getDisplayName(),
                         ),
                         onClick = {
-                            onNavigateToContents(contentTypeId, areaCode, sigunguCode)
+                            onNavigateToContents(contentType.id, areaCode, sigunguCode)
                         },
                         trailingIcon = Icons.AutoMirrored.Filled.ArrowForward,
                         colors = ListItemDefaults.colors(containerColor = Color.Transparent),
@@ -189,8 +193,7 @@ private fun HomeScreenContentPreview() {
 
     val contentListStatesSize = 7
     val contentListUiState = ContentListUiState.Success(
-        contentTypeId = "12",
-        contentTypeName = "관광지",
+        contentType = TourContentType.TouristSpot,
     )
     val contents = List(10) {
         ContentListItemUiState(
