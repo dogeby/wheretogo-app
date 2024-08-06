@@ -12,7 +12,6 @@ import com.dogeby.wheretogo.core.ui.components.common.LoadingDisplay
 import com.dogeby.wheretogo.core.ui.model.ContentListItemUiState
 import com.dogeby.wheretogo.core.ui.model.ContentListUiState
 import com.dogeby.wheretogo.core.ui.model.FestivalListItemUiState
-import com.dogeby.wheretogo.core.ui.model.FestivalListUiState
 import com.dogeby.wheretogo.feature.home.model.HomeScreenUiState
 import kotlinx.coroutines.flow.flowOf
 
@@ -45,10 +44,6 @@ internal fun HomeScreen(
 @Preview(showBackground = true)
 @Composable
 private fun HomeScreenPreview() {
-    val festivalListUiState = FestivalListUiState.Success(
-        contentTypeId = "15",
-        contentTypeName = "축제/공연/행사",
-    )
     val festivals = List(10) {
         FestivalListItemUiState(
             id = "$it",
@@ -103,7 +98,6 @@ private fun HomeScreenPreview() {
 
     HomeScreen(
         homeScreenUiState = HomeScreenUiState.Success(
-            festivalPerformanceEventListState = festivalListUiState,
             contentListStates = List(contentListStatesSize) {
                 contentListUiState
             },

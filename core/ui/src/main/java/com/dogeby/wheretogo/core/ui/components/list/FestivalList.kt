@@ -28,97 +28,84 @@ import androidx.paging.compose.collectAsLazyPagingItems
 import com.dogeby.wheretogo.core.ui.components.card.FestivalCard
 import com.dogeby.wheretogo.core.ui.components.listitem.FestivalListItem
 import com.dogeby.wheretogo.core.ui.model.FestivalListItemUiState
-import com.dogeby.wheretogo.core.ui.model.FestivalListUiState
 import kotlinx.coroutines.flow.flowOf
 
 fun LazyGridScope.festivalCardList(
-    festivalsState: FestivalListUiState,
     festivals: LazyPagingItems<FestivalListItemUiState>,
     onClickItem: (id: String) -> Unit,
 ) {
-    when (festivalsState) {
-        FestivalListUiState.Loading -> Unit
-        is FestivalListUiState.Success -> {
-            if (festivals.loadState.refresh is LoadState.Loading) {
-                item(span = { GridItemSpan(maxLineSpan) }) {
-                    CircularProgressIndicator(
-                        modifier = Modifier.fillMaxSize()
-                            .wrapContentSize(Alignment.Center),
-                    )
-                }
-            }
-            items(festivals.itemCount) { index ->
-                festivals[index]?.let {
-                    FestivalCard(
-                        title = it.title,
-                        imgSrc = it.imgSrc,
-                        startDate = it.startDate,
-                        endDate = it.endDate,
-                        avgStarRating = it.avgStarRating,
-                        areaName = it.areaName,
-                        sigunguName = it.sigunguName,
-                        onClick = {
-                            onClickItem(it.id)
-                        },
-                    )
-                }
-            }
-            if (festivals.loadState.append is LoadState.Loading) {
-                item(span = { GridItemSpan(maxLineSpan) }) {
-                    CircularProgressIndicator(
-                        modifier = Modifier.fillMaxSize()
-                            .wrapContentSize(Alignment.Center),
-                    )
-                }
-            }
+    if (festivals.loadState.refresh is LoadState.Loading) {
+        item(span = { GridItemSpan(maxLineSpan) }) {
+            CircularProgressIndicator(
+                modifier = Modifier.fillMaxSize()
+                    .wrapContentSize(Alignment.Center),
+            )
+        }
+    }
+    items(festivals.itemCount) { index ->
+        festivals[index]?.let {
+            FestivalCard(
+                title = it.title,
+                imgSrc = it.imgSrc,
+                startDate = it.startDate,
+                endDate = it.endDate,
+                avgStarRating = it.avgStarRating,
+                areaName = it.areaName,
+                sigunguName = it.sigunguName,
+                onClick = {
+                    onClickItem(it.id)
+                },
+            )
+        }
+    }
+    if (festivals.loadState.append is LoadState.Loading) {
+        item(span = { GridItemSpan(maxLineSpan) }) {
+            CircularProgressIndicator(
+                modifier = Modifier.fillMaxSize()
+                    .wrapContentSize(Alignment.Center),
+            )
         }
     }
 }
 
 fun LazyGridScope.festivalList(
-    festivalsState: FestivalListUiState,
     festivals: LazyPagingItems<FestivalListItemUiState>,
     onClickItem: (id: String) -> Unit,
 ) {
-    when (festivalsState) {
-        FestivalListUiState.Loading -> Unit
-        is FestivalListUiState.Success -> {
-            if (festivals.loadState.refresh is LoadState.Loading) {
-                item(span = { GridItemSpan(maxLineSpan) }) {
-                    CircularProgressIndicator(
-                        modifier = Modifier.fillMaxSize()
-                            .wrapContentSize(Alignment.Center),
-                    )
-                }
-            }
-            items(festivals.itemCount) { index ->
-                festivals[index]?.let {
-                    FestivalListItem(
-                        title = it.title,
-                        imgSrc = it.imgSrc,
-                        startDate = it.startDate,
-                        endDate = it.endDate,
-                        avgStarRating = it.avgStarRating,
-                        areaName = it.areaName,
-                        sigunguName = it.sigunguName,
-                        modifier = Modifier.clickable(
-                            interactionSource = remember { MutableInteractionSource() },
-                            indication = rememberRipple(),
-                        ) {
-                            onClickItem(it.id)
-                        },
-                        colors = ListItemDefaults.colors(containerColor = Color.Transparent),
-                    )
-                }
-            }
-            if (festivals.loadState.append is LoadState.Loading) {
-                item(span = { GridItemSpan(maxLineSpan) }) {
-                    CircularProgressIndicator(
-                        modifier = Modifier.fillMaxSize()
-                            .wrapContentSize(Alignment.Center),
-                    )
-                }
-            }
+    if (festivals.loadState.refresh is LoadState.Loading) {
+        item(span = { GridItemSpan(maxLineSpan) }) {
+            CircularProgressIndicator(
+                modifier = Modifier.fillMaxSize()
+                    .wrapContentSize(Alignment.Center),
+            )
+        }
+    }
+    items(festivals.itemCount) { index ->
+        festivals[index]?.let {
+            FestivalListItem(
+                title = it.title,
+                imgSrc = it.imgSrc,
+                startDate = it.startDate,
+                endDate = it.endDate,
+                avgStarRating = it.avgStarRating,
+                areaName = it.areaName,
+                sigunguName = it.sigunguName,
+                modifier = Modifier.clickable(
+                    interactionSource = remember { MutableInteractionSource() },
+                    indication = rememberRipple(),
+                ) {
+                    onClickItem(it.id)
+                },
+                colors = ListItemDefaults.colors(containerColor = Color.Transparent),
+            )
+        }
+    }
+    if (festivals.loadState.append is LoadState.Loading) {
+        item(span = { GridItemSpan(maxLineSpan) }) {
+            CircularProgressIndicator(
+                modifier = Modifier.fillMaxSize()
+                    .wrapContentSize(Alignment.Center),
+            )
         }
     }
 }
@@ -157,10 +144,6 @@ private fun FestivalCardListPreview() {
         horizontalArrangement = Arrangement.spacedBy(16.dp),
     ) {
         festivalCardList(
-            festivalsState = FestivalListUiState.Success(
-                contentTypeId = "15",
-                contentTypeName = "축제/공연/행사",
-            ),
             festivals = pagedFestivals,
             onClickItem = {},
         )
@@ -199,10 +182,6 @@ private fun FestivalListPreview() {
         contentPadding = PaddingValues(16.dp),
     ) {
         festivalList(
-            festivalsState = FestivalListUiState.Success(
-                contentTypeId = "15",
-                contentTypeName = "축제/공연/행사",
-            ),
             festivals = pagedFestivals,
             onClickItem = {},
         )
