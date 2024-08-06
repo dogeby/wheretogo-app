@@ -3,6 +3,7 @@ package com.dogeby.wheretogo.feature.home
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.paging.LoadState
 import androidx.paging.LoadStates
 import androidx.paging.PagingData
@@ -15,6 +16,28 @@ import com.dogeby.wheretogo.core.ui.model.ContentListUiState
 import com.dogeby.wheretogo.core.ui.model.FestivalListItemUiState
 import com.dogeby.wheretogo.feature.home.model.HomeScreenUiState
 import kotlinx.coroutines.flow.flowOf
+
+@Composable
+fun HomeRoute(
+    navigateToList: (contentType: TourContentType, areaCode: String, sigunguCode: String) -> Unit,
+    navigateToContentDetail: (id: String) -> Unit,
+    modifier: Modifier = Modifier,
+    viewModel: HomeViewModel = hiltViewModel(),
+) {
+    val homeScreenUiState = viewModel.homeScreenUiState
+    val festivals = viewModel.festivalPerformanceEventListState.collectAsLazyPagingItems()
+    val contentsList = viewModel.contentListStates.map {
+        it.collectAsLazyPagingItems()
+    }
+    HomeScreen(
+        homeScreenUiState = homeScreenUiState,
+        festivals = festivals,
+        contentsList = contentsList,
+        onNavigateToList = navigateToList,
+        onNavigateToContentDetail = navigateToContentDetail,
+        modifier = modifier,
+    )
+}
 
 @Composable
 internal fun HomeScreen(
