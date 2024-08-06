@@ -1,7 +1,6 @@
 package com.dogeby.wheretogo.feature.contents.model
 
 import com.dogeby.wheretogo.core.ui.model.CategoryChipUiState
-import com.dogeby.wheretogo.core.ui.model.ContentListUiState
 import com.dogeby.wheretogo.core.ui.model.ContentTypeTabUiState
 
 sealed interface ContentsScreenUiState {
@@ -16,5 +15,4 @@ sealed interface ContentsScreenUiState {
 data class ContentsPageUiState(
     val contentTypeTabState: ContentTypeTabUiState,
     val categoryChipStates: List<CategoryChipUiState>,
-    val contentsState: ContentListUiState,
 )

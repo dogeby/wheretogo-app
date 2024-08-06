@@ -34,6 +34,7 @@ import kotlinx.coroutines.flow.flowOf
 internal fun SearchResultScreen(
     searchResultScreenState: SearchResultScreenUiState,
     festivals: LazyPagingItems<FestivalListItemUiState>,
+    contents: LazyPagingItems<ContentListItemUiState>,
     onClickContent: (id: String) -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -46,11 +47,9 @@ internal fun SearchResultScreen(
         is SearchResultScreenUiState.Success -> {
             with(searchResultScreenState) {
                 SearchResultList(
-                    attractionListState = attractionListState,
                     festivalListState = festivalListState,
                     festivals = festivals,
-                    restaurantListState = restaurantListState,
-                    accommodationListState = accommodationListState,
+                    contents = contents,
                     onClickContent = onClickContent,
                     modifier = modifier,
                 )
@@ -61,11 +60,9 @@ internal fun SearchResultScreen(
 
 @Composable
 private fun SearchResultList(
-    attractionListState: ContentListUiState,
     festivalListState: FestivalListUiState,
     festivals: LazyPagingItems<FestivalListItemUiState>,
-    restaurantListState: ContentListUiState,
-    accommodationListState: ContentListUiState,
+    contents: LazyPagingItems<ContentListItemUiState>,
     onClickContent: (id: String) -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -76,7 +73,7 @@ private fun SearchResultList(
     ) {
         contentSearchResultList(
             titleResId = R.string.destination,
-            contentListState = attractionListState,
+            contents = contents,
             onClickContent = onClickContent,
         )
         when (festivalListState) {
@@ -104,12 +101,12 @@ private fun SearchResultList(
         }
         contentSearchResultList(
             titleResId = R.string.restaurant,
-            contentListState = restaurantListState,
+            contents = contents,
             onClickContent = onClickContent,
         )
         contentSearchResultList(
             titleResId = R.string.accommodation,
-            contentListState = accommodationListState,
+            contents = contents,
             onClickContent = onClickContent,
         )
     }
@@ -117,30 +114,25 @@ private fun SearchResultList(
 
 private fun LazyGridScope.contentSearchResultList(
     @StringRes titleResId: Int,
-    contentListState: ContentListUiState,
+    contents: LazyPagingItems<ContentListItemUiState>,
     onClickContent: (id: String) -> Unit,
 ) {
-    when (contentListState) {
-        ContentListUiState.Loading -> Unit
-        is ContentListUiState.Success -> {
-            if (contentListState.contents.isNotEmpty()) {
-                item(
-                    span = {
-                        GridItemSpan(maxLineSpan)
-                    },
-                ) {
-                    Text(
-                        text = stringResource(id = titleResId),
-                        style = MaterialTheme.typography.titleMedium,
-                        modifier = Modifier.padding(horizontal = 16.dp),
-                    )
-                }
-                contentList(
-                    contentsState = contentListState,
-                    onClickItem = onClickContent,
-                )
-            }
+    if (contents.itemCount != 0) {
+        item(
+            span = {
+                GridItemSpan(maxLineSpan)
+            },
+        ) {
+            Text(
+                text = stringResource(id = titleResId),
+                style = MaterialTheme.typography.titleMedium,
+                modifier = Modifier.padding(horizontal = 16.dp),
+            )
         }
+        contentList(
+            contents = contents,
+            onClickItem = onClickContent,
+        )
     }
 }
 
@@ -150,9 +142,13 @@ private fun SearchResultScreenPreview_Empty() {
     val festivals = emptyList<FestivalListItemUiState>()
     val pagedFestivals = flowOf(PagingData.from(festivals)).collectAsLazyPagingItems()
 
+    val contents = emptyList<ContentListItemUiState>()
+    val pagedContents = flowOf(PagingData.from(contents)).collectAsLazyPagingItems()
+
     SearchResultScreen(
         searchResultScreenState = SearchResultScreenUiState.Empty,
         festivals = pagedFestivals,
+        contents = pagedContents,
         onClickContent = {},
     )
 }
@@ -163,9 +159,13 @@ private fun SearchResultScreenPreview_Loading() {
     val festivals = emptyList<FestivalListItemUiState>()
     val pagedFestivals = flowOf(PagingData.from(festivals)).collectAsLazyPagingItems()
 
+    val contents = emptyList<ContentListItemUiState>()
+    val pagedContents = flowOf(PagingData.from(contents)).collectAsLazyPagingItems()
+
     SearchResultScreen(
         searchResultScreenState = SearchResultScreenUiState.Loading,
         festivals = pagedFestivals,
+        contents = pagedContents,
         onClickContent = {},
     )
 }
@@ -188,24 +188,26 @@ private fun SearchResultScreenPreview_Success() {
     }
     val pagedFestivals = flowOf(PagingData.from(festivals)).collectAsLazyPagingItems()
 
+    val contents = List(10) {
+        ContentListItemUiState(
+            id = "$it",
+            title = "Title",
+            imgSrc = "http://tong.visitkorea.or.kr/cms/resource/23/" +
+                "2678623_image3_1.jpg",
+            categories = listOf("cat1", "cat2", "cat3"),
+            avgStarRating = 4.5,
+            areaName = "area",
+            sigunguName = "sigungu",
+        )
+    }
+    val pagedContents = flowOf(PagingData.from(contents)).collectAsLazyPagingItems()
+
     Column {
         SearchResultScreen(
             searchResultScreenState = SearchResultScreenUiState.Success(
                 attractionListState = ContentListUiState.Success(
                     contentTypeId = "12",
                     contentTypeName = "관광지",
-                    contents = List(10) {
-                        ContentListItemUiState(
-                            id = "$it",
-                            title = "Title",
-                            imgSrc = "http://tong.visitkorea.or.kr/cms/resource/23/" +
-                                "2678623_image3_1.jpg",
-                            categories = listOf("cat1", "cat2", "cat3"),
-                            avgStarRating = 4.5,
-                            areaName = "area",
-                            sigunguName = "sigungu",
-                        )
-                    },
                 ),
                 festivalListState = FestivalListUiState.Success(
                     contentTypeId = "15",
@@ -214,15 +216,14 @@ private fun SearchResultScreenPreview_Success() {
                 restaurantListState = ContentListUiState.Success(
                     contentTypeId = "39",
                     contentTypeName = "음식",
-                    contents = emptyList(),
                 ),
                 accommodationListState = ContentListUiState.Success(
                     contentTypeId = "32",
                     contentTypeName = "숙박",
-                    contents = emptyList(),
                 ),
             ),
             festivals = pagedFestivals,
+            contents = pagedContents,
             onClickContent = {},
         )
     }

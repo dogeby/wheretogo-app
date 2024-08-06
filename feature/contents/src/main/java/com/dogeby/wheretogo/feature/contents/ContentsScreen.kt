@@ -17,6 +17,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.paging.PagingData
+import androidx.paging.compose.LazyPagingItems
+import androidx.paging.compose.collectAsLazyPagingItems
 import com.dogeby.wheretogo.core.ui.components.chip.CategoryChipRow
 import com.dogeby.wheretogo.core.ui.components.common.EmptyListDisplay
 import com.dogeby.wheretogo.core.ui.components.common.LoadingDisplay
@@ -24,16 +27,17 @@ import com.dogeby.wheretogo.core.ui.components.list.contentList
 import com.dogeby.wheretogo.core.ui.components.tab.ContentTypeTabRow
 import com.dogeby.wheretogo.core.ui.model.CategoryChipUiState
 import com.dogeby.wheretogo.core.ui.model.ContentListItemUiState
-import com.dogeby.wheretogo.core.ui.model.ContentListUiState
 import com.dogeby.wheretogo.core.ui.model.ContentTypeTabUiState
 import com.dogeby.wheretogo.feature.contents.model.ContentsPageUiState
 import com.dogeby.wheretogo.feature.contents.model.ContentsScreenUiState
+import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 internal fun ContentsScreen(
     contentsScreenState: ContentsScreenUiState,
+    contents: LazyPagingItems<ContentListItemUiState>,
     onClickContentTypeTab: (id: String) -> Unit,
     onClickCategoryChip: (contentTypeId: String, categoryId: String) -> Unit,
     onClickContent: (id: String) -> Unit,
@@ -78,22 +82,17 @@ internal fun ContentsScreen(
                                 state = LazyListState(),
                                 contentPadding = PaddingValues(horizontal = 16.dp),
                             )
-                            when (contentsState) {
-                                ContentListUiState.Loading -> LoadingDisplay()
-                                is ContentListUiState.Success -> {
-                                    if (contentsState.contents.isEmpty()) {
-                                        EmptyListDisplay()
-                                    } else {
-                                        LazyVerticalGrid(
-                                            columns = GridCells.Adaptive(360.dp),
-                                            contentPadding = PaddingValues(bottom = 16.dp),
-                                        ) {
-                                            contentList(
-                                                contentsState = contentsState,
-                                                onClickItem = onClickContent,
-                                            )
-                                        }
-                                    }
+                            if (contents.itemCount == 0) {
+                                EmptyListDisplay()
+                            } else {
+                                LazyVerticalGrid(
+                                    columns = GridCells.Adaptive(360.dp),
+                                    contentPadding = PaddingValues(bottom = 16.dp),
+                                ) {
+                                    contentList(
+                                        contents = contents,
+                                        onClickItem = onClickContent,
+                                    )
                                 }
                             }
                         }
@@ -126,26 +125,25 @@ private fun ContentScreenPreview() {
                     isSelected = tabAndCategory["$tabIndex"] == "$tabIndex$it",
                 )
             },
-            contentsState = ContentListUiState.Success(
-                contentTypeId = "12",
-                contentTypeName = "관광지",
-                contents = List(20) {
-                    ContentListItemUiState(
-                        id = "$tabIndex$it",
-                        title = "Title $tabIndex $it",
-                        imgSrc = "http://tong.visitkorea.or.kr/cms/resource/23/" +
-                            "2678623_image3_1.jpg",
-                        categories = listOf("cat1", "cat2", "cat3"),
-                        avgStarRating = 4.5,
-                        areaName = "area",
-                        sigunguName = "sigungu",
-                    )
-                },
-            ),
         )
     }
+    val contents = List(20) {
+        ContentListItemUiState(
+            id = "$it",
+            title = "Title",
+            imgSrc = "http://tong.visitkorea.or.kr/cms/resource/23/" +
+                "2678623_image3_1.jpg",
+            categories = listOf("cat1", "cat2", "cat3"),
+            avgStarRating = 4.5,
+            areaName = "area",
+            sigunguName = "sigungu",
+        )
+    }
+    val pagedContents = flowOf(PagingData.from(contents)).collectAsLazyPagingItems()
+
     ContentsScreen(
         contentsScreenState = ContentsScreenUiState.Success(pageStates),
+        contents = pagedContents,
         onClickContentTypeTab = {},
         onClickCategoryChip = { _, _ -> },
         onClickContent = {},
@@ -155,8 +153,12 @@ private fun ContentScreenPreview() {
 @Preview(showBackground = true)
 @Composable
 private fun ContentScreenPreview_Loading() {
+    val contents = emptyList<ContentListItemUiState>()
+    val pagedContents = flowOf(PagingData.from(contents)).collectAsLazyPagingItems()
+
     ContentsScreen(
         contentsScreenState = ContentsScreenUiState.Loading,
+        contents = pagedContents,
         onClickContentTypeTab = {},
         onClickCategoryChip = { _, _ -> },
         onClickContent = {},
@@ -185,15 +187,14 @@ private fun ContentScreenPreview_Empty() {
                     isSelected = tabAndCategory["$tabIndex"] == "$tabIndex$it",
                 )
             },
-            contentsState = ContentListUiState.Success(
-                contentTypeId = "12",
-                contentTypeName = "관광지",
-                contents = emptyList(),
-            ),
         )
     }
+    val contents = emptyList<ContentListItemUiState>()
+    val pagedContents = flowOf(PagingData.from(contents)).collectAsLazyPagingItems()
+
     ContentsScreen(
         contentsScreenState = ContentsScreenUiState.Success(pageStates),
+        contents = pagedContents,
         onClickContentTypeTab = {},
         onClickCategoryChip = { _, _ -> },
         onClickContent = {},

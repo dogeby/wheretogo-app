@@ -6,15 +6,21 @@ enum class TourContentType(val id: String) {
     Festival("15"),
     TravelCourse("25"),
     LeisureSport("28"),
-    Shopping("38"),
     Accommodation("32"),
+    Shopping("38"),
     Restaurant("39"),
-}
+    ;
 
-fun TourContentType.getDestination() = listOf(
-    TourContentType.TouristSpot,
-    TourContentType.CulturalFacility,
-    TourContentType.LeisureSport,
-    TourContentType.Shopping,
-    TourContentType.TravelCourse,
-)
+    companion object {
+
+        fun getDestinations() = listOf(
+            TouristSpot,
+            CulturalFacility,
+            LeisureSport,
+            Shopping,
+            TravelCourse,
+        )
+
+        fun getAllExceptFestival() = entries.filter { it != Festival }
+    }
+}

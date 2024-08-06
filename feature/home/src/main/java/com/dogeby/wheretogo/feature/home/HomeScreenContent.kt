@@ -37,6 +37,7 @@ import kotlinx.coroutines.flow.flowOf
 internal fun HomeScreenContent(
     homeScreenUiState: HomeScreenUiState.Success,
     festivals: LazyPagingItems<FestivalListItemUiState>,
+    contentsList: List<LazyPagingItems<ContentListItemUiState>>,
     onNavigateToList: (contentTypeId: String, areaCode: String, sigunguCode: String) -> Unit,
     onNavigateToContentDetail: (id: String) -> Unit,
     modifier: Modifier = Modifier,
@@ -70,12 +71,14 @@ internal fun HomeScreenContent(
                 if (index % 3 == 1) {
                     contentCardsWithTitleRow(
                         contentsState = contentListUiState,
+                        contents = contentsList[index],
                         onNavigateToList = onNavigateToList,
                         onNavigateToContentDetail = onNavigateToContentDetail,
                     )
                 } else {
                     contentsWithTitleRow(
                         contentsState = contentListUiState,
+                        contents = contentsList[index],
                         onNavigateToContents = onNavigateToList,
                         onNavigateToContentDetail = onNavigateToContentDetail,
                     )
@@ -88,6 +91,7 @@ internal fun HomeScreenContent(
 @OptIn(ExperimentalFoundationApi::class)
 private fun LazyListScope.contentCardsWithTitleRow(
     contentsState: ContentListUiState,
+    contents: LazyPagingItems<ContentListItemUiState>,
     onNavigateToList: (contentTypeId: String, areaCode: String, sigunguCode: String) -> Unit,
     onNavigateToContentDetail: (id: String) -> Unit,
 ) {
@@ -109,7 +113,7 @@ private fun LazyListScope.contentCardsWithTitleRow(
                         colors = ListItemDefaults.colors(containerColor = Color.Transparent),
                     )
                     ContentCardCarousel(
-                        contentsState = this,
+                        contents = contents,
                         onClickItem = onNavigateToContentDetail,
                         contentPadding = PaddingValues(horizontal = 16.dp),
                         pageSize = PageSize.Fixed(240.dp),
@@ -124,6 +128,7 @@ private fun LazyListScope.contentCardsWithTitleRow(
 @OptIn(ExperimentalFoundationApi::class)
 private fun LazyListScope.contentsWithTitleRow(
     contentsState: ContentListUiState,
+    contents: LazyPagingItems<ContentListItemUiState>,
     onNavigateToContents: (contentTypeId: String, areaCode: String, sigunguCode: String) -> Unit,
     onNavigateToContentDetail: (id: String) -> Unit,
 ) {
@@ -145,7 +150,7 @@ private fun LazyListScope.contentsWithTitleRow(
                         colors = ListItemDefaults.colors(containerColor = Color.Transparent),
                     )
                     ContentCarousel(
-                        contentsState = this,
+                        contents = contents,
                         onClickItem = onNavigateToContentDetail,
                         pageSize = PageSize.Fixed(360.dp),
                         verticalAlignment = Alignment.Top,
@@ -164,22 +169,6 @@ private fun HomeScreenContentPreview() {
         contentTypeId = "15",
         contentTypeName = "축제/공연/행사",
     )
-    val contentListUiState = ContentListUiState.Success(
-        contentTypeId = "12",
-        contentTypeName = "관광지",
-        contents = List(10) {
-            ContentListItemUiState(
-                id = "$it",
-                title = "Title",
-                imgSrc = "http://tong.visitkorea.or.kr/cms/resource/23/" +
-                    "2678623_image3_1.jpg",
-                categories = listOf("cat1", "cat2", "cat3"),
-                avgStarRating = 4.5,
-                areaName = "area",
-                sigunguName = "sigungu",
-            )
-        },
-    )
     val festivals = List(10) {
         FestivalListItemUiState(
             id = "$it",
@@ -195,6 +184,25 @@ private fun HomeScreenContentPreview() {
     }
     val pagedFestivals = flowOf(PagingData.from(festivals)).collectAsLazyPagingItems()
 
+    val contentListStatesSize = 7
+    val contentListUiState = ContentListUiState.Success(
+        contentTypeId = "12",
+        contentTypeName = "관광지",
+    )
+    val contents = List(10) {
+        ContentListItemUiState(
+            id = "$it",
+            title = "Title",
+            imgSrc = "http://tong.visitkorea.or.kr/cms/resource/23/" +
+                "2678623_image3_1.jpg",
+            categories = listOf("cat1", "cat2", "cat3"),
+            avgStarRating = 4.5,
+            areaName = "area",
+            sigunguName = "sigungu",
+        )
+    }
+    val pagedContents = flowOf(PagingData.from(contents)).collectAsLazyPagingItems()
+
     HomeScreenContent(
         homeScreenUiState = HomeScreenUiState.Success(
             festivalPerformanceEventListState = festivalListUiState,
@@ -203,6 +211,7 @@ private fun HomeScreenContentPreview() {
             },
         ),
         festivals = pagedFestivals,
+        contentsList = List(contentListStatesSize) { pagedContents },
         onNavigateToList = { _, _, _ -> },
         onNavigateToContentDetail = {},
     )
