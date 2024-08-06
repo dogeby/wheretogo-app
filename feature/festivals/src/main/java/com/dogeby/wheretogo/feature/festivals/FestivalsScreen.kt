@@ -8,6 +8,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.paging.LoadState
+import androidx.paging.LoadStates
 import androidx.paging.PagingData
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
@@ -84,7 +86,16 @@ private fun FestivalsScreenPreview() {
             sigunguName = "sigungu",
         )
     }
-    val pagedFestivals = flowOf(PagingData.from(festivals)).collectAsLazyPagingItems()
+    val pagedFestivals = flowOf(
+        PagingData.from(
+            data = festivals,
+            sourceLoadStates = LoadStates(
+                refresh = LoadState.NotLoading(false),
+                prepend = LoadState.NotLoading(false),
+                append = LoadState.NotLoading(false),
+            ),
+        ),
+    ).collectAsLazyPagingItems()
 
     FestivalsScreen(
         festivalsScreenState = FestivalsScreenUiState.Success(
@@ -108,8 +119,9 @@ private fun FestivalsScreenPreview() {
 @Preview(showBackground = true)
 @Composable
 private fun FestivalsScreenPreview_Empty() {
-    val festivals = emptyList<FestivalListItemUiState>()
-    val pagedFestivals = flowOf(PagingData.from(festivals)).collectAsLazyPagingItems()
+    val pagedFestivals = flowOf(
+        PagingData.empty<FestivalListItemUiState>(),
+    ).collectAsLazyPagingItems()
 
     FestivalsScreen(
         festivalsScreenState = FestivalsScreenUiState.Success(

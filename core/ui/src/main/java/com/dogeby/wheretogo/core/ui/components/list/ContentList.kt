@@ -23,6 +23,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.paging.LoadState
+import androidx.paging.LoadStates
 import androidx.paging.PagingData
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
@@ -35,7 +36,7 @@ fun LazyGridScope.contentList(
     contents: LazyPagingItems<ContentListItemUiState>,
     onClickItem: (id: String) -> Unit,
 ) {
-    if (contents.loadState.refresh == LoadState.Loading) {
+    if (contents.loadState.refresh is LoadState.Loading) {
         item(span = { GridItemSpan(maxLineSpan) }) {
             CircularProgressIndicator(
                 modifier = Modifier.fillMaxSize()
@@ -68,7 +69,7 @@ fun LazyListScope.contentCardList(
     contents: LazyPagingItems<ContentListItemUiState>,
     onClickItem: (id: String) -> Unit,
 ) {
-    if (contents.loadState.refresh == LoadState.Loading) {
+    if (contents.loadState.refresh is LoadState.Loading) {
         item {
             CircularProgressIndicator(
                 modifier = Modifier.fillMaxSize()
@@ -109,7 +110,16 @@ private fun ContentListPreview() {
             sigunguName = "sigungu",
         )
     }
-    val pagedContents = flowOf(PagingData.from(contents)).collectAsLazyPagingItems()
+    val pagedContents = flowOf(
+        PagingData.from(
+            data = contents,
+            sourceLoadStates = LoadStates(
+                refresh = LoadState.NotLoading(false),
+                prepend = LoadState.NotLoading(false),
+                append = LoadState.NotLoading(false),
+            ),
+        ),
+    ).collectAsLazyPagingItems()
 
     LazyVerticalGrid(
         columns = GridCells.Adaptive(360.dp),
@@ -137,7 +147,16 @@ private fun ContentCardListPreview_LazyListScope() {
             sigunguName = "sigungu",
         )
     }
-    val pagedContents = flowOf(PagingData.from(contents)).collectAsLazyPagingItems()
+    val pagedContents = flowOf(
+        PagingData.from(
+            data = contents,
+            sourceLoadStates = LoadStates(
+                refresh = LoadState.NotLoading(false),
+                prepend = LoadState.NotLoading(false),
+                append = LoadState.NotLoading(false),
+            ),
+        ),
+    ).collectAsLazyPagingItems()
 
     LazyRow(
         horizontalArrangement = Arrangement.spacedBy(16.dp),

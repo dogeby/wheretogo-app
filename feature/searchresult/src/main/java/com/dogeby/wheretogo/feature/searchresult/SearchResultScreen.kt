@@ -15,6 +15,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.paging.LoadState
+import androidx.paging.LoadStates
 import androidx.paging.PagingData
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
@@ -200,7 +202,16 @@ private fun SearchResultScreenPreview_Success() {
             sigunguName = "sigungu",
         )
     }
-    val pagedContents = flowOf(PagingData.from(contents)).collectAsLazyPagingItems()
+    val pagedContents = flowOf(
+        PagingData.from(
+            data = contents,
+            sourceLoadStates = LoadStates(
+                refresh = LoadState.NotLoading(false),
+                prepend = LoadState.NotLoading(false),
+                append = LoadState.NotLoading(false),
+            ),
+        ),
+    ).collectAsLazyPagingItems()
 
     Column {
         SearchResultScreen(

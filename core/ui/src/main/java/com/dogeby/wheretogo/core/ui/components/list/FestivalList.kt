@@ -21,6 +21,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.paging.LoadState
+import androidx.paging.LoadStates
 import androidx.paging.PagingData
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
@@ -38,7 +39,7 @@ fun LazyGridScope.festivalCardList(
     when (festivalsState) {
         FestivalListUiState.Loading -> Unit
         is FestivalListUiState.Success -> {
-            if (festivals.loadState.refresh == LoadState.Loading) {
+            if (festivals.loadState.refresh is LoadState.Loading) {
                 item(span = { GridItemSpan(maxLineSpan) }) {
                     CircularProgressIndicator(
                         modifier = Modifier.fillMaxSize()
@@ -62,7 +63,7 @@ fun LazyGridScope.festivalCardList(
                     )
                 }
             }
-            if (festivals.loadState.append == LoadState.Loading) {
+            if (festivals.loadState.append is LoadState.Loading) {
                 item(span = { GridItemSpan(maxLineSpan) }) {
                     CircularProgressIndicator(
                         modifier = Modifier.fillMaxSize()
@@ -82,7 +83,7 @@ fun LazyGridScope.festivalList(
     when (festivalsState) {
         FestivalListUiState.Loading -> Unit
         is FestivalListUiState.Success -> {
-            if (festivals.loadState.refresh == LoadState.Loading) {
+            if (festivals.loadState.refresh is LoadState.Loading) {
                 item(span = { GridItemSpan(maxLineSpan) }) {
                     CircularProgressIndicator(
                         modifier = Modifier.fillMaxSize()
@@ -110,7 +111,7 @@ fun LazyGridScope.festivalList(
                     )
                 }
             }
-            if (festivals.loadState.append == LoadState.Loading) {
+            if (festivals.loadState.append is LoadState.Loading) {
                 item(span = { GridItemSpan(maxLineSpan) }) {
                     CircularProgressIndicator(
                         modifier = Modifier.fillMaxSize()
@@ -138,7 +139,16 @@ private fun FestivalCardListPreview() {
             sigunguName = "sigungu",
         )
     }
-    val pagedFestivals = flowOf(PagingData.from(festivals)).collectAsLazyPagingItems()
+    val pagedFestivals = flowOf(
+        PagingData.from(
+            data = festivals,
+            sourceLoadStates = LoadStates(
+                refresh = LoadState.NotLoading(false),
+                prepend = LoadState.NotLoading(false),
+                append = LoadState.NotLoading(false),
+            ),
+        ),
+    ).collectAsLazyPagingItems()
 
     LazyVerticalGrid(
         columns = GridCells.Adaptive(360.dp),
@@ -173,7 +183,16 @@ private fun FestivalListPreview() {
             sigunguName = "sigungu",
         )
     }
-    val pagedFestivals = flowOf(PagingData.from(festivals)).collectAsLazyPagingItems()
+    val pagedFestivals = flowOf(
+        PagingData.from(
+            data = festivals,
+            sourceLoadStates = LoadStates(
+                refresh = LoadState.NotLoading(false),
+                prepend = LoadState.NotLoading(false),
+                append = LoadState.NotLoading(false),
+            ),
+        ),
+    ).collectAsLazyPagingItems()
 
     LazyVerticalGrid(
         columns = GridCells.Adaptive(360.dp),

@@ -15,6 +15,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.paging.LoadState
+import androidx.paging.LoadStates
 import androidx.paging.PagingData
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
@@ -91,7 +92,16 @@ private fun FestivalCardCarouselPreview() {
             sigunguName = "sigungu",
         )
     }
-    val pagedFestivals = flowOf(PagingData.from(festivals)).collectAsLazyPagingItems()
+    val pagedFestivals = flowOf(
+        PagingData.from(
+            data = festivals,
+            sourceLoadStates = LoadStates(
+                refresh = LoadState.NotLoading(false),
+                prepend = LoadState.NotLoading(false),
+                append = LoadState.NotLoading(false),
+            ),
+        ),
+    ).collectAsLazyPagingItems()
 
     FestivalCardCarousel(
         festivalsState = FestivalListUiState.Success(
