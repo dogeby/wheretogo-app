@@ -1,5 +1,7 @@
 package com.dogeby.wheretogo.core.common.di
 
+import com.dogeby.wheretogo.core.common.networkmonitor.NetworkMonitor
+import com.dogeby.wheretogo.core.common.networkmonitor.NetworkMonitorImpl
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -16,4 +18,8 @@ object CommonModule {
     fun providesJson(): Json = Json {
         ignoreUnknownKeys = true
     }
+
+    @Provides
+    @Singleton
+    fun providesNetworkMonitor(networkMonitor: NetworkMonitorImpl): NetworkMonitor = networkMonitor
 }
