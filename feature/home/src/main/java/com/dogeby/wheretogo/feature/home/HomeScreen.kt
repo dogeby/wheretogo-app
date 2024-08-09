@@ -18,7 +18,7 @@ import com.dogeby.wheretogo.feature.home.model.HomeScreenUiState
 import kotlinx.coroutines.flow.flowOf
 
 @Composable
-fun HomeRoute(
+internal fun HomeRoute(
     navigateToList: (contentType: TourContentType, areaCode: String, sigunguCode: String) -> Unit,
     navigateToContentDetail: (id: String) -> Unit,
     modifier: Modifier = Modifier,
