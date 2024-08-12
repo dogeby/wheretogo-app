@@ -46,7 +46,6 @@ internal fun SearchScreen(
             onSearch = onSearch,
             active = true,
             onActiveChange = {},
-            modifier = modifier,
             leadingIcon = {
                 IconButton(
                     onClick = onNavigateUp,
