@@ -1,4 +1,4 @@
-package com.dogeby.wheretogo
+package com.dogeby.wheretogo.ui
 
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -13,7 +13,9 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.dogeby.wheretogo.R
 import com.dogeby.wheretogo.core.common.networkmonitor.NetworkMonitor
+import com.dogeby.wheretogo.navigation.WheretogoNavHost
 
 @Composable
 fun WheretogoApp(

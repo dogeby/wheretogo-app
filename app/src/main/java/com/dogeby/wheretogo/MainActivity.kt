@@ -5,6 +5,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import com.dogeby.wheretogo.core.common.networkmonitor.NetworkMonitor
+import com.dogeby.wheretogo.ui.WheretogoApp
 import com.dogeby.wheretogo.ui.theme.WheretogoTheme
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject

@@ -1,4 +1,4 @@
-package com.dogeby.wheretogo
+package com.dogeby.wheretogo.ui
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Stable
