@@ -37,9 +37,6 @@ jobs:
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
 
-      - name: Run ktlint
-        run: ./gradlew ktlintCheck
-
       - name: Setup Environment Variables for Tests
         env:
           TOUR_API_BASED_URL: ${{ secrets.TOUR_API_BASED_URL }}
@@ -56,6 +53,9 @@ jobs:
           echo STORE_PASSWORD=\"$STORE_PASSWORD\" >> ./keystore.properties
           echo KEY_ALIAS=\"$KEY_ALIAS\" >> ./keystore.properties
           echo KEY_PASSWORD=\"$KEY_PASSWORD\" >> ./keystore.properties
+
+      - name: Run ktlint
+        run: ./gradlew ktlintCheck
 
       - name: Run unit tests
         run: ./gradlew testDebugUnitTest
