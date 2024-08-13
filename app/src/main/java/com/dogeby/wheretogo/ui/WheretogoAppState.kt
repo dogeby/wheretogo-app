@@ -1,12 +1,16 @@
-package com.dogeby.wheretogo
+package com.dogeby.wheretogo.ui
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Stable
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.navigation.NavDestination
 import androidx.navigation.NavHostController
+import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.dogeby.wheretogo.core.common.networkmonitor.NetworkMonitor
+import com.dogeby.wheretogo.feature.home.navigation.HOME_ROUTE
+import com.dogeby.wheretogo.navigation.Screen
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.map
@@ -29,6 +33,16 @@ class WheretogoAppState(
     coroutineScope: CoroutineScope,
     networkMonitor: NetworkMonitor,
 ) {
+    val currentDestination: NavDestination?
+        @Composable get() = navController
+            .currentBackStackEntryAsState().value?.destination
+
+    val currentScreen: Screen?
+        @Composable
+        get() = when (currentDestination?.route) {
+            HOME_ROUTE -> Screen.Home
+            else -> null
+        }
 
     val isOffline = networkMonitor.isOnline
         .map(Boolean::not)

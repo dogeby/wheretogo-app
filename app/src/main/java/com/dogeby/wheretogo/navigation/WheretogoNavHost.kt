@@ -1,4 +1,4 @@
-package com.dogeby.wheretogo
+package com.dogeby.wheretogo.navigation
 
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable

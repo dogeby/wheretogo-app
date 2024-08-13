@@ -1,4 +1,4 @@
 <resources>
-    <string name="app_name">Wheretogo</string>
-    <string name="not_connected">네트워크 연결 상태를 확인 후 다시 시대해 주세요.</string>
+    <string name="app_name">어디갈까</string>
+    <string name="not_connected">네트워크 연결 상태를 확인 후 다시 시도해 주세요.</string>
 </resources>

@@ -1,3 +1,6 @@
+import java.io.FileInputStream
+import java.util.Properties
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.jetbrains.kotlin.android)
@@ -7,6 +10,19 @@ plugins {
 }
 
 android {
+    val keystorePropertiesFile = rootProject.file("keystore.properties")
+    val keystoreProperties = Properties()
+    keystoreProperties.load(FileInputStream(keystorePropertiesFile))
+
+    signingConfigs {
+
+        create("release") {
+            storeFile = keystoreProperties["STORE_FILE"]?.let { file(it) }
+            storePassword = keystoreProperties["STORE_PASSWORD"].toString()
+            keyAlias = keystoreProperties["KEY_ALIAS"].toString()
+            keyPassword = keystoreProperties["KEY_PASSWORD"].toString()
+        }
+    }
     namespace = "com.dogeby.wheretogo"
     compileSdk = 34
 
@@ -31,6 +47,7 @@ android {
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro",
             )
+            signingConfig = signingConfigs.getByName("release")
         }
     }
     compileOptions {
@@ -52,6 +69,7 @@ android {
 
 dependencies {
     implementation(project(":core:common"))
+    implementation(project(":core:ui"))
     implementation(project(":feature:home"))
 
     implementation(libs.androidx.core.ktx)
