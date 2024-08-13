@@ -14,11 +14,10 @@ hilt = "2.49"
 hiltNavigationCompose = "1.2.0"
 zoomable = "1.6.1"
 autoLinkText = "1.1.1"
-retrofit = "2.9.0"
-retrofitKotlinxSerializationJson = "1.0.0"
+retrofit = "2.11.0"
 kotlinxCoroutines = "1.7.3"
 secrets = "2.0.1"
-kotlinxSerializationJson = "1.5.0"
+kotlinxSerializationJson = "1.7.1"
 okhttp = "4.12.0"
 paging = "3.3.2"
 kotlinxDatetime = "0.6.0-RC.2"
@@ -52,7 +51,7 @@ hilt-navigation-compose = { group = "androidx.hilt", name = "hilt-navigation-com
 zoomable = { group = "net.engawapg.lib", name = "zoomable", version.ref = "zoomable" }
 autolinktext = { module = "sh.calvin.autolinktext:autolinktext", version.ref = "autoLinkText" }
 retrofit-core = { group = "com.squareup.retrofit2", name = "retrofit", version.ref = "retrofit" }
-retrofit-kotlin-serialization = { group = "com.jakewharton.retrofit", name = "retrofit2-kotlinx-serialization-converter", version.ref = "retrofitKotlinxSerializationJson" }
+retrofit-kotlin-serialization = { group = "com.squareup.retrofit2", name = "converter-kotlinx-serialization", version.ref = "retrofit" }
 kotlinx-coroutines-android = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-android", version.ref = "kotlinxCoroutines" }
 kotlinx-coroutines-test = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-test", version.ref = "kotlinxCoroutines" }
 kotlinx-serialization-json = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "kotlinxSerializationJson" }
