@@ -43,10 +43,19 @@ jobs:
       - name: Setup Environment Variables for Tests
         env:
           TOUR_API_BASED_URL: ${{ secrets.TOUR_API_BASED_URL }}
-          TOUR_API_SERVICE_KEY: ${{ secrets.TOUR_API_SERVICE_KEY  }}
+          TOUR_API_SERVICE_KEY: ${{ secrets.TOUR_API_SERVICE_KEY }}
+          STORE_FILE: ${{ secrets.STORE_FILE }}
+          STORE_PASSWORD: ${{ secrets.STORE_PASSWORD }}
+          KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
+          KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
+
         run: |
           echo TOUR_API_BASED_URL=\"$TOUR_API_BASED_URL\" >> ./local.properties
           echo TOUR_API_SERVICE_KEY=\"$TOUR_API_SERVICE_KEY\" >> ./local.properties
+          echo STORE_FILE=\"$STORE_FILE\" >> ./keystore.properties
+          echo STORE_PASSWORD=\"$STORE_PASSWORD\" >> ./keystore.properties
+          echo KEY_ALIAS=\"$KEY_ALIAS\" >> ./keystore.properties
+          echo KEY_PASSWORD=\"$KEY_PASSWORD\" >> ./keystore.properties
 
       - name: Run unit tests
         run: ./gradlew testDebugUnitTest

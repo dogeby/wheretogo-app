@@ -17,10 +17,10 @@ android {
     signingConfigs {
 
         create("release") {
-            storeFile = keystoreProperties["storeFile"]?.let { file(it) }
-            storePassword = keystoreProperties["storePassword"].toString()
-            keyAlias = keystoreProperties["keyAlias"].toString()
-            keyPassword = keystoreProperties["keyPassword"].toString()
+            storeFile = keystoreProperties["STORE_FILE"]?.let { file(it) }
+            storePassword = keystoreProperties["STORE_PASSWORD"].toString()
+            keyAlias = keystoreProperties["KEY_ALIAS"].toString()
+            keyPassword = keystoreProperties["KEY_PASSWORD"].toString()
         }
     }
     namespace = "com.dogeby.wheretogo"
