@@ -10,9 +10,9 @@ interface CachePreferencesManager {
         serializer: KSerializer<T>,
         value: T,
         ttl: Long = DEFAULT_TIME_TO_LIVE,
-    )
+    ): Result<Unit>
 
-    suspend fun <T> loadValue(
+    fun <T> loadValue(
         key: String,
         deserializer: KSerializer<T>,
     ): Flow<Result<T>>

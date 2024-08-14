@@ -24,7 +24,7 @@ class CachePreferencesManagerImpl @Inject constructor(
         serializer: KSerializer<T>,
         value: T,
         ttl: Long,
-    ) {
+    ): Result<Unit> = runCatching {
         val entry = CacheEntry(
             data = value,
             expiresAt = System.currentTimeMillis() + ttl,
@@ -37,7 +37,7 @@ class CachePreferencesManagerImpl @Inject constructor(
         }
     }
 
-    override suspend fun <T> loadValue(
+    override fun <T> loadValue(
         key: String,
         deserializer: KSerializer<T>,
     ): Flow<Result<T>> {
