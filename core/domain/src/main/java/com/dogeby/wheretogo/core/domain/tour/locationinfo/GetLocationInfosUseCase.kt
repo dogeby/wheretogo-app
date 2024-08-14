@@ -1,6 +1,6 @@
 package com.dogeby.wheretogo.core.domain.tour.locationinfo
 
-import com.dogeby.wheretogo.core.data.model.tour.LocationInfoData
+import com.dogeby.wheretogo.core.data.model.tour.locationinfo.LocationInfoData
 import com.dogeby.wheretogo.core.data.repository.TourRepository
 import com.dogeby.wheretogo.core.domain.model.tour.locationinfo.LocationInfo
 import com.dogeby.wheretogo.core.domain.model.tour.locationinfo.toLocationInfo

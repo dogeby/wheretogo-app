@@ -6,13 +6,13 @@ import androidx.paging.PagingData
 import com.dogeby.wheretogo.core.data.model.tour.CommonInfoData
 import com.dogeby.wheretogo.core.data.model.tour.FestivalData
 import com.dogeby.wheretogo.core.data.model.tour.KeywordSearchResultData
-import com.dogeby.wheretogo.core.data.model.tour.LocationInfoData
-import com.dogeby.wheretogo.core.data.model.tour.LocationInfoDataList
 import com.dogeby.wheretogo.core.data.model.tour.TourContentData
+import com.dogeby.wheretogo.core.data.model.tour.locationinfo.LocationInfoData
+import com.dogeby.wheretogo.core.data.model.tour.locationinfo.LocationInfoDataList
+import com.dogeby.wheretogo.core.data.model.tour.locationinfo.toLocationInfoData
 import com.dogeby.wheretogo.core.data.model.tour.serviceinfo.ContentTypeInfoData
 import com.dogeby.wheretogo.core.data.model.tour.serviceinfo.ContentTypeInfoMap
 import com.dogeby.wheretogo.core.data.model.tour.toCommonInfoData
-import com.dogeby.wheretogo.core.data.model.tour.toLocationInfoData
 import com.dogeby.wheretogo.core.data.paging.FestivalInfoPagingSource
 import com.dogeby.wheretogo.core.data.paging.KeywordSearchResultPagingSource
 import com.dogeby.wheretogo.core.data.paging.TourInfoByRegionPagingSource

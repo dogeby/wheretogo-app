@@ -1,4 +1,4 @@
-package com.dogeby.wheretogo.core.data.model.tour
+package com.dogeby.wheretogo.core.data.model.tour.locationinfo
 
 import com.dogeby.wheretogo.core.network.model.tour.locationinfo.NetworkLocationInfoData
 import kotlinx.serialization.Serializable

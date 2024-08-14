@@ -4,8 +4,8 @@ import androidx.paging.PagingData
 import com.dogeby.wheretogo.core.data.model.tour.CommonInfoData
 import com.dogeby.wheretogo.core.data.model.tour.FestivalData
 import com.dogeby.wheretogo.core.data.model.tour.KeywordSearchResultData
-import com.dogeby.wheretogo.core.data.model.tour.LocationInfoData
 import com.dogeby.wheretogo.core.data.model.tour.TourContentData
+import com.dogeby.wheretogo.core.data.model.tour.locationinfo.LocationInfoData
 import com.dogeby.wheretogo.core.data.model.tour.serviceinfo.ContentTypeInfoData
 import com.dogeby.wheretogo.core.model.tour.ArrangeOption
 import kotlinx.coroutines.flow.Flow

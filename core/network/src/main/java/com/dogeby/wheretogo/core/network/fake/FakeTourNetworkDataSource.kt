@@ -208,9 +208,9 @@ class FakeTourNetworkDataSource @Inject constructor() : TourNetworkDataSource {
         val body = NetworkLocationInfoBody(
             numberOfRows = 1,
             currentPage = 1,
-            totalCount = 1,
+            totalCount = LOCATION_INFO_TOTAL_COUNT,
             result = NetworkLocationInfoResult(
-                items = List(1) {
+                items = List(LOCATION_INFO_TOTAL_COUNT) {
                     NetworkLocationInfoData(
                         code = "$it",
                         name = "Name $it",
@@ -266,5 +266,6 @@ class FakeTourNetworkDataSource @Inject constructor() : TourNetworkDataSource {
     companion object {
         const val TOTAL_COUNT = 100
         const val CATEGORY_INFO_TOTAL_COUNT = 2
+        const val LOCATION_INFO_TOTAL_COUNT = 2
     }
 }
