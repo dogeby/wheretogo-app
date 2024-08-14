@@ -26,7 +26,7 @@ class SearchKeywordUseCase @Inject constructor(
         mediumCategoryCode: String = "",
         minorCategoryCode: String = "",
         arrangeOption: ArrangeOption = ArrangeOption.ModifiedTime,
-    ): Flow<Result<PagingData<KeywordSearchResult>>> {
+    ): Flow<PagingData<KeywordSearchResult>> {
         return combine(
             getLocationInfoMapUseCase(),
             getContentTypeInfoMapUseCase(),
@@ -41,7 +41,7 @@ class SearchKeywordUseCase @Inject constructor(
                 arrangeOption = arrangeOption,
             ),
         ) { locationInfoMapResult, contentTypeInfoMapResult, pagedSearchKeywordResultData ->
-            runCatching {
+            try {
                 val locationInfoMap = locationInfoMapResult.getOrThrow()
                 val contentTypeInfoMap = contentTypeInfoMapResult.getOrThrow()
 
@@ -51,6 +51,8 @@ class SearchKeywordUseCase @Inject constructor(
                         locationInfoMap = locationInfoMap,
                     )
                 }
+            } catch (e: Exception) {
+                PagingData.empty()
             }
         }
     }

@@ -22,7 +22,7 @@ class GetPagedFestivalUseCase @Inject constructor(
     operator fun invoke(
         eventStartDate: Instant = Clock.System.now(),
         arrangeOption: ArrangeOption = ArrangeOption.ModifiedTime,
-    ): Flow<Result<PagingData<Festival>>> {
+    ): Flow<PagingData<Festival>> {
         return combine(
             getLocationInfoMapUseCase(),
             getContentTypeInfoMapUseCase(),
@@ -31,7 +31,7 @@ class GetPagedFestivalUseCase @Inject constructor(
                 arrangeOption = arrangeOption,
             ),
         ) { locationInfoMapResult, contentTypeInfoMapResult, pagedFestivalData ->
-            runCatching {
+            try {
                 val locationInfoMap = locationInfoMapResult.getOrThrow()
                 val contentTypeInfoMap = contentTypeInfoMapResult.getOrThrow()
 
@@ -41,6 +41,8 @@ class GetPagedFestivalUseCase @Inject constructor(
                         locationInfoMap = locationInfoMap,
                     )
                 }
+            } catch (e: Exception) {
+                PagingData.empty()
             }
         }
     }

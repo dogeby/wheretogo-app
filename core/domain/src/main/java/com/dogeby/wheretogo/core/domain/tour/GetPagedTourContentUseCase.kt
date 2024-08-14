@@ -25,7 +25,7 @@ class GetPagedTourContentUseCase @Inject constructor(
         mediumCategoryCode: String = "",
         minorCategoryCode: String = "",
         arrangeOption: ArrangeOption = ArrangeOption.ModifiedTime,
-    ): Flow<Result<PagingData<TourContent>>> {
+    ): Flow<PagingData<TourContent>> {
         return combine(
             getLocationInfoMapUseCase(),
             getContentTypeInfoMapUseCase(),
@@ -39,7 +39,7 @@ class GetPagedTourContentUseCase @Inject constructor(
                 arrangeOption = arrangeOption,
             ),
         ) { locationInfoMapResult, contentTypeInfoMapResult, pagedTourInfoData ->
-            runCatching {
+            try {
                 val locationInfoMap = locationInfoMapResult.getOrThrow()
                 val contentTypeInfoMap = contentTypeInfoMapResult.getOrThrow()
 
@@ -49,6 +49,8 @@ class GetPagedTourContentUseCase @Inject constructor(
                         locationInfoMap = locationInfoMap,
                     )
                 }
+            } catch (e: Exception) {
+                PagingData.empty()
             }
         }
     }
