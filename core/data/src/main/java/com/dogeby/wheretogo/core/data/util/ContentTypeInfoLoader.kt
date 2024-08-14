@@ -104,7 +104,7 @@ internal class ContentTypeInfoLoader(
                 cat2 = cat2,
                 cat3 = cat3,
             ),
-        ).map { response ->
+        ).mapCatching { response ->
             if (response.content.header.resultCode != SUCCESS_RESULT_CODE) {
                 throw Exception(response.content.header.resultMessage)
             } else {
