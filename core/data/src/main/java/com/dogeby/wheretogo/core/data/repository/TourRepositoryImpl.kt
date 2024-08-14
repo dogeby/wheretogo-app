@@ -10,6 +10,7 @@ import com.dogeby.wheretogo.core.data.model.tour.LocationInfoData
 import com.dogeby.wheretogo.core.data.model.tour.LocationInfoDataList
 import com.dogeby.wheretogo.core.data.model.tour.TourContentData
 import com.dogeby.wheretogo.core.data.model.tour.serviceinfo.ContentTypeInfoData
+import com.dogeby.wheretogo.core.data.model.tour.serviceinfo.ContentTypeInfoMap
 import com.dogeby.wheretogo.core.data.model.tour.toCommonInfoData
 import com.dogeby.wheretogo.core.data.model.tour.toLocationInfoData
 import com.dogeby.wheretogo.core.data.paging.FestivalInfoPagingSource
@@ -39,10 +40,7 @@ class TourRepositoryImpl @Inject constructor(
 ) : TourRepository {
 
     private val contentTypeInfoLoader: ContentTypeInfoLoader =
-        ContentTypeInfoLoader(
-            tourNetworkDataSource = tourNetworkDataSource,
-            cachePreferencesManager = cachePreferencesManager,
-        )
+        ContentTypeInfoLoader(tourNetworkDataSource)
 
     override fun getPagedTourInfoByRegion(
         currentPage: Int,
@@ -214,7 +212,11 @@ class TourRepositoryImpl @Inject constructor(
     override fun getContentTypeInfoMap(): Flow<Result<Map<String, ContentTypeInfoData>>> {
         return flow {
             val result = try {
-                Result.success(contentTypeInfoLoader.getContentTypeInfoList())
+                val cachedContentTypeInfoMap = cachePreferencesManager.loadValue(
+                    key = CONTENT_TYPE_CACHE_KEY,
+                    deserializer = ContentTypeInfoMap.serializer(),
+                ).first()
+                Result.success(cachedContentTypeInfoMap.getOrThrow())
             } catch (e: Exception) {
                 Result.failure(e)
             }
@@ -222,8 +224,32 @@ class TourRepositoryImpl @Inject constructor(
         }
     }
 
+    override fun fetchContentTypeInfoMap(): Flow<Result<Unit>> {
+        return flow {
+            val result = try {
+                val cachedContentTypeInfoMap = cachePreferencesManager.loadValue(
+                    key = CONTENT_TYPE_CACHE_KEY,
+                    deserializer = ContentTypeInfoMap.serializer(),
+                ).first()
+                if (cachedContentTypeInfoMap.isFailure) {
+                    val contentTypeInfoMap = contentTypeInfoLoader.fetchContentTypeInfoList()
+                    cachePreferencesManager.saveValue(
+                        key = CONTENT_TYPE_CACHE_KEY,
+                        value = contentTypeInfoMap,
+                        serializer = ContentTypeInfoMap.serializer(),
+                    )
+                }
+                Result.success(Unit)
+            } catch (e: Exception) {
+                Result.failure(e)
+            }
+            emit(result)
+        }
+    }
+
     private companion object {
         const val SUCCESS_RESULT_CODE = "0000"
         const val AREA_CODE_CACHE_KEY = "AreaCodeCacheKey"
+        const val CONTENT_TYPE_CACHE_KEY = "ContentTypeCacheKey"
     }
 }
