@@ -83,8 +83,7 @@ class HomeViewModel @Inject constructor(
                             )
                         }
                     }
-                    .cachedIn(viewModelScope)
             }
-        }
+        }.cachedIn(viewModelScope)
     }
 }
