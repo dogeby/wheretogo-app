@@ -7,20 +7,19 @@ import org.junit.Assert
 import org.junit.Before
 import org.junit.Test
 
-class LocationInfoLoaderTest {
+class AreaInfoLoaderTest {
 
-    private lateinit var locationInfoLoader: LocationInfoLoader
+    private lateinit var areaInfoLoader: AreaInfoLoader
 
     @Before
     fun setUp() {
         val tourNetworkDataSource = FakeTourNetworkDataSource()
-
-        locationInfoLoader = LocationInfoLoader(tourNetworkDataSource)
+        areaInfoLoader = AreaInfoLoader(tourNetworkDataSource)
     }
 
     @Test
     fun test_fetchAreaInfoMap_success() = runTest {
-        val result = locationInfoLoader.fetchAreaInfoMap().areaInfos
+        val result = areaInfoLoader.fetchAreaInfoMap().areaInfos
 
         Assert.assertEquals(
             LOCATION_INFO_TOTAL_COUNT,

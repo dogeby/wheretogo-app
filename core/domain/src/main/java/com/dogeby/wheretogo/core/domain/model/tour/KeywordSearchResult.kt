@@ -37,7 +37,7 @@ data class KeywordSearchResult(
  */
 internal fun KeywordSearchResultData.toKeywordSearchResult(
     contentTypeInfoMap: Map<String, ContentTypeInfo>,
-    locationInfoMap: Map<String, AreaInfo>,
+    areaInfoMap: Map<String, AreaInfo>,
 ): KeywordSearchResult {
     val contentTypeInfo = getContentTypeInfo(
         contentTypeInfoMap = contentTypeInfoMap,
@@ -51,7 +51,7 @@ internal fun KeywordSearchResultData.toKeywordSearchResult(
         category3 = category3,
     )
 
-    val areaInfo = locationInfoMap[areaCode]
+    val areaInfo = areaInfoMap[areaCode]
     val sigunguInfo = areaInfo?.sigunguInfos?.get(sigunguCode)
 
     return KeywordSearchResult(

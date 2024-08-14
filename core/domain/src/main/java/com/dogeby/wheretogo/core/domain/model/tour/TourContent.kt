@@ -38,7 +38,7 @@ data class TourContent(
  */
 internal fun TourContentData.toTourContent(
     contentTypeInfoMap: Map<String, ContentTypeInfo>,
-    locationInfoMap: Map<String, AreaInfo>,
+    areaInfoMap: Map<String, AreaInfo>,
 ): TourContent {
     val contentTypeInfo = getContentTypeInfo(
         contentTypeInfoMap = contentTypeInfoMap,
@@ -52,7 +52,7 @@ internal fun TourContentData.toTourContent(
         category3 = category3,
     )
 
-    val areaInfo = locationInfoMap[areaCode]
+    val areaInfo = areaInfoMap[areaCode]
     val sigunguInfo = areaInfo?.sigunguInfos?.get(sigunguCode)
 
     return TourContent(

@@ -7,24 +7,22 @@ import com.dogeby.wheretogo.core.data.model.tour.CommonInfoData
 import com.dogeby.wheretogo.core.data.model.tour.FestivalData
 import com.dogeby.wheretogo.core.data.model.tour.KeywordSearchResultData
 import com.dogeby.wheretogo.core.data.model.tour.TourContentData
-import com.dogeby.wheretogo.core.data.model.tour.locationinfo.LocationInfoData
-import com.dogeby.wheretogo.core.data.model.tour.locationinfo.LocationInfoDataList
-import com.dogeby.wheretogo.core.data.model.tour.locationinfo.toLocationInfoData
+import com.dogeby.wheretogo.core.data.model.tour.locationinfo.AreaInfoData
+import com.dogeby.wheretogo.core.data.model.tour.locationinfo.AreaInfoMap
 import com.dogeby.wheretogo.core.data.model.tour.serviceinfo.ContentTypeInfoData
 import com.dogeby.wheretogo.core.data.model.tour.serviceinfo.ContentTypeInfoMap
 import com.dogeby.wheretogo.core.data.model.tour.toCommonInfoData
 import com.dogeby.wheretogo.core.data.paging.FestivalInfoPagingSource
 import com.dogeby.wheretogo.core.data.paging.KeywordSearchResultPagingSource
 import com.dogeby.wheretogo.core.data.paging.TourInfoByRegionPagingSource
+import com.dogeby.wheretogo.core.data.util.AreaInfoLoader
 import com.dogeby.wheretogo.core.data.util.ContentTypeInfoLoader
 import com.dogeby.wheretogo.core.datastore.cache.CachePreferencesManager
 import com.dogeby.wheretogo.core.model.tour.ArrangeOption
 import com.dogeby.wheretogo.core.network.TourNetworkDataSource
-import com.dogeby.wheretogo.core.network.model.tour.locationinfo.NetworkLocationInfoData
 import com.dogeby.wheretogo.core.network.model.tour.requestbody.CommonInfoRequestBody
 import com.dogeby.wheretogo.core.network.model.tour.requestbody.FestivalInfoRequestBody
 import com.dogeby.wheretogo.core.network.model.tour.requestbody.KeywordSearchRequestBody
-import com.dogeby.wheretogo.core.network.model.tour.requestbody.LocationInfoRequestBody
 import com.dogeby.wheretogo.core.network.model.tour.requestbody.TourInfoByRegionRequestBody
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -41,6 +39,8 @@ class TourRepositoryImpl @Inject constructor(
 
     private val contentTypeInfoLoader: ContentTypeInfoLoader =
         ContentTypeInfoLoader(tourNetworkDataSource)
+    private val areaInfoLoader: AreaInfoLoader =
+        AreaInfoLoader(tourNetworkDataSource)
 
     override fun getPagedTourInfoByRegion(
         currentPage: Int,
@@ -169,43 +169,41 @@ class TourRepositoryImpl @Inject constructor(
         }
     }
 
-    override fun getLocationInfoList(areaCode: String): Flow<Result<List<LocationInfoData>>> {
+    override fun getAreaInfoMap(): Flow<Result<Map<String, AreaInfoData>>> {
         return flow {
             val result = try {
-                val key = "$AREA_CODE_CACHE_KEY/$areaCode"
-                val cachedLocationInfoDataList = cachePreferencesManager.loadValue(
-                    key = key,
-                    deserializer = LocationInfoDataList.serializer(),
+                val cachedAreaInfoMap = cachePreferencesManager.loadValue(
+                    key = AREA_CODE_CACHE_KEY,
+                    deserializer = AreaInfoMap.serializer(),
                 ).first()
-
-                if (cachedLocationInfoDataList.isFailure) {
-                    val response = tourNetworkDataSource.fetchLocationInfo(
-                        LocationInfoRequestBody(
-                            areaCode = areaCode,
-                        ),
-                    ).getOrThrow()
-
-                    if (response.content.header.resultCode != SUCCESS_RESULT_CODE) {
-                        Result.failure(Exception(response.content.header.resultMessage))
-                    } else {
-                        val locationInfos = response.content.body.result
-                            .items
-                            .map(NetworkLocationInfoData::toLocationInfoData)
-                        cachePreferencesManager.saveValue(
-                            key = key,
-                            serializer = LocationInfoDataList.serializer(),
-                            value = LocationInfoDataList(locationInfos),
-                        )
-                        Result.success(locationInfos)
-                    }
-                } else {
-                    Result.success(cachedLocationInfoDataList.getOrThrow().locationInfos)
-                }
+                Result.success(cachedAreaInfoMap.getOrThrow())
             } catch (e: Exception) {
                 Result.failure(e)
             }
+            emit(result.map { it.areaInfos })
+        }
+    }
 
-            emit(result)
+    override fun fetchAreaInfoMap(): Flow<Result<Unit>> {
+        return flow {
+            try {
+                val cachedAreaInfoMap = cachePreferencesManager.loadValue(
+                    key = AREA_CODE_CACHE_KEY,
+                    deserializer = AreaInfoMap.serializer(),
+                ).first()
+
+                if (cachedAreaInfoMap.isFailure) {
+                    val areaInfoMap = areaInfoLoader.fetchAreaInfoMap()
+                    cachePreferencesManager.saveValue(
+                        key = AREA_CODE_CACHE_KEY,
+                        serializer = AreaInfoMap.serializer(),
+                        value = areaInfoMap,
+                    )
+                }
+                emit(Result.success(Unit))
+            } catch (e: Exception) {
+                emit(Result.failure(e))
+            }
         }
     }
 
@@ -226,7 +224,7 @@ class TourRepositoryImpl @Inject constructor(
 
     override fun fetchContentTypeInfoMap(): Flow<Result<Unit>> {
         return flow {
-            val result = try {
+            try {
                 val cachedContentTypeInfoMap = cachePreferencesManager.loadValue(
                     key = CONTENT_TYPE_CACHE_KEY,
                     deserializer = ContentTypeInfoMap.serializer(),
@@ -239,11 +237,10 @@ class TourRepositoryImpl @Inject constructor(
                         serializer = ContentTypeInfoMap.serializer(),
                     )
                 }
-                Result.success(Unit)
+                emit(Result.success(Unit))
             } catch (e: Exception) {
-                Result.failure(e)
+                emit(Result.failure(e))
             }
-            emit(result)
         }
     }
 

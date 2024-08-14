@@ -37,7 +37,7 @@ data class Festival(
 
 internal fun FestivalData.toFestival(
     contentTypeInfoMap: Map<String, ContentTypeInfo>,
-    locationInfoMap: Map<String, AreaInfo>,
+    areaInfoMap: Map<String, AreaInfo>,
 ): Festival {
     val contentTypeInfo = getContentTypeInfo(
         contentTypeInfoMap = contentTypeInfoMap,
@@ -51,7 +51,7 @@ internal fun FestivalData.toFestival(
         category3 = category3,
     )
 
-    val areaInfo = locationInfoMap[areaCode]
+    val areaInfo = areaInfoMap[areaCode]
     val sigunguInfo = areaInfo?.sigunguInfos?.get(sigunguCode)
 
     return Festival(

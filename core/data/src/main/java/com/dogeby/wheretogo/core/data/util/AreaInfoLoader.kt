@@ -11,7 +11,7 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-internal class LocationInfoLoader @Inject constructor(
+internal class AreaInfoLoader @Inject constructor(
     private val tourNetworkDataSource: TourNetworkDataSource,
 ) {
 

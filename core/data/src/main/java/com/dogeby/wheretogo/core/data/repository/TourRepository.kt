@@ -5,7 +5,7 @@ import com.dogeby.wheretogo.core.data.model.tour.CommonInfoData
 import com.dogeby.wheretogo.core.data.model.tour.FestivalData
 import com.dogeby.wheretogo.core.data.model.tour.KeywordSearchResultData
 import com.dogeby.wheretogo.core.data.model.tour.TourContentData
-import com.dogeby.wheretogo.core.data.model.tour.locationinfo.LocationInfoData
+import com.dogeby.wheretogo.core.data.model.tour.locationinfo.AreaInfoData
 import com.dogeby.wheretogo.core.data.model.tour.serviceinfo.ContentTypeInfoData
 import com.dogeby.wheretogo.core.model.tour.ArrangeOption
 import kotlinx.coroutines.flow.Flow
@@ -58,7 +58,9 @@ interface TourRepository {
         isOverviewIncluded: Boolean = true,
     ): Flow<Result<CommonInfoData>>
 
-    fun getLocationInfoList(areaCode: String = ""): Flow<Result<List<LocationInfoData>>>
+    fun getAreaInfoMap(): Flow<Result<Map<String, AreaInfoData>>>
+
+    fun fetchAreaInfoMap(): Flow<Result<Unit>>
 
     fun getContentTypeInfoMap(): Flow<Result<Map<String, ContentTypeInfoData>>>
 
