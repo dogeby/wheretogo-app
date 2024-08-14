@@ -6,56 +6,41 @@ import com.dogeby.wheretogo.core.data.model.tour.serviceinfo.ContentTypeInfoMap
 import com.dogeby.wheretogo.core.data.model.tour.serviceinfo.MajorCategoryInfoData
 import com.dogeby.wheretogo.core.data.model.tour.serviceinfo.MediumCategoryInfoData
 import com.dogeby.wheretogo.core.data.model.tour.serviceinfo.toCategoryInfoData
-import com.dogeby.wheretogo.core.datastore.cache.CachePreferencesManager
 import com.dogeby.wheretogo.core.model.tour.TourContentType
 import com.dogeby.wheretogo.core.network.TourNetworkDataSource
 import com.dogeby.wheretogo.core.network.model.tour.categoryinfo.NetworkCategoryInfoData
 import com.dogeby.wheretogo.core.network.model.tour.requestbody.CategoryInfoRequestBody
-import kotlinx.coroutines.flow.first
 
 internal class ContentTypeInfoLoader(
     private val tourNetworkDataSource: TourNetworkDataSource,
-    private val cachePreferencesManager: CachePreferencesManager,
 ) {
 
-    suspend fun getContentTypeInfoList(
+    suspend fun fetchContentTypeInfoList(
         contentType: List<TourContentType> = TourContentType.entries,
     ): ContentTypeInfoMap {
-        val cachedContentTypeInfoMap = cachePreferencesManager.loadValue(
-            key = CONTENT_TYPE_CACHE_KEY,
-            deserializer = ContentTypeInfoMap.serializer(),
-        ).first()
-        if (cachedContentTypeInfoMap.isFailure) {
-            val contentTypeInfos = contentType.associateBy(
-                keySelector = { it.id },
-            ) {
-                val majorCategories = getMajorCategories(it.id)
-                ContentTypeInfoData(
-                    contentType = it,
-                    majorCategories = majorCategories,
-                )
-            }
-            val contentTypeInfoMap = ContentTypeInfoMap(contentTypeInfos)
-            cachePreferencesManager.saveValue(
-                key = CONTENT_TYPE_CACHE_KEY,
-                value = contentTypeInfoMap,
-                serializer = ContentTypeInfoMap.serializer(),
+        val contentTypeInfos = contentType.associateBy(
+            keySelector = { it.id },
+        ) {
+            val majorCategories = fetchMajorCategories(it.id)
+            ContentTypeInfoData(
+                contentType = it,
+                majorCategories = majorCategories,
             )
-            return contentTypeInfoMap
-        } else {
-            return cachedContentTypeInfoMap.getOrThrow()
         }
+        val contentTypeInfoMap = ContentTypeInfoMap(contentTypeInfos)
+
+        return contentTypeInfoMap
     }
 
-    private suspend fun getMajorCategories(
+    private suspend fun fetchMajorCategories(
         contentTypeId: String,
     ): Map<String, MajorCategoryInfoData> {
-        return getCategoryInfoData(contentTypeId = contentTypeId)
+        return fetchCategoryInfoData(contentTypeId = contentTypeId)
             .getOrThrow()
             .associateBy(
                 keySelector = { it.code },
                 valueTransform = { majorCategory ->
-                    val mediumCategories = getMediumCategories(
+                    val mediumCategories = fetchMediumCategories(
                         contentTypeId = contentTypeId,
                         majorCategoryId = majorCategory.code,
                     )
@@ -67,11 +52,11 @@ internal class ContentTypeInfoLoader(
             )
     }
 
-    private suspend fun getMediumCategories(
+    private suspend fun fetchMediumCategories(
         contentTypeId: String,
         majorCategoryId: String,
     ): Map<String, MediumCategoryInfoData> {
-        return getCategoryInfoData(
+        return fetchCategoryInfoData(
             contentTypeId = contentTypeId,
             cat1 = majorCategoryId,
         )
@@ -79,7 +64,7 @@ internal class ContentTypeInfoLoader(
             .associateBy(
                 keySelector = { it.code },
                 valueTransform = { mediumCategory ->
-                    val minorCategories = getMinorCategories(
+                    val minorCategories = fetchMinorCategories(
                         contentTypeId = contentTypeId,
                         majorCategoryId = majorCategoryId,
                         mediumCategoryId = mediumCategory.code,
@@ -92,12 +77,12 @@ internal class ContentTypeInfoLoader(
             )
     }
 
-    private suspend fun getMinorCategories(
+    private suspend fun fetchMinorCategories(
         contentTypeId: String,
         majorCategoryId: String,
         mediumCategoryId: String,
     ): Map<String, CategoryInfoData> {
-        return getCategoryInfoData(
+        return fetchCategoryInfoData(
             contentTypeId = contentTypeId,
             cat1 = majorCategoryId,
             cat2 = mediumCategoryId,
@@ -106,7 +91,7 @@ internal class ContentTypeInfoLoader(
             .associateBy { it.code }
     }
 
-    private suspend fun getCategoryInfoData(
+    private suspend fun fetchCategoryInfoData(
         contentTypeId: String = "",
         cat1: String = "",
         cat2: String = "",
@@ -119,7 +104,7 @@ internal class ContentTypeInfoLoader(
                 cat2 = cat2,
                 cat3 = cat3,
             ),
-        ).map { response ->
+        ).mapCatching { response ->
             if (response.content.header.resultCode != SUCCESS_RESULT_CODE) {
                 throw Exception(response.content.header.resultMessage)
             } else {
@@ -130,6 +115,5 @@ internal class ContentTypeInfoLoader(
 
     private companion object {
         const val SUCCESS_RESULT_CODE = "0000"
-        const val CONTENT_TYPE_CACHE_KEY = "contentTypeCacheKey"
     }
 }

@@ -25,19 +25,20 @@ class HomeViewModel @Inject constructor(
     getPagedTourContentUseCase: GetPagedTourContentUseCase,
 ) : ViewModel() {
 
-    val festivalPerformanceEventListState = getPagedFestivalUseCase().map { result ->
-        result.getOrThrow().map {
-            FestivalListItemUiState(
-                id = it.contentId,
-                title = it.title,
-                startDate = it.eventStartDate,
-                endDate = it.eventEndDate,
-                imgSrc = it.firstImageSrc ?: "",
-                areaName = it.areaInfo?.name ?: "",
-                sigunguName = it.sigunguInfo?.name ?: "",
-            )
+    val festivalPerformanceEventListState = getPagedFestivalUseCase()
+        .map { pagingData ->
+            pagingData.map {
+                FestivalListItemUiState(
+                    id = it.contentId,
+                    title = it.title,
+                    startDate = it.eventStartDate,
+                    endDate = it.eventEndDate,
+                    imgSrc = it.firstImageSrc ?: "",
+                    areaName = it.areaInfo?.name ?: "",
+                    sigunguName = it.sigunguInfo?.name ?: "",
+                )
+            }
         }
-    }
         .cachedIn(viewModelScope)
 
     val homeScreenUiState = HomeScreenUiState.Success(
@@ -65,23 +66,24 @@ class HomeViewModel @Inject constructor(
                     contentTypeId = contentListUiState.contentType.id,
                     areaCode = contentListUiState.areaCode,
                     sigunguCode = contentListUiState.sigunguCode,
-                ).map { result ->
-                    result.getOrThrow().map {
-                        ContentListItemUiState(
-                            id = it.contentId,
-                            title = it.title,
-                            imgSrc = it.firstImageSrc ?: "",
-                            categories = listOf(
-                                it.majorCategoryInfo?.name ?: "",
-                                it.mediumCategoryInfo?.name ?: "",
-                                it.minorCategoryInfo?.name ?: "",
-                            ),
-                            areaName = it.areaInfo?.name ?: "",
-                            sigunguName = it.sigunguInfo?.name ?: "",
-                        )
+                )
+                    .map { pagingData ->
+                        pagingData.map {
+                            ContentListItemUiState(
+                                id = it.contentId,
+                                title = it.title,
+                                imgSrc = it.firstImageSrc ?: "",
+                                categories = listOf(
+                                    it.majorCategoryInfo?.name ?: "",
+                                    it.mediumCategoryInfo?.name ?: "",
+                                    it.minorCategoryInfo?.name ?: "",
+                                ),
+                                areaName = it.areaInfo?.name ?: "",
+                                sigunguName = it.sigunguInfo?.name ?: "",
+                            )
+                        }
                     }
-                }.cachedIn(viewModelScope)
             }
-        }
+        }.cachedIn(viewModelScope)
     }
 }

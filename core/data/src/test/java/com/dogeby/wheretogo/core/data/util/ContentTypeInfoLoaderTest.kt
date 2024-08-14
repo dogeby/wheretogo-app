@@ -1,7 +1,5 @@
 package com.dogeby.wheretogo.core.data.util
 
-import com.dogeby.wheretogo.core.common.di.CommonModule
-import com.dogeby.wheretogo.core.datastore.fake.FakeCachePreferencesManager
 import com.dogeby.wheretogo.core.model.tour.TourContentType
 import com.dogeby.wheretogo.core.network.fake.FakeTourNetworkDataSource
 import com.dogeby.wheretogo.core.network.fake.FakeTourNetworkDataSource.Companion.CATEGORY_INFO_TOTAL_COUNT
@@ -10,24 +8,22 @@ import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test
 
-class TourContentTypeInfoLoaderTest {
+class ContentTypeInfoLoaderTest {
 
     private lateinit var contentTypeInfoLoader: ContentTypeInfoLoader
 
     @Before
     fun setUp() {
         val tourNetworkDataSource = FakeTourNetworkDataSource()
-        val cachePreferencesManager = FakeCachePreferencesManager(CommonModule.providesJson())
 
         contentTypeInfoLoader = ContentTypeInfoLoader(
             tourNetworkDataSource = tourNetworkDataSource,
-            cachePreferencesManager = cachePreferencesManager,
         )
     }
 
     @Test
     fun test_getContentTypeInfoList_success() = runTest {
-        val result = contentTypeInfoLoader.getContentTypeInfoList().contentTypeInfos
+        val result = contentTypeInfoLoader.fetchContentTypeInfoList().contentTypeInfos
 
         assertEquals(TourContentType.entries.size, result.size)
 

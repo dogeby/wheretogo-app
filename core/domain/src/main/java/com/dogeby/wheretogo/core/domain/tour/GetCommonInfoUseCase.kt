@@ -3,14 +3,14 @@ package com.dogeby.wheretogo.core.domain.tour
 import com.dogeby.wheretogo.core.data.repository.TourRepository
 import com.dogeby.wheretogo.core.domain.model.tour.CommonInfo
 import com.dogeby.wheretogo.core.domain.model.tour.toCommonInfo
-import com.dogeby.wheretogo.core.domain.tour.locationinfo.GetLocationInfoMapUseCase
+import com.dogeby.wheretogo.core.domain.tour.areainfo.GetAreaInfoMapUseCase
 import javax.inject.Inject
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
 
 class GetCommonInfoUseCase @Inject constructor(
     private val tourRepository: TourRepository,
-    private val getLocationInfoMapUseCase: GetLocationInfoMapUseCase,
+    private val getAreaInfoMapUseCase: GetAreaInfoMapUseCase,
     private val getContentTypeInfoMapUseCase: GetContentTypeInfoMapUseCase,
 ) {
 
@@ -26,7 +26,7 @@ class GetCommonInfoUseCase @Inject constructor(
         isOverviewIncluded: Boolean = true,
     ): Flow<Result<CommonInfo>> {
         return combine(
-            getLocationInfoMapUseCase(),
+            getAreaInfoMapUseCase(),
             getContentTypeInfoMapUseCase(),
             tourRepository.getCommonInfo(
                 contentId = contentId,
@@ -39,14 +39,14 @@ class GetCommonInfoUseCase @Inject constructor(
                 isMapInfoIncluded = isMapInfoIncluded,
                 isOverviewIncluded = isOverviewIncluded,
             ),
-        ) { locationInfoMapResult, contentTypeInfoMapResult, commonInfoDataResult ->
+        ) { areaInfoMapResult, contentTypeInfoMapResult, commonInfoDataResult ->
             commonInfoDataResult.mapCatching { commonInfoData ->
-                val locationInfoMap = locationInfoMapResult.getOrThrow()
+                val areaInfoMap = areaInfoMapResult.getOrThrow()
                 val contentTypeInfoMap = contentTypeInfoMapResult.getOrThrow()
 
                 commonInfoData.toCommonInfo(
                     contentTypeInfoMap = contentTypeInfoMap,
-                    locationInfoMap = locationInfoMap,
+                    areaInfoMap = areaInfoMap,
                 )
             }
         }

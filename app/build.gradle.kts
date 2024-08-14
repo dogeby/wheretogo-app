@@ -70,6 +70,7 @@ android {
 dependencies {
     implementation(project(":core:common"))
     implementation(project(":core:ui"))
+    implementation(project(":core:domain"))
     implementation(project(":feature:home"))
 
     implementation(libs.androidx.core.ktx)
@@ -81,6 +82,7 @@ dependencies {
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
     implementation(libs.navigation.compose)
+    implementation(libs.androidx.core.splashscreen)
     implementation(libs.hilt.android)
     kapt(libs.hilt.compiler)
 

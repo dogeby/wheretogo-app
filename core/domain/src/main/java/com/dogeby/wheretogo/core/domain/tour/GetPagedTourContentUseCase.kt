@@ -5,7 +5,7 @@ import androidx.paging.map
 import com.dogeby.wheretogo.core.data.repository.TourRepository
 import com.dogeby.wheretogo.core.domain.model.tour.TourContent
 import com.dogeby.wheretogo.core.domain.model.tour.toTourContent
-import com.dogeby.wheretogo.core.domain.tour.locationinfo.GetLocationInfoMapUseCase
+import com.dogeby.wheretogo.core.domain.tour.areainfo.GetAreaInfoMapUseCase
 import com.dogeby.wheretogo.core.model.tour.ArrangeOption
 import javax.inject.Inject
 import kotlinx.coroutines.flow.Flow
@@ -13,7 +13,7 @@ import kotlinx.coroutines.flow.combine
 
 class GetPagedTourContentUseCase @Inject constructor(
     private val tourRepository: TourRepository,
-    private val getLocationInfoMapUseCase: GetLocationInfoMapUseCase,
+    private val getAreaInfoMapUseCase: GetAreaInfoMapUseCase,
     private val getContentTypeInfoMapUseCase: GetContentTypeInfoMapUseCase,
 ) {
 
@@ -25,9 +25,9 @@ class GetPagedTourContentUseCase @Inject constructor(
         mediumCategoryCode: String = "",
         minorCategoryCode: String = "",
         arrangeOption: ArrangeOption = ArrangeOption.ModifiedTime,
-    ): Flow<Result<PagingData<TourContent>>> {
+    ): Flow<PagingData<TourContent>> {
         return combine(
-            getLocationInfoMapUseCase(),
+            getAreaInfoMapUseCase(),
             getContentTypeInfoMapUseCase(),
             tourRepository.getPagedTourInfoByRegion(
                 contentTypeId = contentTypeId,
@@ -38,17 +38,19 @@ class GetPagedTourContentUseCase @Inject constructor(
                 category3 = minorCategoryCode,
                 arrangeOption = arrangeOption,
             ),
-        ) { locationInfoMapResult, contentTypeInfoMapResult, pagedTourInfoData ->
-            runCatching {
-                val locationInfoMap = locationInfoMapResult.getOrThrow()
+        ) { areaInfoMapResult, contentTypeInfoMapResult, pagedTourInfoData ->
+            try {
+                val areaInfoMap = areaInfoMapResult.getOrThrow()
                 val contentTypeInfoMap = contentTypeInfoMapResult.getOrThrow()
 
                 pagedTourInfoData.map { tourContentData ->
                     tourContentData.toTourContent(
                         contentTypeInfoMap = contentTypeInfoMap,
-                        locationInfoMap = locationInfoMap,
+                        areaInfoMap = areaInfoMap,
                     )
                 }
+            } catch (e: Exception) {
+                PagingData.empty()
             }
         }
     }

@@ -5,7 +5,7 @@ import androidx.paging.map
 import com.dogeby.wheretogo.core.data.repository.TourRepository
 import com.dogeby.wheretogo.core.domain.model.tour.KeywordSearchResult
 import com.dogeby.wheretogo.core.domain.model.tour.toKeywordSearchResult
-import com.dogeby.wheretogo.core.domain.tour.locationinfo.GetLocationInfoMapUseCase
+import com.dogeby.wheretogo.core.domain.tour.areainfo.GetAreaInfoMapUseCase
 import com.dogeby.wheretogo.core.model.tour.ArrangeOption
 import javax.inject.Inject
 import kotlinx.coroutines.flow.Flow
@@ -13,7 +13,7 @@ import kotlinx.coroutines.flow.combine
 
 class SearchKeywordUseCase @Inject constructor(
     private val tourRepository: TourRepository,
-    private val getLocationInfoMapUseCase: GetLocationInfoMapUseCase,
+    private val getAreaInfoMapUseCase: GetAreaInfoMapUseCase,
     private val getContentTypeInfoMapUseCase: GetContentTypeInfoMapUseCase,
 ) {
 
@@ -26,9 +26,9 @@ class SearchKeywordUseCase @Inject constructor(
         mediumCategoryCode: String = "",
         minorCategoryCode: String = "",
         arrangeOption: ArrangeOption = ArrangeOption.ModifiedTime,
-    ): Flow<Result<PagingData<KeywordSearchResult>>> {
+    ): Flow<PagingData<KeywordSearchResult>> {
         return combine(
-            getLocationInfoMapUseCase(),
+            getAreaInfoMapUseCase(),
             getContentTypeInfoMapUseCase(),
             tourRepository.searchKeyword(
                 keyword = keyword,
@@ -40,17 +40,19 @@ class SearchKeywordUseCase @Inject constructor(
                 category3 = minorCategoryCode,
                 arrangeOption = arrangeOption,
             ),
-        ) { locationInfoMapResult, contentTypeInfoMapResult, pagedSearchKeywordResultData ->
-            runCatching {
-                val locationInfoMap = locationInfoMapResult.getOrThrow()
+        ) { areaInfoMapResult, contentTypeInfoMapResult, pagedSearchKeywordResultData ->
+            try {
+                val areaInfoMap = areaInfoMapResult.getOrThrow()
                 val contentTypeInfoMap = contentTypeInfoMapResult.getOrThrow()
 
                 pagedSearchKeywordResultData.map { keywordSearchResultData ->
                     keywordSearchResultData.toKeywordSearchResult(
                         contentTypeInfoMap = contentTypeInfoMap,
-                        locationInfoMap = locationInfoMap,
+                        areaInfoMap = areaInfoMap,
                     )
                 }
+            } catch (e: Exception) {
+                PagingData.empty()
             }
         }
     }

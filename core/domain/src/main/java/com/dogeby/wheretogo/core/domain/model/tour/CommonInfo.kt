@@ -41,7 +41,7 @@ data class CommonInfo(
  */
 internal fun CommonInfoData.toCommonInfo(
     contentTypeInfoMap: Map<String, ContentTypeInfo>,
-    locationInfoMap: Map<String, AreaInfo>,
+    areaInfoMap: Map<String, AreaInfo>,
 ): CommonInfo {
     val contentTypeInfo = getContentTypeInfo(
         contentTypeInfoMap = contentTypeInfoMap,
@@ -55,7 +55,7 @@ internal fun CommonInfoData.toCommonInfo(
         category3 = category3,
     )
 
-    val areaInfo = locationInfoMap[areaCode]
+    val areaInfo = areaInfoMap[areaCode]
     val sigunguInfo = areaInfo?.sigunguInfos?.get(sigunguCode)
 
     return CommonInfo(
