@@ -50,7 +50,10 @@ internal fun HomeScreenContent(
         contentPadding = PaddingValues(vertical = 16.dp),
         verticalArrangement = Arrangement.spacedBy(16.dp),
     ) {
-        item {
+        item(
+            key = createKey(HomeScreenContentUiType.FestivalCardCarousel),
+            contentType = HomeScreenContentUiType.FestivalCardCarousel,
+        ) {
             FestivalCardCarousel(
                 festivals = festivals,
                 onClickItem = onNavigateToContentDetail,
@@ -59,7 +62,10 @@ internal fun HomeScreenContent(
                 pageSpacing = 16.dp,
             )
         }
-        item {
+        item(
+            contentType = HomeScreenContentUiType.NavigationMenus,
+            key = HomeScreenContentUiType.NavigationMenus,
+        ) {
             NavigationMenus(
                 onNavigateToList = {
                     onNavigateToList(it, "", "")
@@ -100,7 +106,12 @@ private fun LazyListScope.contentCardsWithTitleRow(
     when (contentsState) {
         ContentListUiState.Loading -> Unit
         is ContentListUiState.Success -> {
-            item {
+            item(
+                key = createKey(
+                    contentUiType = HomeScreenContentUiType.ListTitleRow,
+                    contentListState = contentsState,
+                ),
+            ) {
                 with(contentsState) {
                     ListTitleRow(
                         title = buildLocationContentTypeText(
@@ -114,14 +125,23 @@ private fun LazyListScope.contentCardsWithTitleRow(
                         trailingIcon = Icons.AutoMirrored.Filled.ArrowForward,
                         colors = ListItemDefaults.colors(containerColor = Color.Transparent),
                     )
-                    ContentCardCarousel(
-                        contents = contents,
-                        onClickItem = onNavigateToContentDetail,
-                        contentPadding = PaddingValues(horizontal = 16.dp),
-                        pageSize = PageSize.Fixed(240.dp),
-                        pageSpacing = 16.dp,
-                    )
                 }
+            }
+
+            item(
+                key = createKey(
+                    contentUiType = HomeScreenContentUiType.ContentCardCarousel,
+                    contentListState = contentsState,
+                ),
+                contentType = HomeScreenContentUiType.ContentCardCarousel,
+            ) {
+                ContentCardCarousel(
+                    contents = contents,
+                    onClickItem = onNavigateToContentDetail,
+                    contentPadding = PaddingValues(horizontal = 16.dp),
+                    pageSize = PageSize.Fixed(240.dp),
+                    pageSpacing = 16.dp,
+                )
             }
         }
     }
@@ -141,7 +161,13 @@ private fun LazyListScope.contentsWithTitleRow(
     when (contentsState) {
         ContentListUiState.Loading -> Unit
         is ContentListUiState.Success -> {
-            item {
+            item(
+                key = createKey(
+                    contentUiType = HomeScreenContentUiType.ListTitleRow,
+                    contentListState = contentsState,
+                ),
+                contentType = HomeScreenContentUiType.ListTitleRow,
+            ) {
                 with(contentsState) {
                     ListTitleRow(
                         title = buildLocationContentTypeText(
@@ -155,17 +181,42 @@ private fun LazyListScope.contentsWithTitleRow(
                         trailingIcon = Icons.AutoMirrored.Filled.ArrowForward,
                         colors = ListItemDefaults.colors(containerColor = Color.Transparent),
                     )
-                    ContentCarousel(
-                        contents = contents,
-                        onClickItem = onNavigateToContentDetail,
-                        pageSize = PageSize.Fixed(360.dp),
-                        verticalAlignment = Alignment.Top,
-                        columns = 3,
-                    )
                 }
+            }
+            item(
+                key = createKey(
+                    contentUiType = HomeScreenContentUiType.ContentCarousel,
+                    contentListState = contentsState,
+                ),
+                contentType = HomeScreenContentUiType.ContentCarousel,
+            ) {
+                ContentCarousel(
+                    contents = contents,
+                    onClickItem = onNavigateToContentDetail,
+                    pageSize = PageSize.Fixed(360.dp),
+                    verticalAlignment = Alignment.Top,
+                    columns = 3,
+                )
             }
         }
     }
+}
+
+private enum class HomeScreenContentUiType {
+    FestivalCardCarousel,
+    NavigationMenus,
+    ContentCardCarousel,
+    ContentCarousel,
+    ListTitleRow,
+}
+
+private fun createKey(
+    contentUiType: HomeScreenContentUiType,
+    contentListState: ContentListUiState.Success? = null,
+): String {
+    return contentListState?.let {
+        "${it.contentType}${it.areaCode}${it.sigunguCode}$contentUiType"
+    } ?: "$contentUiType"
 }
 
 @Preview(showBackground = true)
