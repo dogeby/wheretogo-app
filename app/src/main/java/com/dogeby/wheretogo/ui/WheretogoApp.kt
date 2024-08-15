@@ -1,5 +1,6 @@
 package com.dogeby.wheretogo.ui
 
+import androidx.compose.foundation.layout.consumeWindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -37,6 +38,8 @@ fun WheretogoApp(
             if (topAppBarState != null) {
                 WheretogoTopAppBar(
                     titleRes = topAppBarState.titleRes,
+                    navigation = topAppBarState.navigation
+                        ?.toTopAppBarActionUiState(appState.navController),
                     actions = topAppBarState.actions.map {
                         it.toTopAppBarActionUiState(appState.navController)
                     },
@@ -59,9 +62,9 @@ fun WheretogoApp(
 
         WheretogoNavHost(
             navController = appState.navController,
-            snackbarHostState = snackbarHostState,
-            onNavigateUp = { appState.onNavigateUp() },
-            modifier = Modifier.padding(contentPadding),
+            modifier = Modifier
+                .padding(contentPadding)
+                .consumeWindowInsets(contentPadding),
         )
     }
 }

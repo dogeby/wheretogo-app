@@ -5,9 +5,9 @@ import com.dogeby.wheretogo.core.network.model.tour.commoninfo.NetworkCommonInfo
 data class CommonInfoData(
     val contentId: String,
     val contentTypeId: String,
-    val createdTime: String? = null,
-    val modifiedTime: String? = null,
-    val title: String? = null,
+    val createdTime: String,
+    val modifiedTime: String,
+    val title: String,
     val overview: String? = null,
     val addr1: String? = null,
     val addr2: String? = null,

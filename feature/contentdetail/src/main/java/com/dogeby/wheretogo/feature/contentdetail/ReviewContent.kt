@@ -21,6 +21,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.dogeby.wheretogo.core.ui.R
+import com.dogeby.wheretogo.core.ui.components.common.EmptyListDisplay
 import com.dogeby.wheretogo.core.ui.components.list.reviewCardWithWriterList
 import com.dogeby.wheretogo.core.ui.model.ReviewWithWriterListItemUiState
 import com.dogeby.wheretogo.core.ui.model.ReviewWithWriterListUiState
@@ -79,12 +80,21 @@ internal fun LazyListScope.reviewContent(
             }
         }
     }
-    reviewCardWithWriterList(
-        reviewWithWriterListUiState = reviewWithWriterListUiState,
-        onEdit = onEdit,
-        onDelete = onDelete,
-        onImageClick = onImageClick,
-    )
+    if (
+        reviewWithWriterListUiState is ReviewWithWriterListUiState.Success &&
+        reviewWithWriterListUiState.reviews.isEmpty()
+    ) {
+        item {
+            EmptyListDisplay()
+        }
+    } else {
+        reviewCardWithWriterList(
+            reviewWithWriterListUiState = reviewWithWriterListUiState,
+            onEdit = onEdit,
+            onDelete = onDelete,
+            onImageClick = onImageClick,
+        )
+    }
 }
 
 @Preview(showBackground = true)

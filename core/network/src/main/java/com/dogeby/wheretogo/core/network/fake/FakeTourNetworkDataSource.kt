@@ -181,6 +181,8 @@ class FakeTourNetworkDataSource @Inject constructor() : TourNetworkDataSource {
                         contentId = "$it",
                         contentTypeId = "38",
                         title = "Title $it",
+                        createdTime = "",
+                        modifiedTime = "",
                     )
                 },
             ),

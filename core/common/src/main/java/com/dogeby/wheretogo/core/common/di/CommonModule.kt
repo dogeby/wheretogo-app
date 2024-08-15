@@ -1,5 +1,7 @@
 package com.dogeby.wheretogo.core.common.di
 
+import com.dogeby.wheretogo.core.common.decoder.StringDecoder
+import com.dogeby.wheretogo.core.common.decoder.UriDecoder
 import com.dogeby.wheretogo.core.common.networkmonitor.NetworkMonitor
 import com.dogeby.wheretogo.core.common.networkmonitor.NetworkMonitorImpl
 import dagger.Module
@@ -22,4 +24,8 @@ object CommonModule {
     @Provides
     @Singleton
     fun providesNetworkMonitor(networkMonitor: NetworkMonitorImpl): NetworkMonitor = networkMonitor
+
+    @Provides
+    @Singleton
+    fun providesStringDecoder(): StringDecoder = UriDecoder()
 }

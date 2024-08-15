@@ -3,7 +3,7 @@ package com.dogeby.wheretogo.core.ui.util
 import junit.framework.TestCase.assertEquals
 import org.junit.Test
 
-class DataFormatterTest {
+class FormatterTest {
 
     @Test
     fun test_buildLocationText_nonBlankAreaAndSigungu() {

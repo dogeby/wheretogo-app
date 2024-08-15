@@ -1,18 +1,17 @@
 package com.dogeby.wheretogo.navigation
 
-import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
+import com.dogeby.wheretogo.feature.contentdetail.navigation.contentDetailScreen
+import com.dogeby.wheretogo.feature.contentdetail.navigation.navigateToContentDetail
 import com.dogeby.wheretogo.feature.home.navigation.HOME_ROUTE
-import com.dogeby.wheretogo.feature.home.navigation.homeScreen
+import com.dogeby.wheretogo.feature.home.navigation.homeGraph
 
 @Composable
 fun WheretogoNavHost(
     navController: NavHostController,
-    snackbarHostState: SnackbarHostState,
-    onNavigateUp: () -> Unit,
     modifier: Modifier = Modifier,
     startDestination: String = HOME_ROUTE,
 ) {
@@ -21,11 +20,15 @@ fun WheretogoNavHost(
         startDestination = startDestination,
         modifier = modifier,
     ) {
-        homeScreen(
+        homeGraph(
             navigateToContents = { _, _, _ -> },
             navigateToFestivals = {},
-            navigateToContentDetail = {},
-            nestedGraphs = {},
+            navigateToContentDetail = {
+                navController.navigateToContentDetail(it)
+            },
+            nestedGraphs = {
+                contentDetailScreen()
+            },
         )
     }
 }
