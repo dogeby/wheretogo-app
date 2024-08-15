@@ -9,6 +9,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.dogeby.wheretogo.core.common.networkmonitor.NetworkMonitor
+import com.dogeby.wheretogo.feature.contentdetail.navigation.CONTENT_DETAIL_ROUTE
 import com.dogeby.wheretogo.feature.home.navigation.HOME_ROUTE
 import com.dogeby.wheretogo.navigation.Screen
 import kotlinx.coroutines.CoroutineScope
@@ -41,6 +42,7 @@ class WheretogoAppState(
         @Composable
         get() = when (currentDestination?.route) {
             HOME_ROUTE -> Screen.Home
+            CONTENT_DETAIL_ROUTE -> Screen.ContentDetail
             else -> null
         }
 
@@ -51,8 +53,4 @@ class WheretogoAppState(
             started = SharingStarted.WhileSubscribed(5_000),
             initialValue = false,
         )
-
-    fun onBackClick() {
-        navController.popBackStack()
-    }
 }

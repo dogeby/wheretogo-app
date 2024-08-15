@@ -2,6 +2,7 @@ package com.dogeby.wheretogo.navigation
 
 import androidx.annotation.StringRes
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.outlined.Person
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -25,11 +26,21 @@ enum class Screen(
             ),
         ),
     ),
+    ContentDetail(
+        topAppBarState = ScreenTopAppBarState(
+            titleRes = null,
+            navigation = ScreenTopAppBarAction(
+                icon = Icons.AutoMirrored.Default.ArrowBack,
+                onActionClick = { it.popBackStack() },
+            ),
+        ),
+    ),
 }
 
 data class ScreenTopAppBarState(
-    @StringRes val titleRes: Int,
-    val actions: List<ScreenTopAppBarAction>,
+    @StringRes val titleRes: Int?,
+    val navigation: ScreenTopAppBarAction? = null,
+    val actions: List<ScreenTopAppBarAction> = emptyList(),
 )
 
 data class ScreenTopAppBarAction(
