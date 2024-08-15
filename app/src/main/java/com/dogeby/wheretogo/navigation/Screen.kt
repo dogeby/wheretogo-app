@@ -2,8 +2,8 @@ package com.dogeby.wheretogo.navigation
 
 import androidx.annotation.StringRes
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Search
+import androidx.compose.material.icons.outlined.Person
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.navigation.NavHostController
 import com.dogeby.wheretogo.R
@@ -20,7 +20,7 @@ enum class Screen(
                     icon = Icons.Default.Search,
                 ),
                 ScreenTopAppBarAction(
-                    icon = Icons.Default.Person,
+                    icon = Icons.Outlined.Person,
                 ),
             ),
         ),
