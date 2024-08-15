@@ -12,13 +12,13 @@ data class NetworkCommonInfoData(
     val contentTypeId: String,
 
     @SerialName("createdtime")
-    val createdTime: String? = null,
+    val createdTime: String,
 
     @SerialName("modifiedtime")
-    val modifiedTime: String? = null,
+    val modifiedTime: String,
 
     @SerialName("title")
-    val title: String? = null,
+    val title: String,
 
     @SerialName("overview")
     val overview: String? = null,

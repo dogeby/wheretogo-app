@@ -12,9 +12,9 @@ import com.dogeby.wheretogo.core.model.tour.TourContentType
 data class CommonInfo(
     val contentId: String,
     val contentType: TourContentType,
-    val createdTime: String? = null,
-    val modifiedTime: String? = null,
-    val title: String? = null,
+    val createdTime: String,
+    val modifiedTime: String,
+    val title: String,
     val overview: String? = null,
     val addr1: String? = null,
     val addr2: String? = null,
