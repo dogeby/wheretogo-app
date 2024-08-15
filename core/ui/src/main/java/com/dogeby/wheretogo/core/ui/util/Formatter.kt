@@ -1,6 +1,8 @@
 package com.dogeby.wheretogo.core.ui.util
 
 import android.icu.text.SimpleDateFormat
+import android.text.Spanned
+import androidx.core.text.HtmlCompat
 import java.util.Locale
 
 fun String.formatDate(
@@ -41,4 +43,11 @@ fun buildLocationContentTypeText(
             append(contentTypeName)
         }
     }
+}
+
+fun htmlToPlainText(html: String): String {
+    val spanned: Spanned = HtmlCompat.fromHtml(html, HtmlCompat.FROM_HTML_MODE_COMPACT)
+    val plainText = spanned.toString()
+
+    return plainText
 }
