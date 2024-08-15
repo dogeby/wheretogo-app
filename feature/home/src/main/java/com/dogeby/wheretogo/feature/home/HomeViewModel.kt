@@ -72,7 +72,7 @@ class HomeViewModel @Inject constructor(
                             ContentListItemUiState(
                                 id = it.contentId,
                                 title = it.title,
-                                imgSrc = it.firstImageSrc ?: "",
+                                imgSrc = it.firstImageThumbnailSrc ?: "",
                                 categories = listOf(
                                     it.majorCategoryInfo?.name ?: "",
                                     it.mediumCategoryInfo?.name ?: "",
