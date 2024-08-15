@@ -8,7 +8,6 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.material3.MaterialTheme
@@ -46,8 +45,10 @@ internal fun LazyListScope.commonContent(
             Spacer(modifier = Modifier.height(16.dp))
 
             Row {
-                StarRatingDisplay(avgStarRating = avgStarRating)
-                Spacer(modifier = Modifier.width(8.dp))
+                StarRatingDisplay(
+                    avgStarRating = avgStarRating,
+                    modifier = Modifier.padding(end = 8.dp),
+                )
                 CategoryDisplay(categories)
             }
             Spacer(modifier = Modifier.height(16.dp))
