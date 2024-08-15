@@ -22,6 +22,7 @@ import com.dogeby.wheretogo.core.ui.R
 import com.dogeby.wheretogo.core.ui.components.common.CategoryDisplay
 import com.dogeby.wheretogo.core.ui.components.common.StarRatingDisplay
 import com.dogeby.wheretogo.core.ui.util.formatDate
+import com.dogeby.wheretogo.core.ui.util.htmlToPlainText
 import sh.calvin.autolinktext.AutoLinkText
 
 internal fun LazyListScope.commonContent(
@@ -70,7 +71,7 @@ internal fun LazyListScope.commonContent(
                             style = MaterialTheme.typography.labelSmall,
                         )
                         AutoLinkText(
-                            text = tel,
+                            text = htmlToPlainText(tel),
                             style = MaterialTheme.typography.labelSmall,
                         )
                     }
@@ -83,7 +84,7 @@ internal fun LazyListScope.commonContent(
                             style = MaterialTheme.typography.labelSmall,
                         )
                         AutoLinkText(
-                            text = homepage,
+                            text = htmlToPlainText(homepage),
                             style = MaterialTheme.typography.labelSmall,
                         )
                     }
