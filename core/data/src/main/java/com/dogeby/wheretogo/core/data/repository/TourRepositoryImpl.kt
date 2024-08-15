@@ -28,8 +28,8 @@ import javax.inject.Inject
 import javax.inject.Singleton
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.mapLatest
 import kotlinx.datetime.Instant
 
@@ -182,19 +182,24 @@ class TourRepositoryImpl @Inject constructor(
     }
 
     override fun fetchAreaInfoMap(): Flow<Result<Unit>> {
-        return cachePreferencesManager.loadValue(
-            key = AREA_CODE_CACHE_KEY,
-            deserializer = AreaInfoMap.serializer(),
-        ).map { result ->
-            if (result.isFailure) {
-                val areaInfoMap = areaInfoLoader.fetchAreaInfoMap()
-                cachePreferencesManager.saveValue(
+        return flow {
+            try {
+                val cachedAreaInfoMap = cachePreferencesManager.loadValue(
                     key = AREA_CODE_CACHE_KEY,
-                    serializer = AreaInfoMap.serializer(),
-                    value = areaInfoMap,
-                )
-            } else {
-                Result.success(Unit)
+                    deserializer = AreaInfoMap.serializer(),
+                ).first()
+
+                if (cachedAreaInfoMap.isFailure) {
+                    val areaInfoMap = areaInfoLoader.fetchAreaInfoMap()
+                    cachePreferencesManager.saveValue(
+                        key = AREA_CODE_CACHE_KEY,
+                        serializer = AreaInfoMap.serializer(),
+                        value = areaInfoMap,
+                    )
+                }
+                emit(Result.success(Unit))
+            } catch (e: Exception) {
+                emit(Result.failure(e))
             }
         }
     }
@@ -210,19 +215,23 @@ class TourRepositoryImpl @Inject constructor(
     }
 
     override fun fetchContentTypeInfoMap(): Flow<Result<Unit>> {
-        return cachePreferencesManager.loadValue(
-            key = CONTENT_TYPE_CACHE_KEY,
-            deserializer = ContentTypeInfoMap.serializer(),
-        ).map { result ->
-            if (result.isFailure) {
-                val contentTypeInfoMap = contentTypeInfoLoader.fetchContentTypeInfoList()
-                cachePreferencesManager.saveValue(
+        return flow {
+            try {
+                val cachedContentTypeInfoMap = cachePreferencesManager.loadValue(
                     key = CONTENT_TYPE_CACHE_KEY,
-                    value = contentTypeInfoMap,
-                    serializer = ContentTypeInfoMap.serializer(),
-                )
-            } else {
-                Result.success(Unit)
+                    deserializer = ContentTypeInfoMap.serializer(),
+                ).first()
+                if (cachedContentTypeInfoMap.isFailure) {
+                    val contentTypeInfoMap = contentTypeInfoLoader.fetchContentTypeInfoList()
+                    cachePreferencesManager.saveValue(
+                        key = CONTENT_TYPE_CACHE_KEY,
+                        value = contentTypeInfoMap,
+                        serializer = ContentTypeInfoMap.serializer(),
+                    )
+                }
+                emit(Result.success(Unit))
+            } catch (e: Exception) {
+                emit(Result.failure(e))
             }
         }
     }
