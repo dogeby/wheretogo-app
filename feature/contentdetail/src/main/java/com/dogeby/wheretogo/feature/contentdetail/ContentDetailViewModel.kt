@@ -33,7 +33,7 @@ class ContentDetailViewModel @Inject constructor(
                     title = it.title,
                     avgStarRating = 0.0,
                     modifiedTime = it.modifiedTime,
-                    reviewWithWriterListUiState = ReviewWithWriterListUiState.Loading,
+                    reviewWithWriterListUiState = ReviewWithWriterListUiState.Success(emptyList()),
                     imgSrcs = listOf(it.firstImageSrc ?: ""),
                     categories = listOf(
                         it.majorCategoryInfo?.name ?: "",
