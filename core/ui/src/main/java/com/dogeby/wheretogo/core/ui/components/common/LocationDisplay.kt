@@ -2,8 +2,11 @@ package com.dogeby.wheretogo.core.ui.components.common
 
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.LocationOn
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import com.dogeby.wheretogo.core.ui.util.buildLocationText
 
@@ -13,16 +16,24 @@ fun LocationDisplay(
     areaName: String = "",
     sigunguName: String = "",
 ) {
-    if (areaName.isBlank() && sigunguName.isBlank()) {
-        return
-    }
     val locationText = buildLocationText(areaName, sigunguName)
 
-    IconText(
-        icon = Icons.Default.LocationOn,
-        text = locationText,
-        modifier = modifier,
-    )
+    if (locationText.isBlank()) {
+        Text(
+            text = "",
+            modifier = modifier,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
+            overflow = TextOverflow.Ellipsis,
+            maxLines = 1,
+            style = MaterialTheme.typography.labelMedium,
+        )
+    } else {
+        IconText(
+            icon = Icons.Default.LocationOn,
+            text = locationText,
+            modifier = modifier,
+        )
+    }
 }
 
 @Preview(showBackground = true)
