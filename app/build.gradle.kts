@@ -72,6 +72,7 @@ dependencies {
     implementation(project(":core:ui"))
     implementation(project(":core:domain"))
     implementation(project(":feature:home"))
+    implementation(project(":feature:contentdetail"))
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.activity.compose)

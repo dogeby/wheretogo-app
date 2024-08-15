@@ -59,8 +59,6 @@ fun WheretogoApp(
 
         WheretogoNavHost(
             navController = appState.navController,
-            snackbarHostState = snackbarHostState,
-            onNavigateUp = { appState.onNavigateUp() },
             modifier = Modifier.padding(contentPadding),
         )
     }

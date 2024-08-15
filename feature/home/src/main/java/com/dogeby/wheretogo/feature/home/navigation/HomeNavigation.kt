@@ -9,11 +9,11 @@ import com.dogeby.wheretogo.feature.home.HomeRoute
 
 const val HOME_ROUTE = "home_route"
 
-fun NavController.navigateToHome(navOptions: NavOptions? = null) {
+fun NavController.navigateToHomeGraph(navOptions: NavOptions? = null) {
     navigate(HOME_ROUTE, navOptions)
 }
 
-fun NavGraphBuilder.homeScreen(
+fun NavGraphBuilder.homeGraph(
     navigateToContents: (contentTypeId: String, areaCode: String, sigunguCode: String) -> Unit,
     navigateToFestivals: () -> Unit,
     navigateToContentDetail: (id: String) -> Unit,

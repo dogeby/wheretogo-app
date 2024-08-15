@@ -52,7 +52,7 @@ class WheretogoAppState(
             initialValue = false,
         )
 
-    fun onNavigateUp() {
+    fun onBackClick() {
         navController.popBackStack()
     }
 }
