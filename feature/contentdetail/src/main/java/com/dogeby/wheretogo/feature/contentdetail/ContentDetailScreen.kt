@@ -12,6 +12,8 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.dogeby.wheretogo.core.ui.components.common.ImgHorizontalPager
 import com.dogeby.wheretogo.core.ui.components.common.LoadingDisplay
 import com.dogeby.wheretogo.core.ui.components.dialogue.ImgDetailDialogue
@@ -19,6 +21,27 @@ import com.dogeby.wheretogo.core.ui.model.ReviewWithWriterListItemUiState
 import com.dogeby.wheretogo.core.ui.model.ReviewWithWriterListUiState
 import com.dogeby.wheretogo.feature.contentdetail.model.ContentDetailScreenUiState
 import com.dogeby.wheretogo.feature.contentdetail.model.RatingFilterOption
+
+@Composable
+internal fun ContentDetailRoute(
+    navigateToReviewCreate: (contentId: String) -> Unit,
+    navigateToReviewEdit: (reviewId: String) -> Unit,
+    modifier: Modifier = Modifier,
+    viewModel: ContentDetailViewModel = hiltViewModel(),
+) {
+    val contentDetailScreenUiState by viewModel
+        .contentDetailScreenUiState
+        .collectAsStateWithLifecycle()
+
+    ContentDetailScreen(
+        contentDetailScreenUiState = contentDetailScreenUiState,
+        onReviewCreate = navigateToReviewCreate,
+        onReviewEdit = navigateToReviewEdit,
+        onReviewDelete = {},
+        onFilterChanged = {},
+        modifier = modifier,
+    )
+}
 
 @Composable
 internal fun ContentDetailScreen(
