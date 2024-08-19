@@ -23,8 +23,29 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.dogeby.wheretogo.core.ui.components.listitem.KeywordListItem
 import java.util.Locale
+
+@Composable
+internal fun SearchRoute(
+    navigateToSearchResult: (query: String) -> Unit,
+    onNavigateUp: () -> Unit,
+    modifier: Modifier = Modifier,
+    viewModel: SearchViewModel = hiltViewModel(),
+) {
+    val query by viewModel.query.collectAsStateWithLifecycle()
+
+    SearchScreen(
+        query = { query },
+        recentQueries = { emptyList() },
+        onQueryChange = viewModel::editQuery,
+        onSearch = navigateToSearchResult,
+        onNavigateUp = onNavigateUp,
+        modifier = modifier,
+    )
+}
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
