@@ -8,6 +8,7 @@ import com.dogeby.wheretogo.feature.contentdetail.navigation.contentDetailScreen
 import com.dogeby.wheretogo.feature.contentdetail.navigation.navigateToContentDetail
 import com.dogeby.wheretogo.feature.home.navigation.HOME_ROUTE
 import com.dogeby.wheretogo.feature.home.navigation.homeScreen
+import com.dogeby.wheretogo.feature.search.navigation.searchGraph
 
 @Composable
 fun WheretogoNavHost(
@@ -28,5 +29,10 @@ fun WheretogoNavHost(
             },
         )
         contentDetailScreen()
+        searchGraph(
+            navigateToSearchResult = {},
+            onNavigateUp = { navController.popBackStack() },
+            nestedGraphs = {},
+        )
     }
 }

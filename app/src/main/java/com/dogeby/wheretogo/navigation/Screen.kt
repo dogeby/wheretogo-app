@@ -9,6 +9,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.navigation.NavHostController
 import com.dogeby.wheretogo.R
 import com.dogeby.wheretogo.core.ui.model.TopAppBarActionUiState
+import com.dogeby.wheretogo.feature.search.navigation.navigateToSearchGraph
 
 enum class Screen(
     val topAppBarState: ScreenTopAppBarState,
@@ -19,6 +20,7 @@ enum class Screen(
             actions = listOf(
                 ScreenTopAppBarAction(
                     icon = Icons.Default.Search,
+                    onActionClick = { it.navigateToSearchGraph() },
                 ),
                 ScreenTopAppBarAction(
                     icon = Icons.Outlined.Person,
