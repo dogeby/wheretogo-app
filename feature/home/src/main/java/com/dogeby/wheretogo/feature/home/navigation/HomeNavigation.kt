@@ -9,15 +9,14 @@ import com.dogeby.wheretogo.feature.home.HomeRoute
 
 const val HOME_ROUTE = "home_route"
 
-fun NavController.navigateToHomeGraph(navOptions: NavOptions? = null) {
+fun NavController.navigateToHome(navOptions: NavOptions? = null) {
     navigate(HOME_ROUTE, navOptions)
 }
 
-fun NavGraphBuilder.homeGraph(
+fun NavGraphBuilder.homeScreen(
     navigateToContents: (contentTypeId: String, areaCode: String, sigunguCode: String) -> Unit,
     navigateToFestivals: () -> Unit,
     navigateToContentDetail: (id: String) -> Unit,
-    nestedGraphs: NavGraphBuilder.() -> Unit,
 ) {
     composable(route = HOME_ROUTE) {
         HomeRoute(
@@ -34,5 +33,4 @@ fun NavGraphBuilder.homeGraph(
             navigateToContentDetail = navigateToContentDetail,
         )
     }
-    nestedGraphs()
 }

@@ -7,7 +7,8 @@ import androidx.navigation.compose.NavHost
 import com.dogeby.wheretogo.feature.contentdetail.navigation.contentDetailScreen
 import com.dogeby.wheretogo.feature.contentdetail.navigation.navigateToContentDetail
 import com.dogeby.wheretogo.feature.home.navigation.HOME_ROUTE
-import com.dogeby.wheretogo.feature.home.navigation.homeGraph
+import com.dogeby.wheretogo.feature.home.navigation.homeScreen
+import com.dogeby.wheretogo.feature.search.navigation.searchGraph
 
 @Composable
 fun WheretogoNavHost(
@@ -20,15 +21,18 @@ fun WheretogoNavHost(
         startDestination = startDestination,
         modifier = modifier,
     ) {
-        homeGraph(
+        homeScreen(
             navigateToContents = { _, _, _ -> },
             navigateToFestivals = {},
             navigateToContentDetail = {
                 navController.navigateToContentDetail(it)
             },
-            nestedGraphs = {
-                contentDetailScreen()
-            },
+        )
+        contentDetailScreen()
+        searchGraph(
+            navigateToSearchResult = {},
+            onNavigateUp = { navController.popBackStack() },
+            nestedGraphs = {},
         )
     }
 }
