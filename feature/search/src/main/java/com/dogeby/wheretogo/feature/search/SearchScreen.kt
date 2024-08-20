@@ -69,7 +69,11 @@ internal fun SearchScreen(
             onQueryChange = onQueryChange,
             onSearch = onSearch,
             active = true,
-            onActiveChange = {},
+            onActiveChange = {
+                if (it.not()) {
+                    onNavigateUp()
+                }
+            },
             leadingIcon = {
                 IconButton(
                     onClick = onNavigateUp,
