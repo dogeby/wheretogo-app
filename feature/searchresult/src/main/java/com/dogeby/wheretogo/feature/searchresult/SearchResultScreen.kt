@@ -8,6 +8,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.paging.LoadState
 import androidx.paging.LoadStates
 import androidx.paging.PagingData
@@ -17,6 +18,21 @@ import com.dogeby.wheretogo.core.ui.components.common.NoSearchResultsDisplay
 import com.dogeby.wheretogo.core.ui.components.list.contentList
 import com.dogeby.wheretogo.core.ui.model.ContentListItemUiState
 import kotlinx.coroutines.flow.flowOf
+
+@Composable
+internal fun SearchResultRoute(
+    navigateToContentDetail: (id: String) -> Unit,
+    modifier: Modifier = Modifier,
+    viewModel: SearchResultViewModel = hiltViewModel(),
+) {
+    val contents = viewModel.searchResults.collectAsLazyPagingItems()
+
+    SearchResultScreen(
+        contents = contents,
+        onClickContent = navigateToContentDetail,
+        modifier = modifier,
+    )
+}
 
 @Composable
 internal fun SearchResultScreen(
