@@ -14,6 +14,7 @@ import androidx.paging.LoadStates
 import androidx.paging.PagingData
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
+import com.dogeby.wheretogo.core.ui.components.common.LoadingDisplay
 import com.dogeby.wheretogo.core.ui.components.common.NoSearchResultsDisplay
 import com.dogeby.wheretogo.core.ui.components.list.contentList
 import com.dogeby.wheretogo.core.ui.model.ContentListItemUiState
@@ -41,6 +42,9 @@ internal fun SearchResultScreen(
     modifier: Modifier = Modifier,
 ) {
     when {
+        contents.loadState.refresh is LoadState.Loading -> {
+            LoadingDisplay()
+        }
         contents.itemCount == 0 -> {
             NoSearchResultsDisplay(modifier = modifier)
         }
