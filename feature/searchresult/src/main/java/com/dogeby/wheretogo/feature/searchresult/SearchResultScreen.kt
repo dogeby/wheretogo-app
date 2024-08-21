@@ -14,6 +14,7 @@ import androidx.paging.LoadStates
 import androidx.paging.PagingData
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
+import com.dogeby.wheretogo.core.ui.components.common.ErrorDisplay
 import com.dogeby.wheretogo.core.ui.components.common.LoadingDisplay
 import com.dogeby.wheretogo.core.ui.components.common.NoSearchResultsDisplay
 import com.dogeby.wheretogo.core.ui.components.list.contentList
@@ -48,7 +49,9 @@ internal fun SearchResultScreen(
         contents.itemCount == 0 -> {
             NoSearchResultsDisplay(modifier = modifier)
         }
-        contents.loadState.hasError -> TODO()
+        contents.loadState.hasError -> {
+            ErrorDisplay()
+        }
         else -> {
             LazyVerticalGrid(
                 columns = GridCells.Adaptive(360.dp),
