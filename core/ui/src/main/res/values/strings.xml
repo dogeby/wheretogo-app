@@ -6,6 +6,7 @@
     <string name="cancel">취소</string>
     <string name="no_search_results">검색 결과가 없습니다.</string>
     <string name="empty_list">목록이 비어있습니다.</string>
+    <string name="error_occurred">오류가 발생했습니다.\n잠시 후 다시 시도해 주세요.</string>
     <string name="review">리뷰</string>
     <string name="all">전체</string>
     <string name="tel">전화번호</string>
