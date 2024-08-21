@@ -39,10 +39,11 @@ internal fun SearchRoute(
     viewModel: SearchViewModel = hiltViewModel(),
 ) {
     val query by viewModel.query.collectAsStateWithLifecycle()
+    val recentQueries by viewModel.recentQueries.collectAsStateWithLifecycle()
 
     SearchScreen(
         query = { query },
-        recentQueries = { emptyList() },
+        recentQueries = { recentQueries },
         onQueryChange = viewModel::editQuery,
         onSearch = navigateToSearchResult,
         onNavigateUp = onNavigateUp,
