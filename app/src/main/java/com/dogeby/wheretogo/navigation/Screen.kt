@@ -37,6 +37,15 @@ enum class Screen(
             ),
         ),
     ),
+    SearchResult(
+        topAppBarState = ScreenTopAppBarState(
+            titleRes = R.string.search_result,
+            navigation = ScreenTopAppBarAction(
+                icon = Icons.AutoMirrored.Default.ArrowBack,
+                onActionClick = { it.popBackStack() },
+            ),
+        ),
+    ),
 }
 
 data class ScreenTopAppBarState(
