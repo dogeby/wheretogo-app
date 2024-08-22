@@ -11,6 +11,7 @@ import androidx.navigation.compose.rememberNavController
 import com.dogeby.wheretogo.core.common.networkmonitor.NetworkMonitor
 import com.dogeby.wheretogo.feature.contentdetail.navigation.CONTENT_DETAIL_ROUTE
 import com.dogeby.wheretogo.feature.home.navigation.HOME_ROUTE
+import com.dogeby.wheretogo.feature.regionselection.navigation.REGION_SELECTION_ROUTE
 import com.dogeby.wheretogo.feature.searchresult.navigation.SEARCH_RESULT_ROUTE
 import com.dogeby.wheretogo.navigation.Screen
 import kotlinx.coroutines.CoroutineScope
@@ -45,6 +46,7 @@ class WheretogoAppState(
             HOME_ROUTE -> Screen.Home
             CONTENT_DETAIL_ROUTE -> Screen.ContentDetail
             SEARCH_RESULT_ROUTE -> Screen.SearchResult
+            REGION_SELECTION_ROUTE -> Screen.RegionSelection
             else -> null
         }
 

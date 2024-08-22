@@ -46,6 +46,15 @@ enum class Screen(
             ),
         ),
     ),
+    RegionSelection(
+        topAppBarState = ScreenTopAppBarState(
+            titleRes = R.string.region_selection,
+            navigation = ScreenTopAppBarAction(
+                icon = Icons.AutoMirrored.Default.ArrowBack,
+                onActionClick = { it.popBackStack() },
+            ),
+        ),
+    ),
 }
 
 data class ScreenTopAppBarState(
