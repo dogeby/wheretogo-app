@@ -9,10 +9,8 @@ import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
@@ -22,6 +20,7 @@ import androidx.paging.LoadStates
 import androidx.paging.PagingData
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
+import com.dogeby.wheretogo.core.model.tour.TourContentType
 import com.dogeby.wheretogo.core.ui.components.chip.CategoryChipRow
 import com.dogeby.wheretogo.core.ui.components.common.EmptyListDisplay
 import com.dogeby.wheretogo.core.ui.components.common.LoadingDisplay
@@ -50,9 +49,6 @@ internal fun ContentsScreen(
     when (contentsScreenState) {
         ContentsScreenUiState.Loading -> LoadingDisplay(modifier = modifier)
         is ContentsScreenUiState.Success -> {
-            val selectedTabIndex = rememberSaveable(contentsScreenState.pageStates.size) {
-                mutableIntStateOf(0)
-            }
             Column(modifier = modifier) {
                 val pagerState = rememberPagerState {
                     contentsScreenState.pageStates.size
@@ -60,26 +56,36 @@ internal fun ContentsScreen(
 
                 ContentTypeTabRow(
                     tabStates = contentsScreenState.pageStates.map { it.contentTypeTabState },
-                    onClickTab = { index, id ->
-                        selectedTabIndex.intValue = index
+                    onClickTab = { id ->
                         coroutineScope.launch {
-                            pagerState.scrollToPage(index)
+                            pagerState.scrollToPage(
+                                contentsScreenState
+                                    .pageStates
+                                    .indexOfFirst {
+                                        it.contentTypeTabState.contentType.id == id
+                                    },
+                            )
                         }
                         onClickContentTypeTab(id)
                     },
-                    state = selectedTabIndex,
                     containerColor = Color.Transparent,
                 )
                 HorizontalPager(
                     state = pagerState,
                     userScrollEnabled = false,
                 ) {
-                    with(contentsScreenState.pageStates[selectedTabIndex.intValue]) {
+                    val contentsPageState = contentsScreenState.pageStates.firstOrNull {
+                        it.contentTypeTabState.isSelected
+                    }
+                    if (contentsPageState != null) {
                         Column {
                             CategoryChipRow(
-                                chipStates = categoryChipStates,
+                                chipStates = contentsPageState.categoryChipStates,
                                 onClickChip = {
-                                    onClickCategoryChip(contentTypeTabState.id, it)
+                                    onClickCategoryChip(
+                                        contentsPageState.contentTypeTabState.contentType.id,
+                                        it,
+                                    )
                                 },
                                 state = LazyListState(),
                                 contentPadding = PaddingValues(horizontal = 16.dp),
@@ -114,21 +120,23 @@ private fun ContentScreenPreview() {
             "1" to "12",
         )
     }
-    val pageStates = List(4) { tabIndex ->
-        ContentsPageUiState(
-            ContentTypeTabUiState(
-                id = tabIndex.toString(),
-                name = "name $tabIndex",
-            ),
-            categoryChipStates = List(5) {
-                CategoryChipUiState(
-                    id = "$tabIndex$it",
-                    name = "name $tabIndex$it",
-                    isSelected = tabAndCategory["$tabIndex"] == "$tabIndex$it",
-                )
-            },
-        )
-    }
+    val pageStates = TourContentType
+        .getDestinations()
+        .mapIndexed { tabIndex, tourContentType ->
+            ContentsPageUiState(
+                contentTypeTabState = ContentTypeTabUiState(
+                    contentType = tourContentType,
+                    isSelected = tabIndex == 0,
+                ),
+                categoryChipStates = List(5) {
+                    CategoryChipUiState(
+                        id = "$tabIndex$it",
+                        name = "name $tabIndex$it",
+                        isSelected = tabAndCategory["$tabIndex"] == "$tabIndex$it",
+                    )
+                },
+            )
+        }
     val contents = List(20) {
         ContentListItemUiState(
             id = "$it",
@@ -186,21 +194,23 @@ private fun ContentScreenPreview_Empty() {
             "1" to "12",
         )
     }
-    val pageStates = List(4) { tabIndex ->
-        ContentsPageUiState(
-            ContentTypeTabUiState(
-                id = tabIndex.toString(),
-                name = "name $tabIndex",
-            ),
-            categoryChipStates = List(5) {
-                CategoryChipUiState(
-                    id = "$tabIndex$it",
-                    name = "name $tabIndex$it",
-                    isSelected = tabAndCategory["$tabIndex"] == "$tabIndex$it",
-                )
-            },
-        )
-    }
+    val pageStates = TourContentType
+        .getDestinations()
+        .mapIndexed { tabIndex, tourContentType ->
+            ContentsPageUiState(
+                contentTypeTabState = ContentTypeTabUiState(
+                    contentType = tourContentType,
+                    isSelected = tabIndex == 0,
+                ),
+                categoryChipStates = List(5) {
+                    CategoryChipUiState(
+                        id = "$tabIndex$it",
+                        name = "name $tabIndex$it",
+                        isSelected = tabAndCategory["$tabIndex"] == "$tabIndex$it",
+                    )
+                },
+            )
+        }
     val pagedContents = flowOf(
         PagingData.empty<ContentListItemUiState>(),
     ).collectAsLazyPagingItems()
