@@ -16,6 +16,7 @@ fun NavController.navigateToHome(navOptions: NavOptions? = null) {
 fun NavGraphBuilder.homeScreen(
     navigateToContents: (contentTypeId: String, areaCode: String, sigunguCode: String) -> Unit,
     navigateToFestivals: () -> Unit,
+    navigateToRegionSelection: (contentTypeId: String) -> Unit,
     navigateToContentDetail: (id: String) -> Unit,
 ) {
     composable(route = HOME_ROUTE) {
@@ -23,11 +24,17 @@ fun NavGraphBuilder.homeScreen(
             navigateToList = { contentType, areaCode, sigunguCode ->
                 when (contentType) {
                     TourContentType.Festival -> navigateToFestivals()
-                    else -> navigateToContents(
-                        contentType.id,
-                        areaCode,
-                        sigunguCode,
-                    )
+                    else -> {
+                        if (areaCode == null) {
+                            navigateToRegionSelection(contentType.id)
+                        } else {
+                            navigateToContents(
+                                contentType.id,
+                                areaCode,
+                                sigunguCode ?: "",
+                            )
+                        }
+                    }
                 }
             },
             navigateToContentDetail = navigateToContentDetail,

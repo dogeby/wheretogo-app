@@ -19,7 +19,11 @@ import kotlinx.coroutines.flow.flowOf
 
 @Composable
 internal fun HomeRoute(
-    navigateToList: (contentType: TourContentType, areaCode: String, sigunguCode: String) -> Unit,
+    navigateToList: (
+        contentType: TourContentType,
+        areaCode: String?,
+        sigunguCode: String?,
+    ) -> Unit,
     navigateToContentDetail: (id: String) -> Unit,
     modifier: Modifier = Modifier,
     viewModel: HomeViewModel = hiltViewModel(),
@@ -44,7 +48,11 @@ internal fun HomeScreen(
     homeScreenUiState: HomeScreenUiState,
     festivals: LazyPagingItems<FestivalListItemUiState>,
     contentsList: List<LazyPagingItems<ContentListItemUiState>>,
-    onNavigateToList: (contentType: TourContentType, areaCode: String, sigunguCode: String) -> Unit,
+    onNavigateToList: (
+        contentType: TourContentType,
+        areaCode: String?,
+        sigunguCode: String?,
+    ) -> Unit,
     onNavigateToContentDetail: (id: String) -> Unit,
     modifier: Modifier = Modifier,
 ) {

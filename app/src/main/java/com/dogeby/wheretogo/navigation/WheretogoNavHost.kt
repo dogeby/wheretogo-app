@@ -9,6 +9,8 @@ import com.dogeby.wheretogo.feature.contentdetail.navigation.contentDetailScreen
 import com.dogeby.wheretogo.feature.contentdetail.navigation.navigateToContentDetail
 import com.dogeby.wheretogo.feature.home.navigation.HOME_ROUTE
 import com.dogeby.wheretogo.feature.home.navigation.homeScreen
+import com.dogeby.wheretogo.feature.regionselection.navigation.navigateToRegionSelection
+import com.dogeby.wheretogo.feature.regionselection.navigation.regionSelectionScreen
 import com.dogeby.wheretogo.feature.search.navigation.SEARCH_ROUTE
 import com.dogeby.wheretogo.feature.search.navigation.searchGraph
 import com.dogeby.wheretogo.feature.searchresult.navigation.navigateToSearchResult
@@ -28,6 +30,9 @@ fun WheretogoNavHost(
         homeScreen(
             navigateToContents = { _, _, _ -> },
             navigateToFestivals = {},
+            navigateToRegionSelection = {
+                navController.navigateToRegionSelection(it)
+            },
             navigateToContentDetail = {
                 navController.navigateToContentDetail(it)
             },
@@ -47,5 +52,8 @@ fun WheretogoNavHost(
         ) {
             searchResultScreen { navController.navigateToContentDetail(it) }
         }
+        regionSelectionScreen(
+            onNavigateToList = { _, _ -> },
+        )
     }
 }
