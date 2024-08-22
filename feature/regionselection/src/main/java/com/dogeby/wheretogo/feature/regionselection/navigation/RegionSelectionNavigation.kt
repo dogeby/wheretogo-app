@@ -11,13 +11,17 @@ import androidx.navigation.navArgument
 import com.dogeby.wheretogo.core.common.decoder.StringDecoder
 import com.dogeby.wheretogo.feature.regionselection.RegionSelectionRoute
 
-internal const val CONTENT_TYPE_ID_ARG = "content_type_id"
-const val REGION_SELECTION_ROUTE = "region_selection_route/{$CONTENT_TYPE_ID_ARG}"
+internal const val REGION_SELECTION_CONTENT_TYPE_ID_ARG = "region_selection_content_type_id"
+const val REGION_SELECTION_ROUTE = "region_selection_route/{$REGION_SELECTION_CONTENT_TYPE_ID_ARG}"
 
 internal class RegionSelectionArgs(val contentTypeId: String) {
 
     constructor(savedStateHandle: SavedStateHandle, stringDecoder: StringDecoder) :
-        this(stringDecoder.decodeString(checkNotNull(savedStateHandle[CONTENT_TYPE_ID_ARG])))
+        this(
+            stringDecoder.decodeString(
+                checkNotNull(savedStateHandle[REGION_SELECTION_CONTENT_TYPE_ID_ARG]),
+            ),
+        )
 }
 
 fun NavController.navigateToRegionSelection(
@@ -34,7 +38,7 @@ fun NavGraphBuilder.regionSelectionScreen(
     composable(
         route = REGION_SELECTION_ROUTE,
         arguments = listOf(
-            navArgument(CONTENT_TYPE_ID_ARG) { type = NavType.StringType },
+            navArgument(REGION_SELECTION_CONTENT_TYPE_ID_ARG) { type = NavType.StringType },
         ),
     ) {
         RegionSelectionRoute(onNavigateToList)
