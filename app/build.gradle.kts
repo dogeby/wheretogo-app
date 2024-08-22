@@ -74,6 +74,7 @@ dependencies {
     implementation(project(":feature:home"))
     implementation(project(":feature:contentdetail"))
     implementation(project(":feature:search"))
+    implementation(project(":feature:searchresult"))
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.activity.compose)

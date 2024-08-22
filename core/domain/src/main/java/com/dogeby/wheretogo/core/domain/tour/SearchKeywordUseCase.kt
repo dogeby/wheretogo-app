@@ -2,6 +2,7 @@ package com.dogeby.wheretogo.core.domain.tour
 
 import androidx.paging.PagingData
 import androidx.paging.map
+import com.dogeby.wheretogo.core.data.repository.SearchKeywordRepository
 import com.dogeby.wheretogo.core.data.repository.TourRepository
 import com.dogeby.wheretogo.core.domain.model.tour.KeywordSearchResult
 import com.dogeby.wheretogo.core.domain.model.tour.toKeywordSearchResult
@@ -13,6 +14,7 @@ import kotlinx.coroutines.flow.combine
 
 class SearchKeywordUseCase @Inject constructor(
     private val tourRepository: TourRepository,
+    private val searchKeywordRepository: SearchKeywordRepository,
     private val getAreaInfoMapUseCase: GetAreaInfoMapUseCase,
     private val getContentTypeInfoMapUseCase: GetContentTypeInfoMapUseCase,
 ) {
@@ -44,6 +46,9 @@ class SearchKeywordUseCase @Inject constructor(
             try {
                 val areaInfoMap = areaInfoMapResult.getOrThrow()
                 val contentTypeInfoMap = contentTypeInfoMapResult.getOrThrow()
+
+                searchKeywordRepository.addSearchKeyword(keyword)
+                searchKeywordRepository.deleteOldestSearchKeywords()
 
                 pagedSearchKeywordResultData.map { keywordSearchResultData ->
                     keywordSearchResultData.toKeywordSearchResult(

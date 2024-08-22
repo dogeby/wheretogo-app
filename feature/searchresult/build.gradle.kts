@@ -40,6 +40,9 @@ android {
 
 dependencies {
     implementation(project(":core:ui"))
+    implementation(project(":core:domain"))
+    implementation(project(":core:common"))
+    implementation(project(":core:model"))
 
     implementation(libs.androidx.core.ktx)
     implementation(platform(libs.androidx.compose.bom))

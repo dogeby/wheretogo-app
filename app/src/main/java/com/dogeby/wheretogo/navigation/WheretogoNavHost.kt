@@ -3,12 +3,16 @@ package com.dogeby.wheretogo.navigation
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
+import androidx.navigation.NavOptions
 import androidx.navigation.compose.NavHost
 import com.dogeby.wheretogo.feature.contentdetail.navigation.contentDetailScreen
 import com.dogeby.wheretogo.feature.contentdetail.navigation.navigateToContentDetail
 import com.dogeby.wheretogo.feature.home.navigation.HOME_ROUTE
 import com.dogeby.wheretogo.feature.home.navigation.homeScreen
+import com.dogeby.wheretogo.feature.search.navigation.SEARCH_ROUTE
 import com.dogeby.wheretogo.feature.search.navigation.searchGraph
+import com.dogeby.wheretogo.feature.searchresult.navigation.navigateToSearchResult
+import com.dogeby.wheretogo.feature.searchresult.navigation.searchResultScreen
 
 @Composable
 fun WheretogoNavHost(
@@ -30,9 +34,18 @@ fun WheretogoNavHost(
         )
         contentDetailScreen()
         searchGraph(
-            navigateToSearchResult = {},
+            navigateToSearchResult = {
+                navController.navigateToSearchResult(
+                    searchKeyword = it,
+                    navOptions = NavOptions.Builder().setPopUpTo(
+                        route = SEARCH_ROUTE,
+                        inclusive = true,
+                    ).build(),
+                )
+            },
             onNavigateUp = { navController.popBackStack() },
-            nestedGraphs = {},
-        )
+        ) {
+            searchResultScreen { navController.navigateToContentDetail(it) }
+        }
     }
 }
