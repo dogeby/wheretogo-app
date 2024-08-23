@@ -5,15 +5,17 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.map
 import com.dogeby.wheretogo.core.common.decoder.StringDecoder
+import com.dogeby.wheretogo.core.domain.model.tour.serviceinfo.CategoryInfo
+import com.dogeby.wheretogo.core.domain.model.tour.serviceinfo.ContentTypeInfo
 import com.dogeby.wheretogo.core.domain.tour.GetContentTypeInfoMapUseCase
 import com.dogeby.wheretogo.core.domain.tour.GetPagedTourContentUseCase
 import com.dogeby.wheretogo.core.model.tour.TourContentType
 import com.dogeby.wheretogo.core.ui.model.CategoryChipUiState
 import com.dogeby.wheretogo.core.ui.model.ContentListItemUiState
 import com.dogeby.wheretogo.core.ui.model.ContentTypeTabUiState
+import com.dogeby.wheretogo.feature.contents.model.Category
 import com.dogeby.wheretogo.feature.contents.model.ContentsPageUiState
 import com.dogeby.wheretogo.feature.contents.model.ContentsScreenUiState
-import com.dogeby.wheretogo.feature.contents.model.MediumCategory
 import com.dogeby.wheretogo.feature.contents.navigation.ContentsArgs
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
@@ -69,7 +71,26 @@ class ContentsViewModel @Inject constructor(
             contentTypeInfo.majorCategories.values.flatMap { majorCategoryInfo ->
                 majorCategoryInfo.mediumCategories.keys.map { mediumCategoryCode ->
                     mediumCategoryCode to
-                        MediumCategory(mediumCategoryCode, majorCategoryInfo.categoryInfo.code)
+                        Category(
+                            mediumCategoryCode = mediumCategoryCode,
+                            majorCategoryCode = majorCategoryInfo.categoryInfo.code,
+                        )
+                }
+            }
+        }?.toMap()
+    }
+
+    private val minorCategoryMap = contentTypeInfoMapState.map { contentTypeInfoMap ->
+        contentTypeInfoMap?.flatMap { (_, contentTypeInfo) ->
+            contentTypeInfo.majorCategories.values.flatMap { majorCategoryInfo ->
+                majorCategoryInfo.mediumCategories.values.flatMap { mediumCategoryInfo ->
+                    mediumCategoryInfo.minorCategories.keys.map { minorCategoryCode ->
+                        minorCategoryCode to Category(
+                            minorCategoryCode = minorCategoryCode,
+                            mediumCategoryCode = mediumCategoryInfo.categoryInfo.code,
+                            majorCategoryCode = majorCategoryInfo.categoryInfo.code,
+                        )
+                    }
                 }
             }
         }?.toMap()
@@ -80,29 +101,26 @@ class ContentsViewModel @Inject constructor(
         selectedCategory,
         contentTypeInfoMapState,
     ) { selectedContentTypeId, selectedCategoryId, contentTypeInfoMap ->
-        val destinations = TourContentType.getDestinations().map { it.id }
-        val contentsPageStates = contentTypeInfoMap?.filter {
-            it.key in destinations
-        }?.map { (_, contentTypeInfo) ->
-            val categories = contentTypeInfo.majorCategories.map { (_, majorCategoryInfo) ->
-                majorCategoryInfo.mediumCategories.values.map { it.categoryInfo }
-            }.flatten()
+        if (contentTypeInfoMap != null) {
+            val contentsPageStates = getScreenContentTypeInfoList(
+                contentTypeInfoMap,
+            ).map { contentTypeInfo ->
+                val categories = getScreenCategoryInfoList(contentTypeInfo)
 
-            ContentsPageUiState(
-                contentTypeTabState = ContentTypeTabUiState(
-                    contentType = contentTypeInfo.contentType,
-                    isSelected = contentTypeInfo.contentType.id == selectedContentTypeId,
-                ),
-                categoryChipStates = categories.map { (code, name) ->
-                    CategoryChipUiState(
-                        id = code,
-                        name = name,
-                        isSelected = code == selectedCategoryId,
-                    )
-                },
-            )
-        }
-        if (contentsPageStates != null) {
+                ContentsPageUiState(
+                    contentTypeTabState = ContentTypeTabUiState(
+                        contentType = contentTypeInfo.contentType,
+                        isSelected = contentTypeInfo.contentType.id == selectedContentTypeId,
+                    ),
+                    categoryChipStates = categories.map { (code, name) ->
+                        CategoryChipUiState(
+                            id = code,
+                            name = name,
+                            isSelected = code == selectedCategoryId,
+                        )
+                    },
+                )
+            }
             ContentsScreenUiState.Success(contentsPageStates)
         } else {
             ContentsScreenUiState.Loading
@@ -115,39 +133,39 @@ class ContentsViewModel @Inject constructor(
         )
 
     @OptIn(ExperimentalCoroutinesApi::class)
-    val contentsState =
-        combine(
-            selectedContentType,
-            selectedCategory,
-            mediumCategoryMap,
-        ) { selectedContentTypeId, selectedCategoryId, mediumCategoryMap ->
-            selectedContentTypeId to (
-                mediumCategoryMap?.get(selectedCategoryId)
-                    ?: MediumCategory("", "")
+    val contentsState = combine(
+        selectedContentType,
+        selectedCategory,
+        if (isScreenContentTypeDestination()) mediumCategoryMap else minorCategoryMap,
+    ) { selectedContentTypeId, selectedCategoryId, categoryMap ->
+        selectedContentTypeId to (
+            categoryMap?.get(selectedCategoryId)
+                ?: Category("", "")
+            )
+    }.flatMapLatest { (selectedContentTypeId, category) ->
+        getPagedTourContentUseCase(
+            contentTypeId = selectedContentTypeId,
+            majorCategoryCode = category.majorCategoryCode,
+            mediumCategoryCode = category.mediumCategoryCode,
+            minorCategoryCode = category.minorCategoryCode,
+            areaCode = contentsArgs.areaCode,
+        ).map { pagingData ->
+            pagingData.map {
+                ContentListItemUiState(
+                    id = it.contentId,
+                    title = it.title,
+                    imgSrc = it.firstImageThumbnailSrc ?: "",
+                    categories = listOf(
+                        it.majorCategoryInfo?.name ?: "",
+                        it.mediumCategoryInfo?.name ?: "",
+                        it.minorCategoryInfo?.name ?: "",
+                    ),
+                    areaName = it.areaInfo?.name ?: "",
+                    sigunguName = it.sigunguInfo?.name ?: "",
                 )
-        }.flatMapLatest { (selectedContentTypeId, mediumCategory) ->
-            getPagedTourContentUseCase(
-                contentTypeId = selectedContentTypeId,
-                majorCategoryCode = mediumCategory.majorCategoryCode,
-                mediumCategoryCode = mediumCategory.code,
-                areaCode = contentsArgs.areaCode,
-            ).map { pagingData ->
-                pagingData.map {
-                    ContentListItemUiState(
-                        id = it.contentId,
-                        title = it.title,
-                        imgSrc = it.firstImageThumbnailSrc ?: "",
-                        categories = listOf(
-                            it.majorCategoryInfo?.name ?: "",
-                            it.mediumCategoryInfo?.name ?: "",
-                            it.minorCategoryInfo?.name ?: "",
-                        ),
-                        areaName = it.areaInfo?.name ?: "",
-                        sigunguName = it.sigunguInfo?.name ?: "",
-                    )
-                }
             }
         }
+    }
 
     fun setContentTypeId(id: String) {
         savedStateHandle.set(
@@ -162,6 +180,46 @@ class ContentsViewModel @Inject constructor(
             key = CONTENTS_SELECTED_CATEGORY_ID_KEY,
             value = categoryId,
         )
+    }
+
+    private fun isScreenContentTypeDestination(): Boolean {
+        return when (contentsArgs.contentTypeId) {
+            TourContentType.Accommodation.id,
+            TourContentType.Restaurant.id,
+            -> false
+            else -> true
+        }
+    }
+
+    private fun getScreenContentTypeInfoList(
+        contentTypeInfoMap: Map<String, ContentTypeInfo>,
+    ): List<ContentTypeInfo> {
+        val contentTypes = when (contentsArgs.contentTypeId) {
+            TourContentType.Accommodation.id -> {
+                listOf(TourContentType.Accommodation)
+            }
+            TourContentType.Restaurant.id -> {
+                listOf(TourContentType.Restaurant)
+            }
+            else -> {
+                TourContentType.getDestinations()
+            }
+        }
+        return contentTypeInfoMap.values.filter { it.contentType in contentTypes }
+    }
+
+    private fun getScreenCategoryInfoList(contentTypeInfo: ContentTypeInfo): List<CategoryInfo> {
+        return if (isScreenContentTypeDestination()) {
+            contentTypeInfo.majorCategories.map { (_, majorCategoryInfo) ->
+                majorCategoryInfo.mediumCategories.values.map { it.categoryInfo }
+            }.flatten()
+        } else {
+            contentTypeInfo.majorCategories.values.map { majorCategoryInfo ->
+                majorCategoryInfo.mediumCategories.values.map { mediumCategoryInfo ->
+                    mediumCategoryInfo.minorCategories.values
+                }.flatten()
+            }.flatten()
+        }
     }
 
     private companion object {
