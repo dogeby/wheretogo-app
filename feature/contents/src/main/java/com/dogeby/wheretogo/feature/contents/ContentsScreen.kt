@@ -9,12 +9,15 @@ import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.paging.LoadState
 import androidx.paging.LoadStates
 import androidx.paging.PagingData
@@ -33,6 +36,25 @@ import com.dogeby.wheretogo.feature.contents.model.ContentsPageUiState
 import com.dogeby.wheretogo.feature.contents.model.ContentsScreenUiState
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.launch
+
+@Composable
+internal fun ContentsRoute(
+    navigateToContentDetail: (id: String) -> Unit,
+    modifier: Modifier = Modifier,
+    viewModel: ContentsViewModel = hiltViewModel(),
+) {
+    val contentsScreenState by viewModel.contentsScreenState.collectAsStateWithLifecycle()
+    val contents = viewModel.contentsState.collectAsLazyPagingItems()
+
+    ContentsScreen(
+        contentsScreenState = contentsScreenState,
+        contents = contents,
+        onClickContentTypeTab = viewModel::setContentTypeId,
+        onClickCategoryChip = viewModel::setCategoryId,
+        onClickContent = navigateToContentDetail,
+        modifier = modifier,
+    )
+}
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
