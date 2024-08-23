@@ -3,4 +3,5 @@
     <string name="not_connected">네트워크 연결 상태를 확인 후 다시 시도해 주세요.</string>
     <string name="search_result">검색 결과</string>
     <string name="region_selection">지역 선택</string>
+    <string name="destination">여행지</string>
 </resources>
