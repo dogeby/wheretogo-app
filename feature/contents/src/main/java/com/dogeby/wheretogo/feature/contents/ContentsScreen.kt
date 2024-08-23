@@ -40,7 +40,7 @@ internal fun ContentsScreen(
     contentsScreenState: ContentsScreenUiState,
     contents: LazyPagingItems<ContentListItemUiState>,
     onClickContentTypeTab: (id: String) -> Unit,
-    onClickCategoryChip: (contentTypeId: String, categoryId: String) -> Unit,
+    onClickCategoryChip: (categoryId: String?) -> Unit,
     onClickContent: (id: String) -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -82,10 +82,7 @@ internal fun ContentsScreen(
                             CategoryChipRow(
                                 chipStates = contentsPageState.categoryChipStates,
                                 onClickChip = {
-                                    onClickCategoryChip(
-                                        contentsPageState.contentTypeTabState.contentType.id,
-                                        it,
-                                    )
+                                    onClickCategoryChip(it)
                                 },
                                 state = LazyListState(),
                                 contentPadding = PaddingValues(horizontal = 16.dp),
@@ -164,7 +161,7 @@ private fun ContentScreenPreview() {
         contentsScreenState = ContentsScreenUiState.Success(pageStates),
         contents = pagedContents,
         onClickContentTypeTab = {},
-        onClickCategoryChip = { _, _ -> },
+        onClickCategoryChip = {},
         onClickContent = {},
     )
 }
@@ -180,7 +177,7 @@ private fun ContentScreenPreview_Loading() {
         contentsScreenState = ContentsScreenUiState.Loading,
         contents = pagedContents,
         onClickContentTypeTab = {},
-        onClickCategoryChip = { _, _ -> },
+        onClickCategoryChip = {},
         onClickContent = {},
     )
 }
@@ -219,7 +216,7 @@ private fun ContentScreenPreview_Empty() {
         contentsScreenState = ContentsScreenUiState.Success(pageStates),
         contents = pagedContents,
         onClickContentTypeTab = {},
-        onClickCategoryChip = { _, _ -> },
+        onClickCategoryChip = {},
         onClickContent = {},
     )
 }

@@ -17,7 +17,7 @@ import com.dogeby.wheretogo.core.ui.model.CategoryChipUiState
 @Composable
 fun CategoryChipRow(
     chipStates: List<CategoryChipUiState>,
-    onClickChip: (id: String) -> Unit,
+    onClickChip: (id: String?) -> Unit,
     modifier: Modifier = Modifier,
     state: LazyListState = rememberLazyListState(),
     contentPadding: PaddingValues = PaddingValues(0.dp),
@@ -32,7 +32,11 @@ fun CategoryChipRow(
             FilterChip(
                 selected = isSelected,
                 onClick = {
-                    onClickChip(id)
+                    if (isSelected) {
+                        onClickChip(null)
+                    } else {
+                        onClickChip(id)
+                    }
                 },
                 label = {
                     Text(text = name)
