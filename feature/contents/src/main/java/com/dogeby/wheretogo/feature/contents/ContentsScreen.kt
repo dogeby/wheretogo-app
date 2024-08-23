@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.runtime.Composable
@@ -24,8 +25,8 @@ import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
 import com.dogeby.wheretogo.core.model.tour.TourContentType
 import com.dogeby.wheretogo.core.ui.components.chip.CategoryChipRow
-import com.dogeby.wheretogo.core.ui.components.common.EmptyListDisplay
 import com.dogeby.wheretogo.core.ui.components.common.LoadingDisplay
+import com.dogeby.wheretogo.core.ui.components.common.NoSearchResultsDisplay
 import com.dogeby.wheretogo.core.ui.components.list.contentList
 import com.dogeby.wheretogo.core.ui.components.tab.ContentTypeTabRow
 import com.dogeby.wheretogo.core.ui.model.CategoryChipUiState
@@ -66,6 +67,7 @@ internal fun ContentsScreen(
     modifier: Modifier = Modifier,
 ) {
     val coroutineScope = rememberCoroutineScope()
+    val contentsState = rememberLazyGridState()
 
     when (contentsScreenState) {
         ContentsScreenUiState.Loading -> LoadingDisplay(modifier = modifier)
@@ -86,6 +88,7 @@ internal fun ContentsScreen(
                                         it.contentTypeTabState.contentType.id == id
                                     },
                             )
+                            contentsState.scrollToItem(0)
                         }
                         onClickContentTypeTab(id)
                     },
@@ -107,17 +110,24 @@ internal fun ContentsScreen(
                                 },
                                 contentPadding = PaddingValues(horizontal = 16.dp),
                             )
-                            if (contents.itemCount == 0) {
-                                EmptyListDisplay()
-                            } else {
-                                LazyVerticalGrid(
-                                    columns = GridCells.Adaptive(360.dp),
-                                    contentPadding = PaddingValues(bottom = 16.dp),
-                                ) {
-                                    contentList(
-                                        contents = contents,
-                                        onClickItem = onClickContent,
-                                    )
+                            when {
+                                contents.loadState.refresh is LoadState.Loading -> {
+                                    LoadingDisplay()
+                                }
+                                contents.itemCount == 0 -> {
+                                    NoSearchResultsDisplay(modifier = modifier)
+                                }
+                                else -> {
+                                    LazyVerticalGrid(
+                                        columns = GridCells.Adaptive(360.dp),
+                                        contentPadding = PaddingValues(bottom = 16.dp),
+                                        state = contentsState,
+                                    ) {
+                                        contentList(
+                                            contents = contents,
+                                            onClickItem = onClickContent,
+                                        )
+                                    }
                                 }
                             }
                         }
