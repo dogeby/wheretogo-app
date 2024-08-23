@@ -55,9 +55,27 @@ enum class Screen(
             ),
         ),
     ),
-    Contents(
+    ContentsDestination(
         topAppBarState = ScreenTopAppBarState(
             titleRes = R.string.destination,
+            navigation = ScreenTopAppBarAction(
+                icon = Icons.AutoMirrored.Default.ArrowBack,
+                onActionClick = { it.popBackStack() },
+            ),
+        ),
+    ),
+    ContentsAccommodation(
+        topAppBarState = ScreenTopAppBarState(
+            titleRes = R.string.accommodation,
+            navigation = ScreenTopAppBarAction(
+                icon = Icons.AutoMirrored.Default.ArrowBack,
+                onActionClick = { it.popBackStack() },
+            ),
+        ),
+    ),
+    ContentsRestaurant(
+        topAppBarState = ScreenTopAppBarState(
+            titleRes = R.string.restaurant,
             navigation = ScreenTopAppBarAction(
                 icon = Icons.AutoMirrored.Default.ArrowBack,
                 onActionClick = { it.popBackStack() },

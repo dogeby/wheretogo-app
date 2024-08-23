@@ -10,7 +10,9 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.dogeby.wheretogo.core.common.networkmonitor.NetworkMonitor
 import com.dogeby.wheretogo.feature.contentdetail.navigation.CONTENT_DETAIL_ROUTE
-import com.dogeby.wheretogo.feature.contents.navigation.CONTENTS_ROUTE
+import com.dogeby.wheretogo.feature.contents.navigation.CONTENTS_ACCOMMODATION_ROUTE
+import com.dogeby.wheretogo.feature.contents.navigation.CONTENTS_DESTINATION_ROUTE
+import com.dogeby.wheretogo.feature.contents.navigation.CONTENTS_RESTAURANT_ROUTE
 import com.dogeby.wheretogo.feature.home.navigation.HOME_ROUTE
 import com.dogeby.wheretogo.feature.regionselection.navigation.REGION_SELECTION_ROUTE
 import com.dogeby.wheretogo.feature.searchresult.navigation.SEARCH_RESULT_ROUTE
@@ -48,7 +50,9 @@ class WheretogoAppState(
             CONTENT_DETAIL_ROUTE -> Screen.ContentDetail
             SEARCH_RESULT_ROUTE -> Screen.SearchResult
             REGION_SELECTION_ROUTE -> Screen.RegionSelection
-            CONTENTS_ROUTE -> Screen.Contents
+            CONTENTS_DESTINATION_ROUTE -> Screen.ContentsDestination
+            CONTENTS_ACCOMMODATION_ROUTE -> Screen.ContentsAccommodation
+            CONTENTS_RESTAURANT_ROUTE -> Screen.ContentsRestaurant
             else -> null
         }
 
