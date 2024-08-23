@@ -1,7 +1,7 @@
 package com.dogeby.wheretogo.core.ui.components.tab
 
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.PrimaryTabRow
+import androidx.compose.material3.PrimaryScrollableTabRow
 import androidx.compose.material3.Tab
 import androidx.compose.material3.TabRowDefaults
 import androidx.compose.material3.Text
@@ -22,7 +22,7 @@ fun ContentTypeTabRow(
     containerColor: Color = TabRowDefaults.primaryContainerColor,
     contentColor: Color = TabRowDefaults.primaryContentColor,
 ) {
-    PrimaryTabRow(
+    PrimaryScrollableTabRow(
         selectedTabIndex = tabStates.indexOfFirst { it.isSelected },
         modifier = modifier,
         containerColor = containerColor,
@@ -35,7 +35,7 @@ fun ContentTypeTabRow(
                     onClickTab(contentType.id)
                 },
                 text = {
-                    Text(text = contentType.getDisplayName())
+                    Text(contentType.getDisplayName())
                 },
             )
         }

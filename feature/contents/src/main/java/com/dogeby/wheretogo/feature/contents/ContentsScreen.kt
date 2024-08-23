@@ -3,7 +3,6 @@ package com.dogeby.wheretogo.feature.contents
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.pager.HorizontalPager
@@ -106,7 +105,6 @@ internal fun ContentsScreen(
                                 onClickChip = {
                                     onClickCategoryChip(it)
                                 },
-                                state = LazyListState(),
                                 contentPadding = PaddingValues(horizontal = 16.dp),
                             )
                             if (contents.itemCount == 0) {
