@@ -3,6 +3,7 @@ package com.dogeby.wheretogo.feature.contents
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.rememberLazyGridState
@@ -10,7 +11,6 @@ import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -77,23 +77,27 @@ internal fun ContentsScreen(
                     contentsScreenState.pageStates.size
                 }
 
-                ContentTypeTabRow(
-                    tabStates = contentsScreenState.pageStates.map { it.contentTypeTabState },
-                    onClickTab = { id ->
-                        coroutineScope.launch {
-                            pagerState.scrollToPage(
-                                contentsScreenState
-                                    .pageStates
-                                    .indexOfFirst {
-                                        it.contentTypeTabState.contentType.id == id
-                                    },
-                            )
-                            contentsState.scrollToItem(0)
-                        }
-                        onClickContentTypeTab(id)
-                    },
-                    containerColor = Color.Transparent,
-                )
+                if (contentsScreenState.pageStates.size > 1) {
+                    ContentTypeTabRow(
+                        tabStates = contentsScreenState.pageStates.map { it.contentTypeTabState },
+                        onClickTab = { id ->
+                            coroutineScope.launch {
+                                pagerState.scrollToPage(
+                                    contentsScreenState
+                                        .pageStates
+                                        .indexOfFirst {
+                                            it.contentTypeTabState.contentType.id == id
+                                        },
+                                )
+                                contentsState.scrollToItem(0)
+                            }
+                            onClickContentTypeTab(id)
+                        },
+                        modifier = Modifier.fillMaxWidth(),
+                        containerColor = Color.Transparent,
+                    )
+                }
+
                 HorizontalPager(
                     state = pagerState,
                     userScrollEnabled = false,
@@ -103,13 +107,16 @@ internal fun ContentsScreen(
                     }
                     if (contentsPageState != null) {
                         Column {
-                            CategoryChipRow(
-                                chipStates = contentsPageState.categoryChipStates,
-                                onClickChip = {
-                                    onClickCategoryChip(it)
-                                },
-                                contentPadding = PaddingValues(horizontal = 16.dp),
-                            )
+                            if (contentsPageState.categoryChipStates.size > 1) {
+                                CategoryChipRow(
+                                    chipStates = contentsPageState.categoryChipStates,
+                                    onClickChip = {
+                                        onClickCategoryChip(it)
+                                    },
+                                    contentPadding = PaddingValues(horizontal = 16.dp),
+                                )
+                            }
+
                             when {
                                 contents.loadState.refresh is LoadState.Loading -> {
                                     LoadingDisplay()
@@ -141,12 +148,6 @@ internal fun ContentsScreen(
 @Preview(showBackground = true)
 @Composable
 private fun ContentScreenPreview() {
-    val tabAndCategory = remember {
-        mutableMapOf(
-            "0" to "00",
-            "1" to "12",
-        )
-    }
     val pageStates = TourContentType
         .getDestinations()
         .mapIndexed { tabIndex, tourContentType ->
@@ -159,7 +160,58 @@ private fun ContentScreenPreview() {
                     CategoryChipUiState(
                         id = "$tabIndex$it",
                         name = "name $tabIndex$it",
-                        isSelected = tabAndCategory["$tabIndex"] == "$tabIndex$it",
+                        isSelected = it == 0,
+                    )
+                },
+            )
+        }
+    val contents = List(20) {
+        ContentListItemUiState(
+            id = "$it",
+            title = "Title",
+            imgSrc = "http://tong.visitkorea.or.kr/cms/resource/23/" +
+                "2678623_image3_1.jpg",
+            categories = listOf("cat1", "cat2", "cat3"),
+            avgStarRating = 4.5,
+            areaName = "area",
+            sigunguName = "sigungu",
+        )
+    }
+    val pagedContents = flowOf(
+        PagingData.from(
+            data = contents,
+            sourceLoadStates = LoadStates(
+                refresh = LoadState.NotLoading(false),
+                prepend = LoadState.NotLoading(false),
+                append = LoadState.NotLoading(false),
+            ),
+        ),
+    ).collectAsLazyPagingItems()
+
+    ContentsScreen(
+        contentsScreenState = ContentsScreenUiState.Success(pageStates),
+        contents = pagedContents,
+        onClickContentTypeTab = {},
+        onClickCategoryChip = {},
+        onClickContent = {},
+    )
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun ContentScreenPreview_Test() {
+    val pageStates = listOf(TourContentType.Restaurant, TourContentType.Accommodation)
+        .mapIndexed { tabIndex, tourContentType ->
+            ContentsPageUiState(
+                contentTypeTabState = ContentTypeTabUiState(
+                    contentType = tourContentType,
+                    isSelected = tabIndex == 0,
+                ),
+                categoryChipStates = List(5) {
+                    CategoryChipUiState(
+                        id = "$tabIndex$it",
+                        name = "name $tabIndex$it",
+                        isSelected = it == 0,
                     )
                 },
             )
@@ -215,12 +267,6 @@ private fun ContentScreenPreview_Loading() {
 @Preview(showBackground = true)
 @Composable
 private fun ContentScreenPreview_Empty() {
-    val tabAndCategory = remember {
-        mutableMapOf(
-            "0" to "00",
-            "1" to "12",
-        )
-    }
     val pageStates = TourContentType
         .getDestinations()
         .mapIndexed { tabIndex, tourContentType ->
@@ -233,7 +279,7 @@ private fun ContentScreenPreview_Empty() {
                     CategoryChipUiState(
                         id = "$tabIndex$it",
                         name = "name $tabIndex$it",
-                        isSelected = tabAndCategory["$tabIndex"] == "$tabIndex$it",
+                        isSelected = it == 0,
                     )
                 },
             )
