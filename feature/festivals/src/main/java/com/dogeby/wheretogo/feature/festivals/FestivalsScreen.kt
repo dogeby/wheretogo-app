@@ -26,7 +26,7 @@ import kotlinx.coroutines.flow.flowOf
 internal fun FestivalsScreen(
     festivalsScreenState: FestivalsScreenUiState,
     festivals: LazyPagingItems<FestivalListItemUiState>,
-    onClickCategoryChip: (categoryId: String) -> Unit,
+    onClickCategoryChip: (categoryId: String?) -> Unit,
     onClickContent: (id: String) -> Unit,
     modifier: Modifier = Modifier,
 ) {

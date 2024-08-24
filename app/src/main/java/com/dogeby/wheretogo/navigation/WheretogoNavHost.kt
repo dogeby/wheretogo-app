@@ -7,8 +7,13 @@ import androidx.navigation.NavOptions
 import androidx.navigation.compose.NavHost
 import com.dogeby.wheretogo.feature.contentdetail.navigation.contentDetailScreen
 import com.dogeby.wheretogo.feature.contentdetail.navigation.navigateToContentDetail
+import com.dogeby.wheretogo.feature.contents.navigation.contentsScreen
+import com.dogeby.wheretogo.feature.contents.navigation.navigateToContents
 import com.dogeby.wheretogo.feature.home.navigation.HOME_ROUTE
 import com.dogeby.wheretogo.feature.home.navigation.homeScreen
+import com.dogeby.wheretogo.feature.regionselection.navigation.REGION_SELECTION_ROUTE
+import com.dogeby.wheretogo.feature.regionselection.navigation.navigateToRegionSelection
+import com.dogeby.wheretogo.feature.regionselection.navigation.regionSelectionScreen
 import com.dogeby.wheretogo.feature.search.navigation.SEARCH_ROUTE
 import com.dogeby.wheretogo.feature.search.navigation.searchGraph
 import com.dogeby.wheretogo.feature.searchresult.navigation.navigateToSearchResult
@@ -26,8 +31,13 @@ fun WheretogoNavHost(
         modifier = modifier,
     ) {
         homeScreen(
-            navigateToContents = { _, _, _ -> },
+            navigateToContents = { contentTypeId, areaCode, _ ->
+                navController.navigateToContents(contentTypeId, areaCode)
+            },
             navigateToFestivals = {},
+            navigateToRegionSelection = {
+                navController.navigateToRegionSelection(it)
+            },
             navigateToContentDetail = {
                 navController.navigateToContentDetail(it)
             },
@@ -46,6 +56,21 @@ fun WheretogoNavHost(
             onNavigateUp = { navController.popBackStack() },
         ) {
             searchResultScreen { navController.navigateToContentDetail(it) }
+        }
+        regionSelectionScreen(
+            onNavigateToList = { contentTypeId, areaCode ->
+                navController.navigateToContents(
+                    contentTypeId = contentTypeId,
+                    areaCode = areaCode,
+                    navOptions = NavOptions.Builder().setPopUpTo(
+                        route = REGION_SELECTION_ROUTE,
+                        inclusive = true,
+                    ).build(),
+                )
+            },
+        )
+        contentsScreen {
+            navController.navigateToContentDetail(it)
         }
     }
 }

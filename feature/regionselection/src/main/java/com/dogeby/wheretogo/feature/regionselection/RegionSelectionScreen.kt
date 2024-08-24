@@ -4,13 +4,33 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.dogeby.wheretogo.core.ui.components.common.LoadingDisplay
 import com.dogeby.wheretogo.core.ui.components.list.regionList
 import com.dogeby.wheretogo.core.ui.model.RegionListItemUiState
 import com.dogeby.wheretogo.core.ui.model.RegionListUiState
+
+@Composable
+internal fun RegionSelectionRoute(
+    onNavigateToList: (contentTypeId: String, areaCode: String) -> Unit,
+    modifier: Modifier = Modifier,
+    viewModel: RegionSelectionViewModel = hiltViewModel(),
+) {
+    val regionState by viewModel.regionListState.collectAsStateWithLifecycle()
+
+    RegionSelectionScreen(
+        regionsState = regionState,
+        onNavigateToList = {
+            onNavigateToList(viewModel.contentTypeId, it)
+        },
+        modifier = modifier,
+    )
+}
 
 @Composable
 internal fun RegionSelectionScreen(

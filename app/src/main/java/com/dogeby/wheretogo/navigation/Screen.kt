@@ -46,6 +46,42 @@ enum class Screen(
             ),
         ),
     ),
+    RegionSelection(
+        topAppBarState = ScreenTopAppBarState(
+            titleRes = R.string.region_selection,
+            navigation = ScreenTopAppBarAction(
+                icon = Icons.AutoMirrored.Default.ArrowBack,
+                onActionClick = { it.popBackStack() },
+            ),
+        ),
+    ),
+    ContentsDestination(
+        topAppBarState = ScreenTopAppBarState(
+            titleRes = R.string.destination,
+            navigation = ScreenTopAppBarAction(
+                icon = Icons.AutoMirrored.Default.ArrowBack,
+                onActionClick = { it.popBackStack() },
+            ),
+        ),
+    ),
+    ContentsAccommodation(
+        topAppBarState = ScreenTopAppBarState(
+            titleRes = R.string.accommodation,
+            navigation = ScreenTopAppBarAction(
+                icon = Icons.AutoMirrored.Default.ArrowBack,
+                onActionClick = { it.popBackStack() },
+            ),
+        ),
+    ),
+    ContentsRestaurant(
+        topAppBarState = ScreenTopAppBarState(
+            titleRes = R.string.restaurant,
+            navigation = ScreenTopAppBarAction(
+                icon = Icons.AutoMirrored.Default.ArrowBack,
+                onActionClick = { it.popBackStack() },
+            ),
+        ),
+    ),
 }
 
 data class ScreenTopAppBarState(

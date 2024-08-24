@@ -41,7 +41,11 @@ internal fun HomeScreenContent(
     homeScreenUiState: HomeScreenUiState.Success,
     festivals: LazyPagingItems<FestivalListItemUiState>,
     contentsList: List<LazyPagingItems<ContentListItemUiState>>,
-    onNavigateToList: (contentType: TourContentType, areaCode: String, sigunguCode: String) -> Unit,
+    onNavigateToList: (
+        contentType: TourContentType,
+        areaCode: String?,
+        sigunguCode: String?,
+    ) -> Unit,
     onNavigateToContentDetail: (id: String) -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -68,7 +72,7 @@ internal fun HomeScreenContent(
         ) {
             NavigationMenus(
                 onNavigateToList = {
-                    onNavigateToList(it, "", "")
+                    onNavigateToList(it, null, null)
                 },
                 horizontalArrangement = Arrangement.Center,
                 modifier = Modifier
