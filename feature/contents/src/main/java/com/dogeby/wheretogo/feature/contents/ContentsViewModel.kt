@@ -5,15 +5,17 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.map
 import com.dogeby.wheretogo.core.common.decoder.StringDecoder
+import com.dogeby.wheretogo.core.domain.model.tour.serviceinfo.CategoryHierarchy
 import com.dogeby.wheretogo.core.domain.model.tour.serviceinfo.CategoryInfo
 import com.dogeby.wheretogo.core.domain.model.tour.serviceinfo.ContentTypeInfo
 import com.dogeby.wheretogo.core.domain.tour.GetContentTypeInfoMapUseCase
 import com.dogeby.wheretogo.core.domain.tour.GetPagedTourContentUseCase
+import com.dogeby.wheretogo.core.domain.tour.category.GetMediumCategoryHierarchyUseCase
+import com.dogeby.wheretogo.core.domain.tour.category.GetMinorCategoryHierarchyUseCase
 import com.dogeby.wheretogo.core.model.tour.TourContentType
 import com.dogeby.wheretogo.core.ui.model.CategoryChipUiState
 import com.dogeby.wheretogo.core.ui.model.ContentListItemUiState
 import com.dogeby.wheretogo.core.ui.model.ContentTypeTabUiState
-import com.dogeby.wheretogo.feature.contents.model.Category
 import com.dogeby.wheretogo.feature.contents.model.ContentsPageUiState
 import com.dogeby.wheretogo.feature.contents.model.ContentsScreenUiState
 import com.dogeby.wheretogo.feature.contents.navigation.ContentsArgs
@@ -32,6 +34,8 @@ class ContentsViewModel @Inject constructor(
     stringDecoder: StringDecoder,
     getPagedTourContentUseCase: GetPagedTourContentUseCase,
     getContentTypeInfoMapUseCase: GetContentTypeInfoMapUseCase,
+    getMinorCategoryHierarchyUseCase: GetMinorCategoryHierarchyUseCase,
+    getMediumCategoryHierarchyUseCase: GetMediumCategoryHierarchyUseCase,
     private val savedStateHandle: SavedStateHandle,
 ) : ViewModel() {
 
@@ -66,35 +70,19 @@ class ContentsViewModel @Inject constructor(
         initialValue = null,
     )
 
-    private val mediumCategoryMap = contentTypeInfoMapState.map { contentTypeInfoMap ->
-        contentTypeInfoMap?.flatMap { (_, contentTypeInfo) ->
-            contentTypeInfo.majorCategories.values.flatMap { majorCategoryInfo ->
-                majorCategoryInfo.mediumCategories.keys.map { mediumCategoryCode ->
-                    mediumCategoryCode to
-                        Category(
-                            mediumCategoryCode = mediumCategoryCode,
-                            majorCategoryCode = majorCategoryInfo.categoryInfo.code,
-                        )
-                }
-            }
-        }?.toMap()
-    }
+    private val mediumCategoryMap = getMediumCategoryHierarchyUseCase()
+        .stateIn(
+            scope = viewModelScope,
+            started = SharingStarted.WhileSubscribed(5_000),
+            initialValue = null,
+        )
 
-    private val minorCategoryMap = contentTypeInfoMapState.map { contentTypeInfoMap ->
-        contentTypeInfoMap?.flatMap { (_, contentTypeInfo) ->
-            contentTypeInfo.majorCategories.values.flatMap { majorCategoryInfo ->
-                majorCategoryInfo.mediumCategories.values.flatMap { mediumCategoryInfo ->
-                    mediumCategoryInfo.minorCategories.keys.map { minorCategoryCode ->
-                        minorCategoryCode to Category(
-                            minorCategoryCode = minorCategoryCode,
-                            mediumCategoryCode = mediumCategoryInfo.categoryInfo.code,
-                            majorCategoryCode = majorCategoryInfo.categoryInfo.code,
-                        )
-                    }
-                }
-            }
-        }?.toMap()
-    }
+    private val minorCategoryMap = getMinorCategoryHierarchyUseCase()
+        .stateIn(
+            scope = viewModelScope,
+            started = SharingStarted.WhileSubscribed(5_000),
+            initialValue = null,
+        )
 
     val contentsScreenState = combine(
         selectedContentType,
@@ -140,7 +128,7 @@ class ContentsViewModel @Inject constructor(
     ) { selectedContentTypeId, selectedCategoryId, categoryMap ->
         selectedContentTypeId to (
             categoryMap?.get(selectedCategoryId)
-                ?: Category("", "")
+                ?: CategoryHierarchy("", "")
             )
     }.flatMapLatest { (selectedContentTypeId, category) ->
         getPagedTourContentUseCase(
