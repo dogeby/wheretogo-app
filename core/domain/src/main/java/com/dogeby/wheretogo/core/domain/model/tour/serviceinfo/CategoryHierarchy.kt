@@ -1,6 +1,6 @@
-package com.dogeby.wheretogo.feature.contents.model
+package com.dogeby.wheretogo.core.domain.model.tour.serviceinfo
 
-internal data class Category(
+data class CategoryHierarchy(
     val minorCategoryCode: String = "",
     val mediumCategoryCode: String = "",
     val majorCategoryCode: String = "",

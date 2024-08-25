@@ -25,8 +25,8 @@ import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
 import com.dogeby.wheretogo.core.model.tour.TourContentType
 import com.dogeby.wheretogo.core.ui.components.chip.CategoryChipRow
+import com.dogeby.wheretogo.core.ui.components.common.EmptyListDisplay
 import com.dogeby.wheretogo.core.ui.components.common.LoadingDisplay
-import com.dogeby.wheretogo.core.ui.components.common.NoSearchResultsDisplay
 import com.dogeby.wheretogo.core.ui.components.list.contentList
 import com.dogeby.wheretogo.core.ui.components.tab.ContentTypeTabRow
 import com.dogeby.wheretogo.core.ui.model.CategoryChipUiState
@@ -122,7 +122,7 @@ internal fun ContentsScreen(
                                     LoadingDisplay()
                                 }
                                 contents.itemCount == 0 -> {
-                                    NoSearchResultsDisplay(modifier = modifier)
+                                    EmptyListDisplay()
                                 }
                                 else -> {
                                     LazyVerticalGrid(

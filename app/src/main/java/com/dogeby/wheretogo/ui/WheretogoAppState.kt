@@ -13,6 +13,7 @@ import com.dogeby.wheretogo.feature.contentdetail.navigation.CONTENT_DETAIL_ROUT
 import com.dogeby.wheretogo.feature.contents.navigation.CONTENTS_ACCOMMODATION_ROUTE
 import com.dogeby.wheretogo.feature.contents.navigation.CONTENTS_DESTINATION_ROUTE
 import com.dogeby.wheretogo.feature.contents.navigation.CONTENTS_RESTAURANT_ROUTE
+import com.dogeby.wheretogo.feature.festivals.navigation.FESTIVALS_ROUTE
 import com.dogeby.wheretogo.feature.home.navigation.HOME_ROUTE
 import com.dogeby.wheretogo.feature.regionselection.navigation.REGION_SELECTION_ROUTE
 import com.dogeby.wheretogo.feature.searchresult.navigation.SEARCH_RESULT_ROUTE
@@ -53,6 +54,7 @@ class WheretogoAppState(
             CONTENTS_DESTINATION_ROUTE -> Screen.ContentsDestination
             CONTENTS_ACCOMMODATION_ROUTE -> Screen.ContentsAccommodation
             CONTENTS_RESTAURANT_ROUTE -> Screen.ContentsRestaurant
+            FESTIVALS_ROUTE -> Screen.Festivals
             else -> null
         }
 
