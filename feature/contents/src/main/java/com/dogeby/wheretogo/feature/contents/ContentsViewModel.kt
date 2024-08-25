@@ -41,26 +41,14 @@ class ContentsViewModel @Inject constructor(
 
     private val contentsArgs = ContentsArgs(savedStateHandle, stringDecoder)
 
-    private val selectedContentType = savedStateHandle
-        .getStateFlow(
-            key = CONTENTS_SELECTED_CONTENT_TYPE_ID_KEY,
-            initialValue = contentsArgs.contentTypeId,
-        )
-        .stateIn(
-            scope = viewModelScope,
-            started = SharingStarted.WhileSubscribed(5_000),
-            initialValue = contentsArgs.contentTypeId,
-        )
-    private val selectedCategory: StateFlow<String?> = savedStateHandle
-        .getStateFlow(
-            key = CONTENTS_SELECTED_CATEGORY_ID_KEY,
-            initialValue = null,
-        )
-        .stateIn(
-            scope = viewModelScope,
-            started = SharingStarted.WhileSubscribed(5_000),
-            initialValue = null,
-        )
+    private val selectedContentType = savedStateHandle.getStateFlow(
+        key = CONTENTS_SELECTED_CONTENT_TYPE_ID_KEY,
+        initialValue = contentsArgs.contentTypeId,
+    )
+    private val selectedCategory: StateFlow<String?> = savedStateHandle.getStateFlow(
+        key = CONTENTS_SELECTED_CATEGORY_ID_KEY,
+        initialValue = null,
+    )
 
     private val contentTypeInfoMapState = getContentTypeInfoMapUseCase().map { result ->
         result.getOrNull()

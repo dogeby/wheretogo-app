@@ -17,16 +17,10 @@ class SearchViewModel @Inject constructor(
 ) : ViewModel() {
 
     val query: StateFlow<String> =
-        savedStateHandle
-            .getStateFlow(
-                key = SEARCH_QUERY_KEY,
-                initialValue = "",
-            )
-            .stateIn(
-                scope = viewModelScope,
-                started = SharingStarted.WhileSubscribed(5_000),
-                initialValue = "",
-            )
+        savedStateHandle.getStateFlow(
+            key = SEARCH_QUERY_KEY,
+            initialValue = "",
+        )
 
     val recentQueries: StateFlow<List<String>> = getRecentSearchKeywordUseCase()
         .stateIn(
