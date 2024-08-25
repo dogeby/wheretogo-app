@@ -64,17 +64,24 @@ internal fun FestivalsScreen(
                             },
                             contentPadding = PaddingValues(horizontal = 16.dp),
                         )
-                        if (festivals.itemCount == 0) {
-                            EmptyListDisplay()
-                        } else {
-                            LazyVerticalGrid(
-                                columns = GridCells.Adaptive(360.dp),
-                                contentPadding = PaddingValues(bottom = 16.dp),
-                            ) {
-                                festivalList(
-                                    festivals = festivals,
-                                    onClickItem = onClickContent,
-                                )
+                        when {
+                            festivals.loadState.refresh is LoadState.Loading -> {
+                                LoadingDisplay()
+                            }
+                            festivals.itemCount == 0 &&
+                                festivals.loadState.append !is LoadState.Loading -> {
+                                EmptyListDisplay()
+                            }
+                            else -> {
+                                LazyVerticalGrid(
+                                    columns = GridCells.Adaptive(360.dp),
+                                    contentPadding = PaddingValues(bottom = 16.dp),
+                                ) {
+                                    festivalList(
+                                        festivals = festivals,
+                                        onClickItem = onClickContent,
+                                    )
+                                }
                             }
                         }
                     }
