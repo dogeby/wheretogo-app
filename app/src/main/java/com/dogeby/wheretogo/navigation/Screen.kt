@@ -82,6 +82,15 @@ enum class Screen(
             ),
         ),
     ),
+    Festivals(
+        topAppBarState = ScreenTopAppBarState(
+            titleRes = R.string.festival_performance_event,
+            navigation = ScreenTopAppBarAction(
+                icon = Icons.AutoMirrored.Default.ArrowBack,
+                onActionClick = { it.popBackStack() },
+            ),
+        ),
+    ),
 }
 
 data class ScreenTopAppBarState(

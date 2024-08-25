@@ -77,6 +77,7 @@ dependencies {
     implementation(project(":feature:searchresult"))
     implementation(project(":feature:regionselection"))
     implementation(project(":feature:contents"))
+    implementation(project(":feature:festivals"))
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.activity.compose)
