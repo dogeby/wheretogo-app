@@ -5,9 +5,12 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.paging.LoadState
 import androidx.paging.LoadStates
 import androidx.paging.PagingData
@@ -21,6 +24,24 @@ import com.dogeby.wheretogo.core.ui.model.CategoryChipUiState
 import com.dogeby.wheretogo.core.ui.model.FestivalListItemUiState
 import com.dogeby.wheretogo.feature.festivals.model.FestivalsScreenUiState
 import kotlinx.coroutines.flow.flowOf
+
+@Composable
+internal fun FestivalsRoute(
+    navigateToContentDetail: (id: String) -> Unit,
+    modifier: Modifier = Modifier,
+    viewModel: FestivalsViewModel = hiltViewModel(),
+) {
+    val festivalsScreenState by viewModel.festivalsScreenState.collectAsStateWithLifecycle()
+    val festivals = viewModel.festivalsState.collectAsLazyPagingItems()
+
+    FestivalsScreen(
+        festivalsScreenState = festivalsScreenState,
+        festivals = festivals,
+        onClickCategoryChip = viewModel::setCategoryCode,
+        onClickContent = navigateToContentDetail,
+        modifier = modifier,
+    )
+}
 
 @Composable
 internal fun FestivalsScreen(
