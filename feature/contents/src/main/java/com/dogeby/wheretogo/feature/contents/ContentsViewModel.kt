@@ -3,6 +3,7 @@ package com.dogeby.wheretogo.feature.contents
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.paging.cachedIn
 import androidx.paging.map
 import com.dogeby.wheretogo.core.common.decoder.StringDecoder
 import com.dogeby.wheretogo.core.domain.model.tour.serviceinfo.CategoryHierarchy
@@ -141,7 +142,7 @@ class ContentsViewModel @Inject constructor(
                 )
             }
         }
-    }
+    }.cachedIn(viewModelScope)
 
     fun setContentTypeId(id: String) {
         savedStateHandle.set(
