@@ -43,6 +43,13 @@ class ContentDetailViewModel @Inject constructor(
                     overview = it.overview ?: "",
                     tel = it.phoneNumber ?: "",
                     homepage = it.homepage ?: "",
+                    address = if (it.addr2.isNullOrBlank()) {
+                        it.addr1
+                    } else {
+                        "${it.addr1} ${it.addr2}"
+                    } ?: "",
+                    longitude = it.longitude?.toDoubleOrNull(),
+                    latitude = it.latitude?.toDoubleOrNull(),
                     ratingFilterOption = RatingFilterOption.ALL,
                 )
             } ?: ContentDetailScreenUiState.Loading

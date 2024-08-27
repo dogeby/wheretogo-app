@@ -94,6 +94,16 @@ internal fun ContentDetailScreen(
                     item {
                         HorizontalDivider()
                     }
+                    if (address.isNotBlank() || (latitude != null && longitude != null)) {
+                        mapContent(
+                            address = address,
+                            latitude = latitude,
+                            longitude = longitude,
+                        )
+                    }
+                    item {
+                        HorizontalDivider()
+                    }
                     reviewContent(
                         reviewWithWriterListUiState = reviewWithWriterListUiState,
                         ratingFilterOption = ratingFilterOption,
