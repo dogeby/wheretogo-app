@@ -2,11 +2,16 @@ plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.jetbrains.kotlin.android)
     alias(libs.plugins.compose.compiler)
+    alias(libs.plugins.secrets)
 }
 
 android {
     namespace = "com.dogeby.wheretogo.core.ui"
     compileSdk = 34
+
+    buildFeatures {
+        buildConfig = true
+    }
 
     defaultConfig {
         minSdk = 24
@@ -36,6 +41,10 @@ android {
     }
 }
 
+secrets {
+    defaultPropertiesFileName = "local.defaults.properties"
+}
+
 dependencies {
     implementation(project(":core:model"))
 
@@ -51,6 +60,7 @@ dependencies {
     implementation(libs.zoomable)
     implementation(libs.androidx.activity.compose)
     implementation(libs.paging.compose)
+    implementation(libs.naver.maps)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
