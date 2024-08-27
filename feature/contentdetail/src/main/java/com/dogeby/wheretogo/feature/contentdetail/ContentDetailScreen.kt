@@ -1,5 +1,7 @@
 package com.dogeby.wheretogo.feature.contentdetail
 
+import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.LocalOverscrollConfiguration
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -7,6 +9,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -46,6 +49,7 @@ internal fun ContentDetailRoute(
     )
 }
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 internal fun ContentDetailScreen(
     contentDetailScreenUiState: ContentDetailScreenUiState,
@@ -63,60 +67,62 @@ internal fun ContentDetailScreen(
             LoadingDisplay(modifier = modifier)
         }
         is ContentDetailScreenUiState.Success -> {
-            LazyColumn(
-                modifier = modifier,
-                contentPadding = PaddingValues(bottom = 16.dp),
-            ) {
-                with(contentDetailScreenUiState) {
-                    if (imgSrcs.isNotEmpty()) {
+            CompositionLocalProvider(LocalOverscrollConfiguration provides null) {
+                LazyColumn(
+                    modifier = modifier,
+                    contentPadding = PaddingValues(bottom = 16.dp),
+                ) {
+                    with(contentDetailScreenUiState) {
+                        if (imgSrcs.isNotEmpty()) {
+                            item {
+                                ImgHorizontalPager(
+                                    imgSrcs = imgSrcs,
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .padding(horizontal = 16.dp)
+                                        .clip(CardDefaults.shape),
+                                    onImgClick = { page, imgSrcs ->
+                                        imgDetailDialogue = page to imgSrcs
+                                    },
+                                )
+                            }
+                        }
+                        commonContent(
+                            title = title,
+                            avgStarRating = avgStarRating,
+                            modifiedTime = modifiedTime,
+                            categories = categories,
+                            overview = overview,
+                            tel = tel,
+                            homepage = homepage,
+                        )
                         item {
-                            ImgHorizontalPager(
-                                imgSrcs = imgSrcs,
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .padding(horizontal = 16.dp)
-                                    .clip(CardDefaults.shape),
-                                onImgClick = { page, imgSrcs ->
-                                    imgDetailDialogue = page to imgSrcs
-                                },
+                            HorizontalDivider()
+                        }
+                        if (address.isNotBlank() || (latitude != null && longitude != null)) {
+                            mapContent(
+                                address = address,
+                                latitude = latitude,
+                                longitude = longitude,
                             )
                         }
-                    }
-                    commonContent(
-                        title = title,
-                        avgStarRating = avgStarRating,
-                        modifiedTime = modifiedTime,
-                        categories = categories,
-                        overview = overview,
-                        tel = tel,
-                        homepage = homepage,
-                    )
-                    item {
-                        HorizontalDivider()
-                    }
-                    if (address.isNotBlank() || (latitude != null && longitude != null)) {
-                        mapContent(
-                            address = address,
-                            latitude = latitude,
-                            longitude = longitude,
+                        item {
+                            HorizontalDivider()
+                        }
+                        reviewContent(
+                            reviewWithWriterListUiState = reviewWithWriterListUiState,
+                            ratingFilterOption = ratingFilterOption,
+                            onCreate = {
+                                onReviewCreate(id)
+                            },
+                            onEdit = onReviewEdit,
+                            onDelete = onReviewDelete,
+                            onImageClick = { page, imgSrcs ->
+                                imgDetailDialogue = page to imgSrcs
+                            },
+                            onFilterChanged = onFilterChanged,
                         )
                     }
-                    item {
-                        HorizontalDivider()
-                    }
-                    reviewContent(
-                        reviewWithWriterListUiState = reviewWithWriterListUiState,
-                        ratingFilterOption = ratingFilterOption,
-                        onCreate = {
-                            onReviewCreate(id)
-                        },
-                        onEdit = onReviewEdit,
-                        onDelete = onReviewDelete,
-                        onImageClick = { page, imgSrcs ->
-                            imgDetailDialogue = page to imgSrcs
-                        },
-                        onFilterChanged = onFilterChanged,
-                    )
                 }
             }
         }
