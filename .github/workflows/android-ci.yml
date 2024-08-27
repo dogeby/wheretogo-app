@@ -41,6 +41,7 @@ jobs:
         env:
           TOUR_API_BASED_URL: ${{ secrets.TOUR_API_BASED_URL }}
           TOUR_API_SERVICE_KEY: ${{ secrets.TOUR_API_SERVICE_KEY }}
+          NAVER_MAPS_CLIENT_ID: ${{ secrets.NAVER_MAPS_CLIENT_ID }}
           STORE_FILE: ${{ secrets.STORE_FILE }}
           STORE_PASSWORD: ${{ secrets.STORE_PASSWORD }}
           KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
@@ -49,6 +50,7 @@ jobs:
         run: |
           echo TOUR_API_BASED_URL=\"$TOUR_API_BASED_URL\" >> ./local.properties
           echo TOUR_API_SERVICE_KEY=\"$TOUR_API_SERVICE_KEY\" >> ./local.properties
+          echo NAVER_MAPS_CLIENT_ID=$NAVER_MAPS_CLIENT_ID >> ./local.properties
           echo STORE_FILE=\"$STORE_FILE\" >> ./keystore.properties
           echo STORE_PASSWORD=\"$STORE_PASSWORD\" >> ./keystore.properties
           echo KEY_ALIAS=\"$KEY_ALIAS\" >> ./keystore.properties
