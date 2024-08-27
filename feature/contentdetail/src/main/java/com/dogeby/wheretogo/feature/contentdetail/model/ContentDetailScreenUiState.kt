@@ -17,6 +17,9 @@ sealed interface ContentDetailScreenUiState {
         val overview: String = "",
         val tel: String = "",
         val homepage: String = "",
+        val address: String = "",
+        val longitude: Double? = null,
+        val latitude: Double? = null,
         val ratingFilterOption: RatingFilterOption = RatingFilterOption.ALL,
     ) : ContentDetailScreenUiState
 }
