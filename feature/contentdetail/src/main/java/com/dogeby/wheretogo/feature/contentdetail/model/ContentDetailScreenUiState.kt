@@ -12,7 +12,6 @@ sealed interface ContentDetailScreenUiState {
         val avgStarRating: Double,
         val modifiedTime: String,
         val reviewWithWriterListUiState: ReviewWithWriterListUiState,
-        val imgSrcs: List<Any> = emptyList(),
         val categories: List<String> = emptyList(),
         val overview: String = "",
         val tel: String = "",

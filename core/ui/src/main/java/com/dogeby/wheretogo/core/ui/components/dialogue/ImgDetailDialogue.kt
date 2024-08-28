@@ -34,6 +34,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
+import androidx.paging.compose.LazyPagingItems
 import com.dogeby.wheretogo.core.ui.components.common.AsyncImageWithFallback
 import net.engawapg.lib.zoomable.rememberZoomState
 import net.engawapg.lib.zoomable.zoomable
@@ -105,6 +106,73 @@ fun ImgDetailDialogue(
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
+@Composable
+fun ImgDetailDialogue(
+    initialPage: Int,
+    imgSrcs: LazyPagingItems<Any>,
+    onDismissRequest: () -> Unit,
+) {
+    var page by remember {
+        mutableIntStateOf(initialPage.coerceIn(0, imgSrcs.itemCount - 1))
+    }
+    var topBarVisible by remember {
+        mutableStateOf(true)
+    }
+    val animatedAlpha by animateFloatAsState(
+        targetValue = if (topBarVisible) 1.0f else 0f,
+        label = "ImgDetailDialogueTopBarAlpha",
+    )
+    Dialog(
+        onDismissRequest = onDismissRequest,
+        properties = DialogProperties(usePlatformDefaultWidth = false),
+    ) {
+        Surface(
+            modifier = Modifier
+                .clickable(
+                    indication = null,
+                    interactionSource = remember { MutableInteractionSource() },
+                ) {
+                    topBarVisible = !topBarVisible
+                },
+        ) {
+            ImgDetailHorizontalPager(
+                imgSrcs = imgSrcs,
+                onPageChanged = {
+                    page = it
+                },
+                pagerState = rememberPagerState(
+                    initialPage = initialPage,
+                    pageCount = { imgSrcs.itemCount },
+                ),
+            )
+            CenterAlignedTopAppBar(
+                title = {
+                    Text(text = "${page + 1} / ${imgSrcs.itemCount}")
+                },
+                modifier = Modifier.graphicsLayer {
+                    alpha = animatedAlpha
+                },
+                navigationIcon = {
+                    IconButton(onClick = {
+                        if (topBarVisible) {
+                            onDismissRequest()
+                        }
+                    }) {
+                        Icon(
+                            imageVector = Icons.Default.Close,
+                            contentDescription = null,
+                        )
+                    }
+                },
+                colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
+                    containerColor = Color.Transparent,
+                ),
+            )
+        }
+    }
+}
+
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun ImgDetailHorizontalPager(
@@ -139,6 +207,49 @@ fun ImgDetailHorizontalPager(
                 ),
             contentScale = ContentScale.Fit,
         )
+
+        LaunchedEffect(pagerState.settledPage) {
+            zoomState.reset()
+        }
+    }
+}
+
+@OptIn(ExperimentalFoundationApi::class)
+@Composable
+fun ImgDetailHorizontalPager(
+    imgSrcs: LazyPagingItems<Any>,
+    onPageChanged: (page: Int) -> Unit,
+    modifier: Modifier = Modifier,
+    pagerState: PagerState = rememberPagerState { imgSrcs.itemCount },
+) {
+    LaunchedEffect(pagerState) {
+        snapshotFlow { pagerState.currentPage }
+            .collect { page ->
+                onPageChanged(page)
+            }
+    }
+    HorizontalPager(
+        state = pagerState,
+        modifier = modifier.fillMaxSize(),
+        flingBehavior = PagerDefaults.flingBehavior(
+            state = pagerState,
+            pagerSnapDistance = PagerSnapDistance.atMost(1),
+        ),
+    ) { page ->
+        val zoomState = rememberZoomState()
+
+        imgSrcs[page]?.let {
+            AsyncImageWithFallback(
+                imgSrc = it,
+                modifier = Modifier
+                    .fillMaxSize()
+                    .zoomable(
+                        zoomState = zoomState,
+                        enableOneFingerZoom = false,
+                    ),
+                contentScale = ContentScale.Fit,
+            )
+        }
 
         LaunchedEffect(pagerState.settledPage) {
             zoomState.reset()
