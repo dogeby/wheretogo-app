@@ -3,6 +3,7 @@ package com.dogeby.wheretogo.core.network.retrofit
 import com.dogeby.wheretogo.core.network.model.tour.requestbody.CategoryInfoRequestBody
 import com.dogeby.wheretogo.core.network.model.tour.requestbody.CommonInfoRequestBody
 import com.dogeby.wheretogo.core.network.model.tour.requestbody.FestivalInfoRequestBody
+import com.dogeby.wheretogo.core.network.model.tour.requestbody.ImgInfoRequestBody
 import com.dogeby.wheretogo.core.network.model.tour.requestbody.KeywordSearchRequestBody
 import com.dogeby.wheretogo.core.network.model.tour.requestbody.LocationInfoRequestBody
 import com.dogeby.wheretogo.core.network.model.tour.requestbody.TourInfoByRegionRequestBody
@@ -94,6 +95,20 @@ class RetrofitTourNetworkTest {
     @Test
     fun test_fetchCategoryInfo_success() = runTest {
         retrofitTourNetwork.fetchCategoryInfo(CategoryInfoRequestBody())
+            .onSuccess {
+                Assert.assertEquals(
+                    "0000",
+                    it.content.header.resultCode,
+                )
+            }
+            .onFailure {
+                Assert.fail(it.message)
+            }
+    }
+
+    @Test
+    fun test_fetchImgInfo_success() = runTest {
+        retrofitTourNetwork.fetchImgInfo(ImgInfoRequestBody("1095732"))
             .onSuccess {
                 Assert.assertEquals(
                     "0000",
