@@ -4,11 +4,13 @@ import com.dogeby.wheretogo.core.model.tour.ArrangeOption
 import com.dogeby.wheretogo.core.network.model.tour.categoryinfo.NetworkCategoryInfoResponse
 import com.dogeby.wheretogo.core.network.model.tour.commoninfo.NetworkCommonInfoResponse
 import com.dogeby.wheretogo.core.network.model.tour.festival.NetworkFestivalResponse
+import com.dogeby.wheretogo.core.network.model.tour.imginfo.NetworkImgInfoResponse
 import com.dogeby.wheretogo.core.network.model.tour.keywordsearch.NetworkKeywordSearchResponse
 import com.dogeby.wheretogo.core.network.model.tour.locationinfo.NetworkLocationInfoResponse
 import com.dogeby.wheretogo.core.network.model.tour.requestbody.CategoryInfoRequestBody
 import com.dogeby.wheretogo.core.network.model.tour.requestbody.CommonInfoRequestBody
 import com.dogeby.wheretogo.core.network.model.tour.requestbody.FestivalInfoRequestBody
+import com.dogeby.wheretogo.core.network.model.tour.requestbody.ImgInfoRequestBody
 import com.dogeby.wheretogo.core.network.model.tour.requestbody.KeywordSearchRequestBody
 import com.dogeby.wheretogo.core.network.model.tour.requestbody.LocationInfoRequestBody
 import com.dogeby.wheretogo.core.network.model.tour.requestbody.TourInfoByRegionRequestBody
@@ -42,4 +44,8 @@ interface TourNetworkDataSource {
     suspend fun fetchCategoryInfo(
         categoryInfoRequestBody: CategoryInfoRequestBody,
     ): Result<NetworkCategoryInfoResponse>
+
+    suspend fun fetchImgInfo(
+        imgInfoRequestBody: ImgInfoRequestBody,
+    ): Result<NetworkImgInfoResponse>
 }

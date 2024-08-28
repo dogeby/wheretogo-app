@@ -18,6 +18,11 @@ import com.dogeby.wheretogo.core.network.model.tour.festival.NetworkFestivalData
 import com.dogeby.wheretogo.core.network.model.tour.festival.NetworkFestivalResponse
 import com.dogeby.wheretogo.core.network.model.tour.festival.NetworkFestivalResponseContent
 import com.dogeby.wheretogo.core.network.model.tour.festival.NetworkFestivalResult
+import com.dogeby.wheretogo.core.network.model.tour.imginfo.NetworkImgInfoBody
+import com.dogeby.wheretogo.core.network.model.tour.imginfo.NetworkImgInfoData
+import com.dogeby.wheretogo.core.network.model.tour.imginfo.NetworkImgInfoResponse
+import com.dogeby.wheretogo.core.network.model.tour.imginfo.NetworkImgInfoResponseContent
+import com.dogeby.wheretogo.core.network.model.tour.imginfo.NetworkImgInfoResult
 import com.dogeby.wheretogo.core.network.model.tour.keywordsearch.NetworkKeywordSearchBody
 import com.dogeby.wheretogo.core.network.model.tour.keywordsearch.NetworkKeywordSearchResponse
 import com.dogeby.wheretogo.core.network.model.tour.keywordsearch.NetworkKeywordSearchResponseContent
@@ -31,6 +36,7 @@ import com.dogeby.wheretogo.core.network.model.tour.locationinfo.NetworkLocation
 import com.dogeby.wheretogo.core.network.model.tour.requestbody.CategoryInfoRequestBody
 import com.dogeby.wheretogo.core.network.model.tour.requestbody.CommonInfoRequestBody
 import com.dogeby.wheretogo.core.network.model.tour.requestbody.FestivalInfoRequestBody
+import com.dogeby.wheretogo.core.network.model.tour.requestbody.ImgInfoRequestBody
 import com.dogeby.wheretogo.core.network.model.tour.requestbody.KeywordSearchRequestBody
 import com.dogeby.wheretogo.core.network.model.tour.requestbody.LocationInfoRequestBody
 import com.dogeby.wheretogo.core.network.model.tour.requestbody.TourInfoByRegionRequestBody
@@ -258,6 +264,43 @@ class FakeTourNetworkDataSource @Inject constructor() : TourNetworkDataSource {
         return Result.success(
             NetworkCategoryInfoResponse(
                 content = NetworkCategoryInfoResponseContent(
+                    header = header,
+                    body = body,
+                ),
+            ),
+        )
+    }
+
+    override suspend fun fetchImgInfo(
+        imgInfoRequestBody: ImgInfoRequestBody,
+    ): Result<NetworkImgInfoResponse> {
+        if (shouldReturnError) {
+            return Result.failure(Exception())
+        }
+        val header = NetworkTourApiHeader(
+            resultCode = "0000",
+            resultMessage = "OK",
+        )
+        val body = NetworkImgInfoBody(
+            numberOfRows = imgInfoRequestBody.numberOfRows,
+            currentPage = imgInfoRequestBody.currentPage,
+            totalCount = TOTAL_COUNT,
+            result = NetworkImgInfoResult(
+                items = List(imgInfoRequestBody.numberOfRows) {
+                    NetworkImgInfoData(
+                        contentId = "$it",
+                        imgName = "name",
+                        originImgUrl = "origin_img_url$it",
+                        serialNum = "$it",
+                        cpyrhtDivCd = "Type3",
+                        smallImgUrl = "small_img_url$it",
+                    )
+                },
+            ),
+        )
+        return Result.success(
+            NetworkImgInfoResponse(
+                content = NetworkImgInfoResponseContent(
                     header = header,
                     body = body,
                 ),

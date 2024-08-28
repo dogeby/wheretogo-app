@@ -6,11 +6,13 @@ import com.dogeby.wheretogo.core.network.TourNetworkDataSource
 import com.dogeby.wheretogo.core.network.model.tour.categoryinfo.NetworkCategoryInfoResponse
 import com.dogeby.wheretogo.core.network.model.tour.commoninfo.NetworkCommonInfoResponse
 import com.dogeby.wheretogo.core.network.model.tour.festival.NetworkFestivalResponse
+import com.dogeby.wheretogo.core.network.model.tour.imginfo.NetworkImgInfoResponse
 import com.dogeby.wheretogo.core.network.model.tour.keywordsearch.NetworkKeywordSearchResponse
 import com.dogeby.wheretogo.core.network.model.tour.locationinfo.NetworkLocationInfoResponse
 import com.dogeby.wheretogo.core.network.model.tour.requestbody.CategoryInfoRequestBody
 import com.dogeby.wheretogo.core.network.model.tour.requestbody.CommonInfoRequestBody
 import com.dogeby.wheretogo.core.network.model.tour.requestbody.FestivalInfoRequestBody
+import com.dogeby.wheretogo.core.network.model.tour.requestbody.ImgInfoRequestBody
 import com.dogeby.wheretogo.core.network.model.tour.requestbody.KeywordSearchRequestBody
 import com.dogeby.wheretogo.core.network.model.tour.requestbody.LocationInfoRequestBody
 import com.dogeby.wheretogo.core.network.model.tour.requestbody.TourInfoByRegionRequestBody
@@ -122,6 +124,19 @@ class RetrofitTourNetwork @Inject constructor(
         }
     }
 
+    override suspend fun fetchImgInfo(
+        imgInfoRequestBody: ImgInfoRequestBody,
+    ): Result<NetworkImgInfoResponse> = runCatching {
+        val response = networkApi.fetchImgInfo(
+            queryParams = imgInfoRequestBody.toQueryMap().putCommonQueryParams(),
+        )
+        if (response.isSuccessful) {
+            response.body() ?: throw NullPointerException()
+        } else {
+            throw Exception(response.message())
+        }
+    }
+
     private fun Map<String, String>.putCommonQueryParams(
         mobileOs: String = TOUR_API_MOBILE_OS,
         mobileApp: String = TOUR_API_MOBILE_APP,
@@ -183,4 +198,9 @@ private interface RetrofitTourNetworkApi {
     suspend fun fetchCategoryInfo(
         @QueryMap queryParams: Map<String, String>,
     ): Response<NetworkCategoryInfoResponse>
+
+    @GET("detailImage1")
+    suspend fun fetchImgInfo(
+        @QueryMap queryParams: Map<String, String>,
+    ): Response<NetworkImgInfoResponse>
 }

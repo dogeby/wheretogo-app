@@ -5,6 +5,7 @@ import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import com.dogeby.wheretogo.core.data.model.tour.CommonInfoData
 import com.dogeby.wheretogo.core.data.model.tour.FestivalData
+import com.dogeby.wheretogo.core.data.model.tour.ImgInfoData
 import com.dogeby.wheretogo.core.data.model.tour.KeywordSearchResultData
 import com.dogeby.wheretogo.core.data.model.tour.TourContentData
 import com.dogeby.wheretogo.core.data.model.tour.locationinfo.AreaInfoData
@@ -13,6 +14,7 @@ import com.dogeby.wheretogo.core.data.model.tour.serviceinfo.ContentTypeInfoData
 import com.dogeby.wheretogo.core.data.model.tour.serviceinfo.ContentTypeInfoMap
 import com.dogeby.wheretogo.core.data.model.tour.toCommonInfoData
 import com.dogeby.wheretogo.core.data.paging.FestivalInfoPagingSource
+import com.dogeby.wheretogo.core.data.paging.ImgInfoPagingSource
 import com.dogeby.wheretogo.core.data.paging.KeywordSearchResultPagingSource
 import com.dogeby.wheretogo.core.data.paging.TourInfoByRegionPagingSource
 import com.dogeby.wheretogo.core.data.util.AreaInfoLoader
@@ -22,6 +24,7 @@ import com.dogeby.wheretogo.core.model.tour.ArrangeOption
 import com.dogeby.wheretogo.core.network.TourNetworkDataSource
 import com.dogeby.wheretogo.core.network.model.tour.requestbody.CommonInfoRequestBody
 import com.dogeby.wheretogo.core.network.model.tour.requestbody.FestivalInfoRequestBody
+import com.dogeby.wheretogo.core.network.model.tour.requestbody.ImgInfoRequestBody
 import com.dogeby.wheretogo.core.network.model.tour.requestbody.KeywordSearchRequestBody
 import com.dogeby.wheretogo.core.network.model.tour.requestbody.TourInfoByRegionRequestBody
 import javax.inject.Inject
@@ -234,6 +237,25 @@ class TourRepositoryImpl @Inject constructor(
                 emit(Result.failure(e))
             }
         }
+    }
+
+    override fun getPagedImgInfo(
+        contentId: String,
+        currentPage: Int,
+        numberOfRows: Int,
+    ): Flow<PagingData<ImgInfoData>> {
+        return Pager(
+            PagingConfig(numberOfRows),
+        ) {
+            ImgInfoPagingSource(
+                tourNetworkDataSource = tourNetworkDataSource,
+                imgInfoRequestBody = ImgInfoRequestBody(
+                    contentId = contentId,
+                    currentPage = currentPage,
+                    numberOfRows = numberOfRows,
+                ),
+            )
+        }.flow
     }
 
     private companion object {
