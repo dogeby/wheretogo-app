@@ -3,6 +3,7 @@ package com.dogeby.wheretogo.core.data.repository
 import androidx.paging.PagingData
 import com.dogeby.wheretogo.core.data.model.tour.CommonInfoData
 import com.dogeby.wheretogo.core.data.model.tour.FestivalData
+import com.dogeby.wheretogo.core.data.model.tour.ImgInfoData
 import com.dogeby.wheretogo.core.data.model.tour.KeywordSearchResultData
 import com.dogeby.wheretogo.core.data.model.tour.TourContentData
 import com.dogeby.wheretogo.core.data.model.tour.locationinfo.AreaInfoData
@@ -65,4 +66,10 @@ interface TourRepository {
     fun getContentTypeInfoMap(): Flow<Result<Map<String, ContentTypeInfoData>>>
 
     fun fetchContentTypeInfoMap(): Flow<Result<Unit>>
+
+    fun getPagedImgInfo(
+        contentId: String,
+        currentPage: Int = 1,
+        numberOfRows: Int = 12,
+    ): Flow<PagingData<ImgInfoData>>
 }
