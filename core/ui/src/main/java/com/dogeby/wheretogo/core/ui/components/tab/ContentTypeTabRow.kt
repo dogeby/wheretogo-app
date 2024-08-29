@@ -3,6 +3,7 @@ package com.dogeby.wheretogo.core.ui.components.tab
 import androidx.compose.foundation.layout.Column
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.PrimaryScrollableTabRow
 import androidx.compose.material3.Tab
 import androidx.compose.material3.TabRowDefaults
@@ -24,6 +25,7 @@ fun ContentTypeTabRow(
     modifier: Modifier = Modifier,
     containerColor: Color = TabRowDefaults.primaryContainerColor,
     contentColor: Color = TabRowDefaults.primaryContentColor,
+    unselectedContentColor: Color = MaterialTheme.colorScheme.onSurfaceVariant,
 ) {
     Column {
         PrimaryScrollableTabRow(
@@ -43,6 +45,7 @@ fun ContentTypeTabRow(
                     text = {
                         Text(contentType.getDisplayName())
                     },
+                    unselectedContentColor = unselectedContentColor,
                 )
             }
         }

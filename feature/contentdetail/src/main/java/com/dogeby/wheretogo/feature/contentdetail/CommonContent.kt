@@ -1,5 +1,7 @@
 package com.dogeby.wheretogo.feature.contentdetail
 
+import android.content.Context
+import android.content.pm.PackageManager
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -15,6 +17,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -35,6 +38,8 @@ internal fun LazyListScope.commonContent(
     homepage: String = "",
 ) {
     item {
+        val context = LocalContext.current
+
         Column(
             modifier = Modifier.padding(16.dp),
         ) {
@@ -70,10 +75,17 @@ internal fun LazyListScope.commonContent(
                             color = MaterialTheme.colorScheme.onSurfaceVariant,
                             style = MaterialTheme.typography.labelSmall,
                         )
-                        AutoLinkText(
-                            text = htmlToPlainText(tel),
-                            style = MaterialTheme.typography.labelSmall,
-                        )
+                        if (hasCallFeature(context)) {
+                            AutoLinkText(
+                                text = htmlToPlainText(tel),
+                                style = MaterialTheme.typography.labelSmall,
+                            )
+                        } else {
+                            Text(
+                                text = htmlToPlainText(tel),
+                                style = MaterialTheme.typography.labelSmall,
+                            )
+                        }
                     }
                 }
                 if (homepage.isNotBlank()) {
@@ -100,6 +112,11 @@ internal fun LazyListScope.commonContent(
             }
         }
     }
+}
+
+private fun hasCallFeature(context: Context): Boolean {
+    val packageManager = context.packageManager
+    return packageManager.hasSystemFeature(PackageManager.FEATURE_TELEPHONY)
 }
 
 @Preview(showBackground = true)
