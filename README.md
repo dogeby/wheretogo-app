@@ -79,7 +79,7 @@
 - **Retrofit2**
   - REST API와의 네트워크 통신을 지원합니다. API 호출을 간편하게 처리할 수 있으며, 서버와의 데이터 교환을 원활하게 해주기 때문에 TourApi와의 통신에 사용했습니다.
 - **Kotlinx.serialization**
-  - JSON과 Kotlin 데이터 클래스 간의 변환을 지원하며, 기본값 적용과 null 안전성 덕분에 사용했습니다.
+  - JSON과 Kotlin 데이터 클래스 간의 변환을 지원하며, 기본값 지원과 null 안전성 때문에 사용했습니다.
 
 ### 데이터 페이징
 - **Paging3**
