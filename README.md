@@ -9,9 +9,9 @@
 
 ### 홈 화면
 
-<img width="30%" src="https://github.com/user-attachments/assets/eef46b53-4e80-418e-8aa6-65a4974727e0"/>
-<img width="30%" src="https://github.com/user-attachments/assets/81efeb46-3c91-487f-b3ad-10570bf28105"/>
-<img width="30%" src="https://github.com/user-attachments/assets/d72d6bb8-110a-4f2c-a2f8-3e8ef354fb3c"/>
+<img width="200" src="https://github.com/user-attachments/assets/eef46b53-4e80-418e-8aa6-65a4974727e0"/>
+<img width="200" src="https://github.com/user-attachments/assets/81efeb46-3c91-487f-b3ad-10570bf28105"/>
+<img width="200" src="https://github.com/user-attachments/assets/d72d6bb8-110a-4f2c-a2f8-3e8ef354fb3c"/>
 
 - 현재 진행 중인 축제, 관광지, 숙박, 음식점 정보가 목록으로 표시됩니다. 각 항목을 클릭하면 상세 정보를 확인할 수 있습니다.
 - 화면 상단의 버튼을 클릭하여 지역별 콘텐츠나 검색 화면으로 쉽게 이동할 수 있습니다.
@@ -19,11 +19,11 @@
 
 ### 지역 선택 및 콘텐츠 목록 화면
 
-<img width="18%" src="https://github.com/user-attachments/assets/0e8d989b-db42-4ddb-9438-b4a46dea5b02"/>
-<img width="18%" src="https://github.com/user-attachments/assets/f7c91dfd-c623-418a-839d-91adbd9b7cfa"/>
-<img width="18%" src="https://github.com/user-attachments/assets/cab6e2ed-1d80-4207-9948-de3d846aacdf"/>
-<img width="18%" src="https://github.com/user-attachments/assets/9292d627-700a-40d0-9ea8-4da4b665923a"/>
-<img width="18%" src="https://github.com/user-attachments/assets/f2355ed6-b400-4c64-87aa-917ad71b1981"/>
+<img width="150" src="https://github.com/user-attachments/assets/0e8d989b-db42-4ddb-9438-b4a46dea5b02"/>
+<img width="150" src="https://github.com/user-attachments/assets/f7c91dfd-c623-418a-839d-91adbd9b7cfa"/>
+<img width="150" src="https://github.com/user-attachments/assets/cab6e2ed-1d80-4207-9948-de3d846aacdf"/>
+<img width="150" src="https://github.com/user-attachments/assets/9292d627-700a-40d0-9ea8-4da4b665923a"/>
+<img width="150" src="https://github.com/user-attachments/assets/f2355ed6-b400-4c64-87aa-917ad71b1981"/>
 
 - 사용자가 원하는 지역을 선택하면, 해당 지역의 여행지, 축제/공연/행사, 숙박, 음식점 등의 콘텐츠 목록이 표시됩니다.
 - 콘텐츠 목록은 카테고리로 필터링할 수 있어, 사용자가 원하는 정보를 빠르게 찾을 수 있습니다.
@@ -31,19 +31,19 @@
 
 ### 콘텐츠 상세 화면
 
-<img width="20%" src="https://github.com/user-attachments/assets/dd023e81-eeb1-4399-901b-dda093c9ffcd"/>
-<img width="20%" src="https://github.com/user-attachments/assets/45d636a5-fb08-44df-b7c1-aee924b41c84"/>
-<img width="20%" src="https://github.com/user-attachments/assets/45c91b10-bf72-4ce9-b91b-f394c0236c9d"/>
-<img width="20%" src="https://github.com/user-attachments/assets/3be5ddc7-fd1b-49bd-92cf-f7cabc7c0c3f"/>
+<img width="200" src="https://github.com/user-attachments/assets/dd023e81-eeb1-4399-901b-dda093c9ffcd"/>
+<img width="200" src="https://github.com/user-attachments/assets/45d636a5-fb08-44df-b7c1-aee924b41c84"/>
+<img width="200" src="https://github.com/user-attachments/assets/45c91b10-bf72-4ce9-b91b-f394c0236c9d"/>
+<img width="200" src="https://github.com/user-attachments/assets/3be5ddc7-fd1b-49bd-92cf-f7cabc7c0c3f"/>
 
 - 콘텐츠의 사진, 카테고리, 개요, 전화번호, 주소 및 지도를 볼 수 있습니다.
 - 사진을 클릭하면 사진을 확대할 수 있는 화면이 나타납니다.
 
 ### 검색 화면
 
-<img width="30%" src="https://github.com/user-attachments/assets/13c07e8d-0dc4-4037-8ea1-da7b1fa9b759"/>
-<img width="30%" src="https://github.com/user-attachments/assets/b5f31c48-8fd5-4445-98f1-11f19d300c94"/>
-<img width="30%" src="https://github.com/user-attachments/assets/dfe35aba-038f-4645-83ff-6c643e83af2f"/>
+<img width="200" src="https://github.com/user-attachments/assets/13c07e8d-0dc4-4037-8ea1-da7b1fa9b759"/>
+<img width="200" src="https://github.com/user-attachments/assets/b5f31c48-8fd5-4445-98f1-11f19d300c94"/>
+<img width="200" src="https://github.com/user-attachments/assets/dfe35aba-038f-4645-83ff-6c643e83af2f"/>
 
 - 키워드를 통해 원하는 콘텐츠를 찾을 수 있습니다.
 
